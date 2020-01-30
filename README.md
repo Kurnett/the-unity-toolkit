@@ -17,4 +17,4 @@ The Unity Toolkit is currently still in development. If you find parts of it tha
 - Menu Management (Not Started)
 
 ## Follow the Development Process
-Think this looks useful? The Toolkit is regularly improved upon in my game development streams. Follow along at https://www.twitch.tv/john_of_all_trades_!
+Think this looks useful? The Toolkit is regularly improved upon in my game development streams. Follow along at [twitch.tv/john_of_all_trades_](https://www.twitch.tv/john_of_all_trades_)!
