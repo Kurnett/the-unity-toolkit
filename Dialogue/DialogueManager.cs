@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add ability to start conversation on specific node.
+// TODO: Create example of inheriting from DialogueManager class to add additional functionality
+//       (e.g. turning NPCs to face the player at the start of a conversation,
+//       preventing players from moving during conversations, etc.)
 
 public class DialogueManager : MonoBehaviour {
 
@@ -91,6 +94,9 @@ public class DialogueManager : MonoBehaviour {
       }
     }
   }
+
+  // TODO: Add handling for clicking on response options in the UI.
+  // TODO: Convert number key response handling from conditional statements to a loop.
 
   void CheckResponse() {
     if (Input.GetKeyDown(KeyCode.Alpha1)) {

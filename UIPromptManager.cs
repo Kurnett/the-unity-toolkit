@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Merge UI prompt sorting by distance into InteractZone logic.
+
 public class UIPromptManager : Singleton<UIPromptManager> {
 
   Dictionary<Transform, UIPrompt> prompts = new Dictionary<Transform, UIPrompt>();

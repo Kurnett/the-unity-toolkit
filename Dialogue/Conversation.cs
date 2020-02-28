@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-/*
-  To-do:
-  - Allow reordering response options.
-*/
+// TODO: Allow reordering response options.
+// TODO: Restyle dialogue nodes to match normal Unity styles.
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : ScriptableObject {

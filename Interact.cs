@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Allow zone interaction and FPS interaction simultaneously.
+// TODO: Ensure zone interactions only interact with the closest target.
+// TODO: Add UI handling to only show the closest zone target.
+
 public class Interact : MonoBehaviour {
 
   public bool zoneInteract = false;

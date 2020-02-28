@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InteractZone : MonoBehaviour {
 
+    // TODO: Allow custom messages for interaction zones in UI.
+
     public GameObject target;
 
     public void Interact () {

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Restyle "select conversation" menu.
+// TODO: Add default screen for when no conversation is selected.
+// TODO: Add ability to create new conversation scriptable objects in a default location.
+// TODO: Create blank starting point node when a conversation is created.
+// TODO: Add ability to delete conversations.
+
 public class DialogueEditor : EditorWindow {
 
   private Conversation selectedConversation;
@@ -147,7 +153,6 @@ public class DialogueEditor : EditorWindow {
         break;
       case EventType.ExecuteCommand:
         // TODO: Add handling for other events of type ExecuteCommand in other contexts.
-        // I.e. 
         SelectConversation();
         break;
     }
