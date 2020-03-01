@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Restyle "select conversation" menu.
-// TODO: Add default screen for when no conversation is selected.
 // TODO: Add ability to create new conversation scriptable objects in a default location.
 // TODO: Create blank starting point node when a conversation is created.
 // TODO: Add ability to delete conversations.
+// TODO: Centralize GUI styles.
+// TODO: Convert GUI components to GUILayouts.
 
 public class DialogueEditor : EditorWindow {
 
@@ -20,6 +20,8 @@ public class DialogueEditor : EditorWindow {
 
   private Vector2 offset;
   private Vector2 drag;
+
+  private GUIStyle centerText;
 
   [MenuItem("Window/Dialogue Editor")]
   private static void OpenWindow() {
@@ -38,50 +40,58 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void OnGUI() {
+    if (selectedConversation == null) {
+      RenderNoConversationSelectedGUI();
+    } else {
+      RenderConversationSelectedGUI();
+    }
+    RenderConversationSelectionGUI();
+    ProcessEvents(Event.current);
+    if (GUI.changed) Repaint();
+  }
+
+  private void RenderNoConversationSelectedGUI() {
+    centerText = new GUIStyle();
+    centerText.alignment = TextAnchor.MiddleCenter;
+    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a conversation to get started", centerText);
+  }
+
+  private void RenderConversationSelectedGUI() {
     DrawGrid(20, 0.2f, Color.gray);
     DrawGrid(100, 0.4f, Color.gray);
 
     DrawNodes();
-    // DrawConnections();
     DrawConnectionLine(Event.current);
 
     ProcessNodeEvents(Event.current);
-    ProcessEvents(Event.current);
-
-    DrawLoadConversation();
-
-    if (GUI.changed) Repaint();
+    ProcessEventsConversation(Event.current);
   }
 
-  private void DrawLoadConversation() {
-    if (GUI.Button(new Rect(50, 50, 140, 30), "Select Conversation")) {
-      OpenConversationPicker();
+  private void RenderConversationSelectionGUI() {
+    GUI.Box(new Rect(18, 18, 196, 48), "");
+    Conversation newConversation = (Conversation)EditorGUI.ObjectField(new Rect(24, 24, 180, 16), selectedConversation, typeof(Conversation), false);
+    EditorGUI.LabelField(new Rect(24, 42, 220, 16), "Selected Conversation");
+    if (newConversation != selectedConversation) {
+      selectedConversation = newConversation;
+      InitializeConversation();
     }
-    EditorGUI.SelectableLabel(new Rect(50, 100, 200, 200), selectedConversation != null ? selectedConversation.name : "");
   }
 
-  private void OpenConversationPicker() {
-    EditorGUIUtility.ShowObjectPicker<Conversation>(null, false, "", 0);
-  }
-
-  private void SelectConversation() {
-    if (EditorGUIUtility.GetObjectPickerObject() is Conversation) {
-      selectedConversation = EditorGUIUtility.GetObjectPickerObject() as Conversation;
-      if (selectedConversation && selectedConversation.dialogue != null) {
-        selectedOption = null;
-        foreach (ConversationNode node in selectedConversation.dialogue) {
-          node.Initialize(
-            selectedConversation,
-            nodeStyle,
-            selectedNodeStyle,
-            OnClickOption,
-            OnClickNode,
-            OnClickRemoveNode,
-            SaveConversation);
-        }
+  private void InitializeConversation() {
+    if (selectedConversation && selectedConversation.dialogue != null) {
+      selectedOption = null;
+      foreach (ConversationNode node in selectedConversation.dialogue) {
+        node.Initialize(
+          selectedConversation,
+          nodeStyle,
+          selectedNodeStyle,
+          OnClickOption,
+          OnClickNode,
+          OnClickRemoveNode,
+          SaveConversation);
       }
-      DrawNodes();
     }
+    DrawNodes();
   }
 
   private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor) {
@@ -139,6 +149,10 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void ProcessEvents(Event e) {
+
+  }
+
+  private void ProcessEventsConversation(Event e) {
     drag = Vector2.zero;
     switch (e.type) {
       case EventType.MouseDown:
@@ -150,10 +164,6 @@ public class DialogueEditor : EditorWindow {
         if (e.button == 0) {
           OnDrag(e.delta);
         }
-        break;
-      case EventType.ExecuteCommand:
-        // TODO: Add handling for other events of type ExecuteCommand in other contexts.
-        SelectConversation();
         break;
     }
   }
@@ -231,6 +241,5 @@ public class DialogueEditor : EditorWindow {
   private void SaveConversation(Conversation conversation) {
     EditorUtility.SetDirty(conversation);
     AssetDatabase.SaveAssets();
-    Debug.Log("SAVED");
   }
 }
