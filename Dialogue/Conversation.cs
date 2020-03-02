@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 // TODO: Allow reordering response options.
-// TODO: Restyle dialogue nodes to match normal Unity styles.
+// TODO: Add refresh handling to prevent missing variables on recompile. Currently requires closing and reopening the editor window.
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : ScriptableObject {
@@ -77,6 +77,7 @@ public class ConversationNode {
   // Editor Data
   public ConversationNode node;
   public Rect rect;
+  public Rect containerRect;
 
   public bool isDragged;
   public bool isSelected;
@@ -96,6 +97,8 @@ public class ConversationNode {
   public Action<Conversation> SaveConversation;
 
   public string title = "";
+
+  // TODO: DRY up duplicate code in constructor and initialization function.
 
   public ConversationNode(
     int id,
@@ -156,51 +159,57 @@ public class ConversationNode {
     EditorStyles.textField.wordWrap = true;
     float spacing = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
     float offset = 220f;
-    GUI.Box(new Rect(rect.x, rect.y, 150f, 30f), "", style);
 
-    Speaker speakerNew = (Speaker)EditorGUI.ObjectField(new Rect(rect.x, rect.y + 30f, 150f, 20f), speaker, typeof(Speaker), false);
+    GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height));
+    containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
+
+    GUILayout.Box("");
+
+    Speaker speakerNew = (Speaker)EditorGUILayout.ObjectField(speaker, typeof(Speaker), false);
     if (speaker != speakerNew) {
       speaker = speakerNew;
       diff = true;
     }
 
     // TODO: Prevent a conversation from having multiple default starting points.
-    bool startConversationNew = GUI.Toggle(new Rect(rect.x, rect.y + 65f, 100f, 30f), startConversation, "Start Conv.");
+    // TODO: Centralize diff checks into one location.
+    bool startConversationNew = EditorGUILayout.ToggleLeft("Start Conv.", startConversation);
     if (startConversation != startConversationNew) {
       startConversation = startConversationNew;
       diff = true;
     }
 
-    bool endConversationNew = GUI.Toggle(new Rect(rect.x, rect.y + 85f, 100f, 30f), endConversation, "End Conv.");
+    bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", endConversation);
     if (endConversation != endConversationNew) {
       endConversation = endConversationNew;
       diff = true;
     }
 
-    bool autoProceedNew = GUI.Toggle(new Rect(rect.x, rect.y + 105f, 100f, 30f), autoProceed, "Auto-Proceed");
+    bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", autoProceed);
     if (autoProceed != autoProceedNew) {
       autoProceed = autoProceedNew;
       diff = true;
     }
 
-    GUI.Box(new Rect(rect.x, rect.y + 120f, 80f, 30f), "Length");
-    float lengthNew = EditorGUI.FloatField(new Rect(rect.x + 80f, rect.y + 120f, 40f, 30f), length);
+    Rect autoNextRect = EditorGUILayout.BeginHorizontal();
+    GUILayout.Label("Auto-Length");
+    float lengthNew = EditorGUILayout.FloatField(length);
     if (length != lengthNew) {
       length = lengthNew;
       diff = true;
     }
 
-    text = EditorGUI.TextField(new Rect(rect.x, rect.y + 160f, 150f, 60f), text);
-    Rect autoNextRect = new Rect(rect.x + 150f, rect.y + 160f, 30f, 60f);
     if (autoOption.next == -1) {
-      if (GUI.Button(autoNextRect, "+")) {
+      if (GUILayout.Button("+")) {
         OnClickOption(autoOption);
       }
     } else {
-      if (GUI.Button(autoNextRect, "-")) {
+      if (GUILayout.Button("-")) {
         autoOption.RemoveConnection();
       }
     }
+    EditorGUILayout.EndHorizontal();
+
     autoOption.rect = autoNextRect;
     ConversationNode autoNextNode = conversation.GetNodeById(autoOption.next);
     if (autoNextNode != null) {
@@ -214,26 +223,42 @@ public class ConversationNode {
         2f
       );
     }
+
+    GUILayout.Label("Dialogue");
+    text = EditorGUILayout.TextArea(text);
+
     for (int i = 0; i < options.Count; i++) {
       ConversationOption option = (ConversationOption)options[i];
-      Rect removeRect = new Rect(rect.x - 30f, rect.y + offset + (spacing * i), 30f, spacing);
-      Rect addRect = new Rect(rect.x + 130f, rect.y + offset + (spacing * i), 30f, spacing);
-      Rect responseRect = new Rect(rect.x, rect.y + offset + (spacing * i), 130f, spacing);
-      option.response = EditorGUI.TextField(responseRect, option.response);
-      // TODO: Move conversation option rectangle definitions to centralized location.
-      option.rect = addRect;
-      GUI.Box(removeRect, "R");
+      EditorGUILayout.BeginHorizontal();
+      if (GUILayout.Button("R")) {
+        options.Remove(option);
+      }
+      option.response = EditorGUILayout.TextArea(option.response);
       if (option.next == -1) {
-        if (GUI.Button(addRect, "+")) {
+        if (GUILayout.Button("+")) {
           OnClickOption(option);
         }
       } else {
-        if (GUI.Button(addRect, "-")) {
+        if (GUILayout.Button("-")) {
           option.RemoveConnection();
         }
       }
+      EditorGUILayout.EndHorizontal();
+    }
 
+    if (GUILayout.Button("Add Response")) {
+      AddOption();
+      GUI.changed = true;
+    }
+
+    EditorGUILayout.EndVertical();
+    GUILayout.EndArea();
+
+    for (int i = 0; i < options.Count; i++) {
+      ConversationOption option = (ConversationOption)options[i];
       ConversationNode nextNode = conversation.GetNodeById(option.next);
+      Rect addRect = new Rect(rect.x + 130f, rect.y + offset + (spacing * i), 30f, spacing);
+      option.rect = addRect;
 
       if (nextNode != null) {
         Handles.DrawBezier(
@@ -247,14 +272,13 @@ public class ConversationNode {
         );
       }
     }
-    GUI.Box(new Rect(rect.x, rect.y + offset + (spacing * options.Count), 130f, spacing), "Add Response");
 
     if (diff) SaveConversation(conversation);
   }
 
   public bool ProcessEvents(Event e) {
     float spacing = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
-    Rect dragRect = new Rect(rect.x, rect.y, 150f, 30f);
+    Rect dragRect = new Rect(rect.x + containerRect.x, rect.y + containerRect.y, containerRect.width, containerRect.height);
     Rect addOptionRect = new Rect(rect.x, rect.y + 220f + (spacing * options.Count), 130f, spacing);
     switch (e.type) {
       case EventType.MouseDown:
@@ -273,12 +297,6 @@ public class ConversationNode {
             isSelected = true;
             style = selectedNodeStyle;
             OnClickNode(this);
-          } else if (addOptionRect.Contains(e.mousePosition)) {
-            AddOption();
-            GUI.changed = true;
-          } else if (removedOption != null) {
-            options.Remove(removedOption);
-            GUI.changed = true;
           } else {
             GUI.changed = true;
             isSelected = false;
