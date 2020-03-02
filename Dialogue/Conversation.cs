@@ -254,6 +254,8 @@ public class ConversationNode {
     EditorGUILayout.EndVertical();
     GUILayout.EndArea();
 
+    // TODO: Figure out a way to position handles correctly with the new GUI system.
+
     for (int i = 0; i < options.Count; i++) {
       ConversationOption option = (ConversationOption)options[i];
       ConversationNode nextNode = conversation.GetNodeById(option.next);
