@@ -6,7 +6,6 @@ using UnityEditor;
 // TODO: Add ability to create new conversation scriptable objects in a default location.
 // TODO: Create blank starting point node when a conversation is created.
 // TODO: Add ability to delete conversations.
-// TODO: Centralize GUI styles.
 
 public class DialogueEditor : EditorWindow {
 
@@ -14,13 +13,11 @@ public class DialogueEditor : EditorWindow {
   [System.NonSerialized]
   private ConversationOption selectedOption;
 
-  private GUIStyle nodeStyle;
-  private GUIStyle selectedNodeStyle;
+  private GUIStyle centerText;
 
   private Vector2 offset;
   private Vector2 drag;
 
-  private GUIStyle centerText;
 
   [UnityEditor.Callbacks.DidReloadScripts]
   private static void OnScriptReload() {
@@ -34,16 +31,6 @@ public class DialogueEditor : EditorWindow {
   private static void OpenWindow() {
     DialogueEditor window = GetWindow<DialogueEditor>();
     window.titleContent = new GUIContent("Dialogue Editor");
-  }
-
-  private void OnEnable() {
-    nodeStyle = new GUIStyle();
-    nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
-    nodeStyle.border = new RectOffset(12, 12, 12, 12);
-
-    selectedNodeStyle = new GUIStyle();
-    selectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
-    selectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
   }
 
   private void OnGUI() {
@@ -91,8 +78,6 @@ public class DialogueEditor : EditorWindow {
       foreach (ConversationNode node in selectedConversation.dialogue) {
         node.Initialize(
           selectedConversation,
-          nodeStyle,
-          selectedNodeStyle,
           OnClickOption,
           OnClickNode,
           OnClickRemoveNode,
@@ -205,8 +190,6 @@ public class DialogueEditor : EditorWindow {
     selectedConversation.dialogue.Add(new ConversationNode(
       selectedConversation.GenerateUniqueId(),
       mousePosition,
-      nodeStyle,
-      selectedNodeStyle,
       selectedConversation,
       OnClickOption,
       OnClickNode,

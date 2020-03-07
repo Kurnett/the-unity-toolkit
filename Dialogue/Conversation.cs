@@ -84,10 +84,6 @@ public class ConversationNode {
   public float width = 200f;
   public float height = 30f;
 
-  public GUIStyle style;
-  public GUIStyle defaultNodeStyle;
-  public GUIStyle selectedNodeStyle;
-
   // Needs initialization
   public Conversation conversation;
   public Action<ConversationOption> OnClickOption;
@@ -100,8 +96,6 @@ public class ConversationNode {
   public ConversationNode(
     int id,
     Vector2 position,
-    GUIStyle nodeStyle,
-    GUIStyle selectedStyle,
     Conversation conversation,
     Action<ConversationOption> OnClickOption,
     Action<ConversationNode> OnClickNode,
@@ -110,24 +104,19 @@ public class ConversationNode {
   ) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
-    style = nodeStyle;
     autoOption = new ConversationOption();
     options = new List<ConversationOption>();
-    Initialize(conversation, nodeStyle, selectedStyle, OnClickOption, OnClickNode, OnClickRemoveNode, SaveConversation);
+    Initialize(conversation, OnClickOption, OnClickNode, OnClickRemoveNode, SaveConversation);
   }
 
   public void Initialize(
     Conversation conversation,
-    GUIStyle nodeStyle,
-    GUIStyle selectedStyle,
     Action<ConversationOption> OnClickOption,
     Action<ConversationNode> OnClickNode,
     Action<ConversationNode> OnClickRemoveNode,
     Action<Conversation> SaveConversation
   ) {
     this.conversation = conversation;
-    defaultNodeStyle = nodeStyle;
-    selectedNodeStyle = selectedStyle;
     this.OnClickNode = OnClickNode;
     this.OnClickOption = OnClickOption;
     this.OnRemoveNode = OnClickRemoveNode;
@@ -287,12 +276,10 @@ public class ConversationNode {
             isDragged = true;
             GUI.changed = true;
             isSelected = true;
-            style = selectedNodeStyle;
             OnClickNode(this);
           } else {
             GUI.changed = true;
             isSelected = false;
-            style = defaultNodeStyle;
           }
         }
 
