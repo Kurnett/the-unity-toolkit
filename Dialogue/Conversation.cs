@@ -131,6 +131,7 @@ public class ConversationNode {
   }
 
   // TODO: Look into cleaning and DRYing up the Draw method.
+  // TODO: Remove save logic from Draw method.
 
   public void Draw() {
     bool diff = false;
@@ -150,32 +151,14 @@ public class ConversationNode {
     }
 
     // TODO: Prevent a conversation from having multiple default starting points.
-    // TODO: Centralize diff checks into one location.
     bool startConversationNew = EditorGUILayout.ToggleLeft("Start Conv.", startConversation);
-    if (startConversation != startConversationNew) {
-      startConversation = startConversationNew;
-      diff = true;
-    }
-
     bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", endConversation);
-    if (endConversation != endConversationNew) {
-      endConversation = endConversationNew;
-      diff = true;
-    }
-
     bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", autoProceed);
-    if (autoProceed != autoProceedNew) {
-      autoProceed = autoProceedNew;
-      diff = true;
-    }
 
     Rect autoNextRect = EditorGUILayout.BeginHorizontal();
     GUILayout.Label("Auto-Length");
+
     float lengthNew = EditorGUILayout.FloatField(length);
-    if (length != lengthNew) {
-      length = lengthNew;
-      diff = true;
-    }
 
     if (autoOption.next == -1) {
       if (GUILayout.Button("+")) {
@@ -261,7 +244,24 @@ public class ConversationNode {
         );
       }
     }
-
+    
+    // Check if conversation needs to be saved.
+    if (startConversation != startConversationNew) {
+      startConversation = startConversationNew;
+      diff = true;
+    }
+    if (endConversation != endConversationNew) {
+      endConversation = endConversationNew;
+      diff = true;
+    }
+    if (autoProceed != autoProceedNew) {
+      autoProceed = autoProceedNew;
+      diff = true;
+    }
+    if (length != lengthNew) {
+      length = lengthNew;
+      diff = true;
+    }
     if (diff) SaveConversation(conversation);
   }
 
