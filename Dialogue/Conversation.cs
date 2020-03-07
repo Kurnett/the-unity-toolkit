@@ -130,36 +130,25 @@ public class ConversationNode {
     rect.position += delta;
   }
 
-  // TODO: Look into cleaning and DRYing up the Draw method.
-  // TODO: Remove save logic from Draw method.
-
   public void Draw() {
     bool diff = false;
-    EditorStyles.textField.wordWrap = true;
-    float spacing = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
-    float offset = 220f;
 
     GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height));
     containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
 
-    GUILayout.Box("");
-
+    // Adds spacing to let users click and drag.
+    GUILayout.Box("", GUIStyle.none);
     Speaker speakerNew = (Speaker)EditorGUILayout.ObjectField(speaker, typeof(Speaker), false);
-    if (speaker != speakerNew) {
-      speaker = speakerNew;
-      diff = true;
-    }
 
     // TODO: Prevent a conversation from having multiple default starting points.
     bool startConversationNew = EditorGUILayout.ToggleLeft("Start Conv.", startConversation);
     bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", endConversation);
     bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", autoProceed);
-
     Rect autoNextRect = EditorGUILayout.BeginHorizontal();
     GUILayout.Label("Auto-Length");
-
     float lengthNew = EditorGUILayout.FloatField(length);
 
+    // Check if the conversation node has a default next node.
     if (autoOption.next == -1) {
       if (GUILayout.Button("+")) {
         OnClickOption(autoOption);
@@ -171,6 +160,39 @@ public class ConversationNode {
     }
     EditorGUILayout.EndHorizontal();
 
+    GUILayout.Label("Dialogue");
+    text = EditorGUILayout.TextArea(text);
+
+    // TODO: Restyle option list GUI to make better use of the limited space.
+    for (int i = 0; i < options.Count; i++) {
+      ConversationOption option = (ConversationOption)options[i];
+      EditorGUILayout.BeginHorizontal();
+
+      EditorGUILayout.BeginVertical();
+      if (GUILayout.Button("Up")) { MoveOption(option, -1); }
+      if (GUILayout.Button("Down")) { MoveOption(option, 1); }
+      EditorGUILayout.EndVertical();
+
+      option.response = EditorGUILayout.TextArea(option.response);
+      if (GUILayout.Button("R")) { options.Remove(option); }
+      if (option.next == -1) {
+        if (GUILayout.Button("+")) { OnClickOption(option); }
+      } else {
+        if (GUILayout.Button("-")) { option.RemoveConnection(); }
+      }
+
+      EditorGUILayout.EndHorizontal();
+    }
+
+    if (GUILayout.Button("Add Response")) {
+      AddOption();
+      GUI.changed = true;
+    }
+
+    EditorGUILayout.EndVertical();
+    GUILayout.EndArea();
+
+    // TODO: Figure out a way to position handles correctly with the new GUI system.
     autoOption.rect = autoNextRect;
     ConversationNode autoNextNode = conversation.GetNodeById(autoOption.next);
     if (autoNextNode != null) {
@@ -184,52 +206,10 @@ public class ConversationNode {
         2f
       );
     }
-
-    GUILayout.Label("Dialogue");
-    text = EditorGUILayout.TextArea(text);
-
-    // TODO: Restyle option list GUI to make better use of the limited space.
-    for (int i = 0; i < options.Count; i++) {
-      ConversationOption option = (ConversationOption)options[i];
-      EditorGUILayout.BeginHorizontal();
-      EditorGUILayout.BeginVertical();
-      if (GUILayout.Button("Up")) {
-        MoveOption(option, -1);
-      }
-      if (GUILayout.Button("Down")) {
-        MoveOption(option, 1);
-      }
-      EditorGUILayout.EndVertical();
-      option.response = EditorGUILayout.TextArea(option.response);
-      if (GUILayout.Button("R")) {
-        options.Remove(option);
-      }
-      if (option.next == -1) {
-        if (GUILayout.Button("+")) {
-          OnClickOption(option);
-        }
-      } else {
-        if (GUILayout.Button("-")) {
-          option.RemoveConnection();
-        }
-      }
-      EditorGUILayout.EndHorizontal();
-    }
-
-    if (GUILayout.Button("Add Response")) {
-      AddOption();
-      GUI.changed = true;
-    }
-
-    EditorGUILayout.EndVertical();
-    GUILayout.EndArea();
-
-    // TODO: Figure out a way to position handles correctly with the new GUI system.
-
     for (int i = 0; i < options.Count; i++) {
       ConversationOption option = (ConversationOption)options[i];
       ConversationNode nextNode = conversation.GetNodeById(option.next);
-      Rect addRect = new Rect(rect.x + 130f, rect.y + offset + (spacing * i), 30f, spacing);
+      Rect addRect = new Rect(rect.x + 130f, rect.y, 30f, 30f);
       option.rect = addRect;
 
       if (nextNode != null) {
@@ -244,8 +224,12 @@ public class ConversationNode {
         );
       }
     }
-    
+
     // Check if conversation needs to be saved.
+    if (speaker != speakerNew) {
+      speaker = speakerNew;
+      diff = true;
+    }
     if (startConversation != startConversationNew) {
       startConversation = startConversationNew;
       diff = true;
@@ -266,19 +250,9 @@ public class ConversationNode {
   }
 
   public bool ProcessEvents(Event e) {
-    float spacing = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
     Rect dragRect = new Rect(rect.x + containerRect.x, rect.y + containerRect.y, containerRect.width, containerRect.height);
-    Rect addOptionRect = new Rect(rect.x, rect.y + 220f + (spacing * options.Count), 130f, spacing);
     switch (e.type) {
       case EventType.MouseDown:
-        ConversationOption removedOption = null;
-        for (int i = 0; i < options.Count; i++) {
-          ConversationOption option = options[i];
-          Rect optionRect = new Rect(rect.x - 30f, rect.y + 220f + (spacing * i), 30f, spacing);
-          if (optionRect.Contains(e.mousePosition)) {
-            removedOption = option;
-          }
-        }
         if (e.button == 0) {
           if (dragRect.Contains(e.mousePosition)) {
             isDragged = true;
