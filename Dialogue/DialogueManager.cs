@@ -55,9 +55,14 @@ public class DialogueManager : MonoBehaviour {
   public bool StartConversation(Conversation conversation, GameObject npc) {
     if (currentConversation == null) {
       currentConversation = conversation;
-      SetNode(conversation.GetStartNodeID());
-      player.SendMessage("StartDialogue", npc);
-      return true;
+      int startNodeID = conversation.GetStartNodeID();
+      if (startNodeID != -1) {
+        SetNode(conversation.GetStartNodeID());
+        player.SendMessage("StartDialogue", npc);
+        return true;
+      } else {
+        Debug.LogWarning("Conversation has no start node.");
+      }
     }
     return false;
   }
@@ -73,14 +78,14 @@ public class DialogueManager : MonoBehaviour {
   }
 
   void SetNode(int id) {
-    currentNode = GetNode(id);
-    currentNodeStartTime = Time.time;
-    gameObject.SendMessage("UpdateConversationUI", currentNode);
+      currentNode = GetNode(id);
+      currentNodeStartTime = Time.time;
+      gameObject.SendMessage("UpdateConversationUI", currentNode);
   }
 
   void SetNode(ConversationNode node) {
-    currentNodeStartTime = Time.time;
-    gameObject.SendMessage("UpdateConversationUI", node);
+      currentNodeStartTime = Time.time;
+      gameObject.SendMessage("UpdateConversationUI", node);
   }
 
   void CheckNodeProgress() {

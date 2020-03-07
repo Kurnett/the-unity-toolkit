@@ -18,7 +18,6 @@ public class DialogueEditor : EditorWindow {
   private Vector2 offset;
   private Vector2 drag;
 
-
   [UnityEditor.Callbacks.DidReloadScripts]
   private static void OnScriptReload() {
     List<DialogueEditor> dialogueEditors = new List<DialogueEditor>();

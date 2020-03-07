@@ -11,7 +11,6 @@ public class Conversation : ScriptableObject {
   public int id;
   new public string name;
   public List<ConversationNode> dialogue = new List<ConversationNode>();
-  // TODO: Add error handling for conversations with no start node defined.
   public ConversationNode startNode;
 
   public int GenerateUniqueId() {
