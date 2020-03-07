@@ -5,12 +5,11 @@ using UnityEngine;
 using UnityEditor;
 
 // TODO: Allow reordering response options.
-// TODO: Add refresh handling to prevent missing variables on recompile. Currently requires closing and reopening the editor window.
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : ScriptableObject {
   public int id;
-  public string name;
+  new public string name;
   public List<ConversationNode> dialogue = new List<ConversationNode>();
   // TODO: Add error handling for conversations with no start node defined.
   public ConversationNode startNode;
@@ -98,8 +97,6 @@ public class ConversationNode {
 
   public string title = "";
 
-  // TODO: DRY up duplicate code in constructor and initialization function.
-
   public ConversationNode(
     int id,
     Vector2 position,
@@ -114,16 +111,9 @@ public class ConversationNode {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
     style = nodeStyle;
-    var obj = this;
-    defaultNodeStyle = nodeStyle;
-    selectedNodeStyle = selectedStyle;
-    this.conversation = conversation;
-    this.OnClickNode = OnClickNode;
-    this.OnClickOption = OnClickOption;
-    this.OnRemoveNode = OnClickRemoveNode;
-    this.SaveConversation = SaveConversation;
     autoOption = new ConversationOption();
     options = new List<ConversationOption>();
+    Initialize(conversation, nodeStyle, selectedStyle, OnClickOption, OnClickNode, OnClickRemoveNode, SaveConversation);
   }
 
   public void Initialize(

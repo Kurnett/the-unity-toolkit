@@ -7,7 +7,6 @@ using UnityEditor;
 // TODO: Create blank starting point node when a conversation is created.
 // TODO: Add ability to delete conversations.
 // TODO: Centralize GUI styles.
-// TODO: Convert GUI components to GUILayouts.
 
 public class DialogueEditor : EditorWindow {
 
@@ -22,6 +21,14 @@ public class DialogueEditor : EditorWindow {
   private Vector2 drag;
 
   private GUIStyle centerText;
+
+  [UnityEditor.Callbacks.DidReloadScripts]
+  private static void OnScriptReload() {
+    List<DialogueEditor> dialogueEditors = new List<DialogueEditor>();
+    foreach (DialogueEditor editor in Resources.FindObjectsOfTypeAll(typeof(DialogueEditor)) as DialogueEditor[]) {
+      editor.InitializeConversation();
+    }
+  }
 
   [MenuItem("Window/Dialogue Editor")]
   private static void OpenWindow() {
@@ -74,6 +81,7 @@ public class DialogueEditor : EditorWindow {
     if (newConversation != selectedConversation) {
       selectedConversation = newConversation;
       InitializeConversation();
+      DrawNodes();
     }
   }
 
@@ -91,7 +99,6 @@ public class DialogueEditor : EditorWindow {
           SaveConversation);
       }
     }
-    DrawNodes();
   }
 
   private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor) {

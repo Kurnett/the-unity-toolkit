@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "Items/Items")]
 public class Item : ScriptableObject {
     public bool unique;
-    public string name;
+    new public string name;
     public string description;
     public GameObject prop;
     public GameObject heldProp;

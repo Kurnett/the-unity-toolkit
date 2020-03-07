@@ -4,5 +4,5 @@ using UnityEngine;
 
 [CreateAssetMenu (menuName = "Dialogue/Speaker")]
 public class Speaker : ScriptableObject {
-    public string name;
+    new public string name;
 }
