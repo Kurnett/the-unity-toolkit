@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Allow reordering response options.
-
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : ScriptableObject {
   public int id;
@@ -132,6 +130,8 @@ public class ConversationNode {
     rect.position += delta;
   }
 
+  // TODO: Look into cleaning and DRYing up the Draw method.
+
   public void Draw() {
     bool diff = false;
     EditorStyles.textField.wordWrap = true;
@@ -205,13 +205,22 @@ public class ConversationNode {
     GUILayout.Label("Dialogue");
     text = EditorGUILayout.TextArea(text);
 
+    // TODO: Restyle option list GUI to make better use of the limited space.
     for (int i = 0; i < options.Count; i++) {
       ConversationOption option = (ConversationOption)options[i];
       EditorGUILayout.BeginHorizontal();
+      EditorGUILayout.BeginVertical();
+      if (GUILayout.Button("Up")) {
+        MoveOption(option, -1);
+      }
+      if (GUILayout.Button("Down")) {
+        MoveOption(option, 1);
+      }
+      EditorGUILayout.EndVertical();
+      option.response = EditorGUILayout.TextArea(option.response);
       if (GUILayout.Button("R")) {
         options.Remove(option);
       }
-      option.response = EditorGUILayout.TextArea(option.response);
       if (option.next == -1) {
         if (GUILayout.Button("+")) {
           OnClickOption(option);
@@ -318,8 +327,14 @@ public class ConversationNode {
     options.Add(newOption);
   }
 
-  private void ReorderOption() {
-    // TODO: Add option reordering functionality.
+  void MoveOption(ConversationOption option, int diff) {
+    int index = options.IndexOf(option);
+    int newIndex = Mathf.Clamp(index + diff, 0, options.Count - 1);
+    if (index != newIndex) {
+      options.RemoveAt(index);
+      options.Insert(index + diff, option);
+      GUI.changed = true;
+    }
   }
 }
 
