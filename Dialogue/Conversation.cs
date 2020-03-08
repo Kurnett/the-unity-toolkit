@@ -142,8 +142,9 @@ public class ConversationNode {
 
   public void Draw() {
     bool diff = false;
+    EditorStyles.textField.wordWrap = true;
 
-    GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height));
+    GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height * 3));
     containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
 
     // Adds spacing to let users click and drag.
@@ -170,24 +171,23 @@ public class ConversationNode {
     EditorGUILayout.EndHorizontal();
 
     GUILayout.Label("Dialogue");
-    text = EditorGUILayout.TextArea(text);
+    text = EditorGUILayout.TextArea(text, GUILayout.Height(90));
 
-    // TODO: Restyle option list GUI to make better use of the limited space.
     for (int i = 0; i < options.Count; i++) {
       ConversationOption option = (ConversationOption)options[i];
       EditorGUILayout.BeginHorizontal();
 
       EditorGUILayout.BeginVertical();
-      if (GUILayout.Button("Up")) { MoveOption(option, -1); }
-      if (GUILayout.Button("Down")) { MoveOption(option, 1); }
+      if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
+      if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
       EditorGUILayout.EndVertical();
 
-      option.response = EditorGUILayout.TextArea(option.response);
-      if (GUILayout.Button("R")) { options.Remove(option); }
+      option.response = EditorGUILayout.TextArea(option.response, GUILayout.Width(140), GUILayout.Height(60));
+      if (GUILayout.Button("R", GUILayout.Width(30))) { options.Remove(option); }
       if (option.next == -1) {
-        if (GUILayout.Button("+")) { OnClickOption(option); }
+        if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
       } else {
-        if (GUILayout.Button("-")) { option.RemoveConnection(); }
+        if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
       }
 
       EditorGUILayout.EndHorizontal();
