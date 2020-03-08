@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractDialogue : MonoBehaviour {
 
-  public string conversationName = "";
+  public Conversation conversation;
   ConversationHandler handler;
 
   void Start() {
@@ -12,10 +12,10 @@ public class InteractDialogue : MonoBehaviour {
   }
 
   public void Interact() {
-    if (conversationName == "") {
+    if (conversation == null) {
       handler.StartConversation();
     } else {
-      handler.StartConversation(conversationName);
+      handler.StartConversation(conversation);
     }
   }
 }

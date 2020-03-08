@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add ability to start conversation on specific node.
-// TODO: Create example of inheriting from DialogueManager class to add additional functionality
-//       (e.g. turning NPCs to face the player at the start of a conversation,
-//       preventing players from moving during conversations, etc.)
 // TODO: Move all UI logic to inherited class.
 
 public class DialogueManager : MonoBehaviour {
-  // TODO: Move player object to inherited class.
-
-  public string dialogueTag = "";
 
   public bool pressKeyToSkip = true;
 
@@ -21,7 +15,6 @@ public class DialogueManager : MonoBehaviour {
 
   public List<Conversation> conversations = new List<Conversation>();
 
-  // TODO: Move logic involving player to inherited class.
   void Start() {
     currentConversation = null;
   }
