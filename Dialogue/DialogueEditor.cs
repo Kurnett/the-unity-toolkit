@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Add ability to create new conversation scriptable objects in a default location.
-// TODO: Create blank starting point node when a conversation is created.
-// TODO: Add ability to delete conversations.
-
 public class DialogueEditor : EditorWindow {
 
   private Conversation selectedConversation;
