@@ -6,9 +6,11 @@ using UnityEngine;
 // TODO: Create example of inheriting from DialogueManager class to add additional functionality
 //       (e.g. turning NPCs to face the player at the start of a conversation,
 //       preventing players from moving during conversations, etc.)
+// TODO: Move all UI logic to inherited class.
 
 public class DialogueManager : MonoBehaviour {
 
+  // TODO: Move player object to inherited class.
   GameObject player;
 
   public string dialogueTag = "";
@@ -21,6 +23,7 @@ public class DialogueManager : MonoBehaviour {
 
   public List<Conversation> conversations = new List<Conversation>();
 
+  // TODO: Move logic involving player to inherited class.
   void Start() {
     player = GameObject.FindWithTag("Player");
     currentConversation = null;
@@ -46,6 +49,7 @@ public class DialogueManager : MonoBehaviour {
     if (currentConversation == null) {
       currentConversation = GetConversation(id);
       SetNode(currentConversation.GetStartNodeID());
+      // TODO: Convert SendMessage to method call in inherited class.
       player.SendMessage("StartDialogue");
       return true;
     }
@@ -58,6 +62,7 @@ public class DialogueManager : MonoBehaviour {
       int startNodeID = conversation.GetStartNodeID();
       if (startNodeID != -1) {
         SetNode(conversation.GetStartNodeID());
+        // TODO: Move SendMessage to inherited class.
         player.SendMessage("StartDialogue", npc);
         return true;
       } else {
@@ -68,6 +73,7 @@ public class DialogueManager : MonoBehaviour {
   }
 
   void EndConversation() {
+    // TODO: Move SendMessage to inherited class.
     gameObject.SendMessage("CleanupConversationUI");
     player.SendMessage("EndDialogue");
     Invoke("ClearConversation", 1);
@@ -80,11 +86,13 @@ public class DialogueManager : MonoBehaviour {
   void SetNode(int id) {
       currentNode = GetNode(id);
       currentNodeStartTime = Time.time;
+      // TODO: Convert SendMessage to method call in inherited class.
       gameObject.SendMessage("UpdateConversationUI", currentNode);
   }
 
   void SetNode(ConversationNode node) {
       currentNodeStartTime = Time.time;
+      // TODO: Move SendMessage to inherited class.
       gameObject.SendMessage("UpdateConversationUI", node);
   }
 
@@ -102,6 +110,7 @@ public class DialogueManager : MonoBehaviour {
 
   // TODO: Add handling for clicking on response options in the UI.
   // TODO: Convert number key response handling from conditional statements to a loop.
+  // TODO: Move custom response handling to inherited class.
 
   void CheckResponse() {
     if (Input.GetKeyDown(KeyCode.Alpha1)) {
