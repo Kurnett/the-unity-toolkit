@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add ability to start conversation on specific node.
-// TODO: Move all UI logic to inherited class.
 
 public class DialogueManager : MonoBehaviour {
 
@@ -21,7 +20,7 @@ public class DialogueManager : MonoBehaviour {
 
   void Update() {
     if (currentConversation != null) {
-      CheckResponse();
+      OnConversationResponse();
       CheckNodeProgress();
     }
   }
@@ -41,7 +40,6 @@ public class DialogueManager : MonoBehaviour {
   }
 
   virtual public void EndConversation() {
-    gameObject.SendMessage("CleanupConversationUI");
     Invoke("ClearConversation", 1);
   }
 
@@ -52,14 +50,12 @@ public class DialogueManager : MonoBehaviour {
   void SetNode(int id) {
     currentNode = GetNode(id);
     currentNodeStartTime = Time.time;
-    // TODO: Convert SendMessage to method call in inherited class.
-    gameObject.SendMessage("UpdateConversationUI", currentNode);
+    OnConversationUIUpdate(currentNode);
   }
 
   void SetNode(ConversationNode node) {
     currentNodeStartTime = Time.time;
-    // TODO: Move SendMessage to inherited class.
-    gameObject.SendMessage("UpdateConversationUI", node);
+    OnConversationUIUpdate(node);
   }
 
   void CheckNodeProgress() {
@@ -74,29 +70,7 @@ public class DialogueManager : MonoBehaviour {
     }
   }
 
-  // TODO: Add handling for clicking on response options in the UI.
-  // TODO: Convert number key response handling from conditional statements to a loop.
-  // TODO: Move custom response handling to inherited class.
-
-  void CheckResponse() {
-    if (Input.GetKeyDown(KeyCode.Alpha1)) {
-      Respond(1);
-    }
-    if (Input.GetKeyDown(KeyCode.Alpha2)) {
-      Respond(2);
-    }
-    if (Input.GetKeyDown(KeyCode.Alpha3)) {
-      Respond(3);
-    }
-    if (Input.GetKeyDown(KeyCode.Alpha4)) {
-      Respond(4);
-    }
-    if (Input.GetKeyDown(KeyCode.Alpha5)) {
-      Respond(5);
-    }
-  }
-
-  void Respond(int option) {
+  public void Respond(int option) {
     SetNode(currentNode.options[option - 1].next);
   }
 
@@ -126,5 +100,8 @@ public class DialogueManager : MonoBehaviour {
     }
     return null;
   }
+
+  virtual public void OnConversationUIUpdate(ConversationNode node) { }
+  virtual public void OnConversationResponse() { }
 
 }
