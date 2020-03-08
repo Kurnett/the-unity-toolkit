@@ -55,6 +55,16 @@ public class Conversation : ScriptableObject {
       }
     }
   }
+
+  public void SetStartNode(ConversationNode startNode) {
+    foreach (ConversationNode node in dialogue) {
+      if (startNode == node) {
+        node.startConversation = true;
+      } else {
+        node.startConversation = false;
+      }
+    }
+  }
 }
 
 [System.Serializable]
@@ -140,7 +150,6 @@ public class ConversationNode {
     GUILayout.Box("", GUIStyle.none);
     Speaker speakerNew = (Speaker)EditorGUILayout.ObjectField(speaker, typeof(Speaker), false);
 
-    // TODO: Prevent a conversation from having multiple default starting points.
     bool startConversationNew = EditorGUILayout.ToggleLeft("Start Conv.", startConversation);
     bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", endConversation);
     bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", autoProceed);
@@ -231,7 +240,7 @@ public class ConversationNode {
       diff = true;
     }
     if (startConversation != startConversationNew) {
-      startConversation = startConversationNew;
+      if (startConversationNew) conversation.SetStartNode(this);
       diff = true;
     }
     if (endConversation != endConversationNew) {
