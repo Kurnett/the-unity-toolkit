@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Figure out why menus (right-click context, speaker/conversation selection, etc) cause the screen to jump.
+
 public class DialogueEditor : EditorWindow {
 
   private Conversation selectedConversation;

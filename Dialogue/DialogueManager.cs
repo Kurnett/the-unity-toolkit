@@ -9,9 +9,7 @@ using UnityEngine;
 // TODO: Move all UI logic to inherited class.
 
 public class DialogueManager : MonoBehaviour {
-
   // TODO: Move player object to inherited class.
-  GameObject player;
 
   public string dialogueTag = "";
 
@@ -25,7 +23,6 @@ public class DialogueManager : MonoBehaviour {
 
   // TODO: Move logic involving player to inherited class.
   void Start() {
-    player = GameObject.FindWithTag("Player");
     currentConversation = null;
   }
 
@@ -36,34 +33,12 @@ public class DialogueManager : MonoBehaviour {
     }
   }
 
-  public bool StartConversation(string name) {
-    if (currentConversation == null) {
-      currentConversation = GetConversation(name);
-      SetNode(currentConversation.GetStartNodeID());
-      return true;
-    }
-    return false;
-  }
-
-  public bool StartConversation(int id) {
-    if (currentConversation == null) {
-      currentConversation = GetConversation(id);
-      SetNode(currentConversation.GetStartNodeID());
-      // TODO: Convert SendMessage to method call in inherited class.
-      player.SendMessage("StartDialogue");
-      return true;
-    }
-    return false;
-  }
-
-  public bool StartConversation(Conversation conversation, GameObject npc) {
+  virtual public bool StartConversation(Conversation conversation) {
     if (currentConversation == null) {
       currentConversation = conversation;
       int startNodeID = conversation.GetStartNodeID();
       if (startNodeID != -1) {
         SetNode(conversation.GetStartNodeID());
-        // TODO: Move SendMessage to inherited class.
-        player.SendMessage("StartDialogue", npc);
         return true;
       } else {
         Debug.LogWarning("Conversation has no start node.");
@@ -72,10 +47,8 @@ public class DialogueManager : MonoBehaviour {
     return false;
   }
 
-  void EndConversation() {
-    // TODO: Move SendMessage to inherited class.
+  virtual public void EndConversation() {
     gameObject.SendMessage("CleanupConversationUI");
-    player.SendMessage("EndDialogue");
     Invoke("ClearConversation", 1);
   }
 
@@ -84,16 +57,16 @@ public class DialogueManager : MonoBehaviour {
   }
 
   void SetNode(int id) {
-      currentNode = GetNode(id);
-      currentNodeStartTime = Time.time;
-      // TODO: Convert SendMessage to method call in inherited class.
-      gameObject.SendMessage("UpdateConversationUI", currentNode);
+    currentNode = GetNode(id);
+    currentNodeStartTime = Time.time;
+    // TODO: Convert SendMessage to method call in inherited class.
+    gameObject.SendMessage("UpdateConversationUI", currentNode);
   }
 
   void SetNode(ConversationNode node) {
-      currentNodeStartTime = Time.time;
-      // TODO: Move SendMessage to inherited class.
-      gameObject.SendMessage("UpdateConversationUI", node);
+    currentNodeStartTime = Time.time;
+    // TODO: Move SendMessage to inherited class.
+    gameObject.SendMessage("UpdateConversationUI", node);
   }
 
   void CheckNodeProgress() {

@@ -11,7 +11,7 @@ public class ConversationHandler : MonoBehaviour {
 
   public List<Conversation> conversations = new List<Conversation>();
   public string defaultConversation = "";
-  DialogueManager manager;
+  HOCH_DialogueManager manager;
 
   Conversation GetConversation(string name) {
     foreach (Conversation conversation in conversations) {
@@ -24,7 +24,7 @@ public class ConversationHandler : MonoBehaviour {
 
   void FindDialogueManager() {
     if (!manager) {
-      DialogueManager[] managers = FindObjectsOfType(typeof(DialogueManager)) as DialogueManager[];
+      HOCH_DialogueManager[] managers = FindObjectsOfType(typeof(HOCH_DialogueManager)) as HOCH_DialogueManager[];
       if (managers.Length > 0) {
         manager = managers[0];
       }
