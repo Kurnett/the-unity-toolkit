@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Figure out why menus (right-click context, speaker/conversation selection, etc) cause the screen to jump.
-
 public class DialogueEditor : EditorWindow {
 
   private Conversation selectedConversation;
@@ -15,6 +13,9 @@ public class DialogueEditor : EditorWindow {
 
   private Vector2 offset;
   private Vector2 drag;
+
+  private bool contextMenuOpen;
+  private bool conversationSelectMenuOpen;
 
   [UnityEditor.Callbacks.DidReloadScripts]
   private static void OnScriptReload() {
@@ -59,14 +60,25 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void RenderConversationSelectionGUI() {
-    GUI.Box(new Rect(18, 18, 196, 48), "");
-    Conversation newConversation = (Conversation)EditorGUI.ObjectField(new Rect(24, 24, 180, 16), selectedConversation, typeof(Conversation), false);
-    EditorGUI.LabelField(new Rect(24, 42, 220, 16), "Selected Conversation");
-    if (newConversation != selectedConversation) {
-      selectedConversation = newConversation;
-      InitializeConversation();
-      DrawNodes();
+    GUILayout.BeginArea(new Rect(18, 18, 196, 48));
+    EditorGUILayout.BeginVertical("Box");
+    if (!selectedConversation) {
+      Conversation newConversation = (Conversation)EditorGUILayout.ObjectField(selectedConversation, typeof(Conversation), false);
+      EditorGUILayout.LabelField("Select Conversation");
+      if (newConversation != selectedConversation) {
+        conversationSelectMenuOpen = true;
+        selectedConversation = newConversation;
+        InitializeConversation();
+        DrawNodes();
+      }
+    } else {
+      if (GUILayout.Button("Select New Conv.")) {
+        selectedConversation = null;
+      }
+      if (selectedConversation != null) EditorGUILayout.LabelField(selectedConversation.name);
     }
+    EditorGUILayout.EndVertical();
+    GUILayout.EndArea();
   }
 
   private void InitializeConversation() {
@@ -113,15 +125,6 @@ public class DialogueEditor : EditorWindow {
     }
   }
 
-  // private void DrawConnections() {
-  //   if (selectedConversation.dialogue != null) {
-  //     foreach (ConversationNode node in selectedConversation.dialogue) {
-  //       if (node.outPoint != null && node.outPoint.connection != null)
-  //         node.outPoint.connection.Draw();
-  //     }
-  //   }
-  // }
-
   private void DrawConnectionLine(Event e) {
     if (selectedOption != null) {
       Handles.DrawBezier(
@@ -145,12 +148,14 @@ public class DialogueEditor : EditorWindow {
     drag = Vector2.zero;
     switch (e.type) {
       case EventType.MouseDown:
+        contextMenuOpen = false;
+        conversationSelectMenuOpen = false;
         if (e.button == 1) {
           ProcessContextMenu(e.mousePosition);
         }
         break;
       case EventType.MouseDrag:
-        if (e.button == 0) {
+        if (e.button == 0 && !contextMenuOpen && !conversationSelectMenuOpen) {
           OnDrag(e.delta);
         }
         break;
@@ -170,6 +175,7 @@ public class DialogueEditor : EditorWindow {
     GenericMenu genericMenu = new GenericMenu();
     genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
     genericMenu.ShowAsContext();
+    contextMenuOpen = true;
   }
 
   private void OnDrag(Vector2 delta) {
