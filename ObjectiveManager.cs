@@ -3,6 +3,8 @@
 // using UnityEngine;
 // using UnityEngine.UI;
 
+// TODO: Get this ObjectiveManager shitshow on the road.
+
 // public class ObjectiveManager : MonoBehaviour {
 
 //     [System.Serializable]
