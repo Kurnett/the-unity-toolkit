@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Implement UIPromptTrigger as a class inheriting from a more generic parent class.
 public class UIPromptTrigger : MonoBehaviour {
 
   UIPromptManager manager;

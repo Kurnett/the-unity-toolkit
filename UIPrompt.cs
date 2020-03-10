@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Update UIPrompt to provide override hooks.
 [CreateAssetMenu(menuName = "UI/Prompt")]
 public class UIPrompt : ScriptableObject {
 

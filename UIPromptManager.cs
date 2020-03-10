@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Look into spllitting UI prompts into more generic parent class and more specific child class.
 // TODO: Merge UI prompt sorting by distance into InteractZone logic.
 
 public class UIPromptManager : Singleton<UIPromptManager> {

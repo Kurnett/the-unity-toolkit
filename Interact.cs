@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Migrate interactions to use inheritance.
 // TODO: Allow zone interaction and FPS interaction simultaneously.
 // TODO: Ensure zone interactions only interact with the closest target.
 // TODO: Add UI handling to only show the closest zone target.
@@ -10,6 +11,7 @@ public class Interact : MonoBehaviour {
 
   public bool zoneInteract = false;
 
+  // TODO: Move camera interactions to inherited class.
   CameraController cameraController;
   public Transform cameraTransform;
 
@@ -23,6 +25,7 @@ public class Interact : MonoBehaviour {
   public GameObject interactCanvas;
   private GameObject currentCanvas;
 
+  // TODO: Move camera interactions to inherited class.
   void Start() {
     if (gameObject.GetComponent<CameraController>()) {
       cameraController = gameObject.GetComponent<CameraController>();
@@ -33,6 +36,7 @@ public class Interact : MonoBehaviour {
     InteractInput();
   }
 
+  // TODO: Move interaction triggers (zones and FPS) to inherited classes. Interact class should primarily be boilerplate to support action-and-reaction.
   void InteractInput() {
     if (Input.GetButtonDown("Interact")) {
       if (zoneInteract) {
@@ -58,6 +62,7 @@ public class Interact : MonoBehaviour {
     }
   }
 
+  // TODO: Move camera interactions to inherited class.
   float GetCameraDistance() {
     if (cameraController) {
       return cameraController.GetCameraDistance();
@@ -65,12 +70,14 @@ public class Interact : MonoBehaviour {
     return cameraDistance;
   }
 
+  // TODO: Move UI interactions to inherited class.
   void CheckUI() {
     if (currentCanvas) {
 
     }
   }
 
+  // TODO: Move zone interactions to inherited class.
   public void EnterZone(GameObject zone) {
     currentZones.Add(zone);
   }
