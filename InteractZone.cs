@@ -1,85 +1,37 @@
-﻿// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-// // TODO: Migrate interactions to use inheritance.
-// // TODO: Allow zone interaction and FPS interaction simultaneously.
-// // TODO: Ensure zone interactions only interact with the closest target.
-// // TODO: Add UI handling to only show the closest zone target.
+public class InteractZone : Interact {
 
-// public class InteractZone : Interact {
+  public List<GameObject> currentZones = new List<GameObject>();
 
-//   public bool zoneInteract = false;
+  //   public GameObject interactCanvas;
+  //   private GameObject currentCanvas;
 
-//   public List<GameObject> currentZones = new List<GameObject>();
+  override public void InteractInput() {
+    if (Input.GetButtonDown("Interact")) {
+      TriggerInteract();
+    }
+  }
 
-//   // TODO: Migrate interaction UI to use inheritance.
+  override public void TriggerInteract() {
+    foreach (GameObject zone in currentZones) {
+      if (zone) {
+        zone.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
+      }
+    }
+  }
 
-//   public GameObject interactCanvas;
-//   private GameObject currentCanvas;
+  override public void UpdateInteractionUI() {
 
-//   // TODO: Move camera interactions to inherited class.
-//   void Start() {
-//     if (gameObject.GetComponent<CameraController>()) {
-//       cameraController = gameObject.GetComponent<CameraController>();
-//     }
-//   }
+  }
 
-//   void Update() {
-//     InteractInput();
-//   }
+  public void EnterZone(GameObject zone) {
+    currentZones.Add(zone);
+  }
 
-//   // TODO: Move interaction triggers (zones and FPS) to inherited classes. Interact class should primarily be boilerplate to support action-and-reaction.
-//   virtual void InteractInput() {
-//     if (Input.GetButtonDown("Interact")) {
-      
-//     }
-//   }
-
-//   virtual public void Interact () {
-//     if (zoneInteract) {
-//       InteractZone();
-//     } else {
-//       InteractFPS();
-//     }
-//   }
-
-//   void InteractZone() {
-//     foreach (GameObject zone in currentZones) {
-//       if (zone) {
-//         zone.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
-//       }
-//     }
-//   }
-
-//   void InteractFPS() {
-//     RaycastHit hit;
-//     if (Physics.Raycast(cameraTransform.position, cameraTransform.TransformDirection(Vector3.forward), out hit, GetCameraDistance() + range, mask)) {
-//       hit.collider.gameObject.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
-//     }
-//   }
-
-//   // TODO: Move camera interactions to inherited class.
-//   float GetCameraDistance() {
-//     if (cameraController) {
-//       return cameraController.GetCameraDistance();
-//     }
-//     return cameraDistance;
-//   }
-
-//   // TODO: Move UI interactions to inherited class.
-//   void CheckUI() {
-//     if (currentCanvas) {
-
-//     }
-//   }
-
-//   // TODO: Move zone interactions to inherited class.
-//   public void EnterZone(GameObject zone) {
-//     currentZones.Add(zone);
-//   }
-
-//   public void LeaveZone(GameObject zone) {
-//     currentZones.Remove(zone);
-//   }
-// }
+  public void LeaveZone(GameObject zone) {
+    currentZones.Remove(zone);
+  }
+}

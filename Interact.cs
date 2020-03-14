@@ -7,9 +7,7 @@ abstract public class Interact : MonoBehaviour {
   void Update() { InteractInput(); }
 
   abstract public void InteractInput();
+  abstract public void TriggerInteract();
+  abstract public void UpdateInteractionUI();
 
-  abstract public void TriggerInteract ();
-
-  abstract public void UpdateInteractionUI ();
-  
 }

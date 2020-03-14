@@ -6,19 +6,19 @@ using UnityEngine;
 
 public class InteractionZone : Interaction {
 
-    // TODO: Allow custom messages for interaction zones in UI.
+  // TODO: Allow custom messages for interaction zones in UI.
 
-    public GameObject target;
+  public GameObject target;
 
-    override public void Interact () {
-        target.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
-    }
+  override public void Interact() {
+    target.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
+  }
 
-    void OnTriggerEnter (Collider other) {
-        other.SendMessage("EnterZone", gameObject);
-    }
+  void OnTriggerEnter(Collider other) {
+    other.SendMessage("EnterZone", gameObject);
+  }
 
-    void OnTriggerExit (Collider other) {
-        other.SendMessage("LeaveZone", gameObject);
-    }
+  void OnTriggerExit(Collider other) {
+    other.SendMessage("LeaveZone", gameObject);
+  }
 }
