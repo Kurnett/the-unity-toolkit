@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Modify InteractZone to inherit from Interact.
-
 public class InteractionZone : Interaction {
-
-  // TODO: Allow custom messages for interaction zones in UI.
 
   public Interaction target;
 
