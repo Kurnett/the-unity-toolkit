@@ -6,9 +6,6 @@ public class InteractZone : Interact {
 
   public List<GameObject> currentZones = new List<GameObject>();
 
-  //   public GameObject interactCanvas;
-  //   private GameObject currentCanvas;
-
   override public void InteractInput() {
     if (Input.GetButtonDown("Interact")) {
       TriggerInteract();
@@ -21,10 +18,6 @@ public class InteractZone : Interact {
         zone.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
       }
     }
-  }
-
-  override public void UpdateInteractionUI() {
-
   }
 
   public void EnterZone(GameObject zone) {
