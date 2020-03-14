@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupableItem : MonoBehaviour {
+public class PickupableItem : Interaction {
 
-    public Item item;
-    public string playerTag = "Player";
+  public Item item;
+  public string playerTag = "Player";
 
-    public void Interact () {
-        GameObject.FindWithTag(playerTag).GetComponent<Inventory>().AddItem(item, gameObject);
-    }
+  override public void Interact() {
+    GameObject.FindWithTag(playerTag).GetComponent<Inventory>().AddItem(item, gameObject);
+  }
 }

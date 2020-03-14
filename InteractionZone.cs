@@ -8,17 +8,23 @@ public class InteractionZone : Interaction {
 
   // TODO: Allow custom messages for interaction zones in UI.
 
-  public GameObject target;
+  public Interaction target;
 
   override public void Interact() {
-    target.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
+    target.Interact();
   }
 
   void OnTriggerEnter(Collider other) {
-    other.SendMessage("EnterZone", gameObject);
+    InteractZone target = other.GetComponent<InteractZone>();
+    if (target != null) {
+      target.EnterZone(gameObject);
+    }
   }
 
   void OnTriggerExit(Collider other) {
-    other.SendMessage("LeaveZone", gameObject);
+    InteractZone target = other.GetComponent<InteractZone>();
+    if (target != null) {
+      target.LeaveZone(gameObject);
+    }
   }
 }
