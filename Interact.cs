@@ -8,6 +8,6 @@ abstract public class Interact : MonoBehaviour {
 
   abstract public void InteractInput();
   abstract public void TriggerInteract();
-  abstract public void UpdateInteractionUI();
+  virtual public void UpdateInteractionUI() { }
 
 }
