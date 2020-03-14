@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Potentially move to local scripts to avoid dependence on Inventory class.
+
 public class PickupableItem : Interaction {
 
   public Item item;
