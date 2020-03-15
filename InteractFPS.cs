@@ -2,23 +2,15 @@
 // using System.Collections.Generic;
 // using UnityEngine;
 
-// // TODO: Migrate interactions to use inheritance.
-// // TODO: Allow zone interaction and FPS interaction simultaneously.
-// // TODO: Ensure zone interactions only interact with the closest target.
-// // TODO: Add UI handling to only show the closest zone target.
-
 // public class InteractFPS : Interact {
 
 //   public bool zoneInteract = false;
 
 //   public List<GameObject> currentZones = new List<GameObject>();
 
-//   // TODO: Migrate interaction UI to use inheritance.
-
 //   public GameObject interactCanvas;
 //   private GameObject currentCanvas;
 
-//   // TODO: Move camera interactions to inherited class.
 //   void Start() {
 //     if (gameObject.GetComponent<CameraController>()) {
 //       cameraController = gameObject.GetComponent<CameraController>();
@@ -29,7 +21,6 @@
 //     InteractInput();
 //   }
 
-//   // TODO: Move interaction triggers (zones and FPS) to inherited classes. Interact class should primarily be boilerplate to support action-and-reaction.
 //   virtual void InteractInput() {
 //     if (Input.GetButtonDown("Interact")) {
       
@@ -59,7 +50,6 @@
 //     }
 //   }
 
-//   // TODO: Move camera interactions to inherited class.
 //   float GetCameraDistance() {
 //     if (cameraController) {
 //       return cameraController.GetCameraDistance();
@@ -67,14 +57,12 @@
 //     return cameraDistance;
 //   }
 
-//   // TODO: Move UI interactions to inherited class.
 //   void CheckUI() {
 //     if (currentCanvas) {
 
 //     }
 //   }
 
-//   // TODO: Move zone interactions to inherited class.
 //   public void EnterZone(GameObject zone) {
 //     currentZones.Add(zone);
 //   }
