@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryInteract : MonoBehaviour
-{
+//TODO: Decouple inventory inheritance from interaction inheritance.
 
-    Inventory player;
+public class InventoryInteract : Interaction {
 
-    public Item requiredItem;
-    public bool shouldRemoveItem = false;
+  Inventory player;
 
-    public GameObject target;
+  public Item requiredItem;
+  public bool shouldRemoveItem = false;
 
-    void Start () {
-        player = GameObject.FindWithTag("Player").GetComponent<Inventory>();
-    }
+  public Interaction target;
 
-    public void Interact () {
-        if (requiredItem != null && target && player != null) {
-            if (player.GetItem(requiredItem) != null) {
-                target.SendMessage("InteractInventory");
-                if (shouldRemoveItem) {
-                    player.RemoveItem(requiredItem);
-                }
-            }
+  void Start() {
+    player = GameObject.FindWithTag("Player").GetComponent<Inventory>();
+  }
+
+  override public void Interact() {
+    if (requiredItem != null && target && player != null) {
+      if (player.GetItem(requiredItem) != null) {
+        target.Interact();
+        if (shouldRemoveItem) {
+          player.RemoveItem(requiredItem);
         }
+      }
     }
+  }
 }

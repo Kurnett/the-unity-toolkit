@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractZone : Interact {
 
-  public List<GameObject> currentZones = new List<GameObject>();
+  List<GameObject> currentZones = new List<GameObject>();
 
   override public void InteractInput() {
     if (Input.GetButtonDown("Interact")) {
@@ -20,11 +20,17 @@ public class InteractZone : Interact {
     }
   }
 
+  public List<GameObject> GetZones () {
+    return currentZones;
+  }
+
   public void EnterZone(GameObject zone) {
     currentZones.Add(zone);
+    UpdateInteractionUI();
   }
 
   public void LeaveZone(GameObject zone) {
     currentZones.Remove(zone);
+    UpdateInteractionUI();
   }
 }
