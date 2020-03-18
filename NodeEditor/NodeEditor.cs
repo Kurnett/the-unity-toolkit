@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Refactor DialogueEditor to inherit from a generic NodeEditor class.
+public class NodeEditor : EditorWindow {
 
-public class DialogueEditor : EditorWindow {
-
-  private Conversation selectedConversation;
+  private NodeGraph selectedGraph;
   [System.NonSerialized]
-  private ConversationOption selectedOption;
+  private NodeOption selectedOption;
 
   private GUIStyle centerText;
 
@@ -17,24 +15,24 @@ public class DialogueEditor : EditorWindow {
   private Vector2 drag;
 
   private bool contextMenuOpen;
-  private bool conversationSelectMenuOpen;
+  private bool graphSelectMenuOpen;
 
   [UnityEditor.Callbacks.DidReloadScripts]
   private static void OnScriptReload() {
-    List<DialogueEditor> dialogueEditors = new List<DialogueEditor>();
-    foreach (DialogueEditor editor in Resources.FindObjectsOfTypeAll(typeof(DialogueEditor)) as DialogueEditor[]) {
-      editor.InitializeConversation();
+    List<NodeEditor> nodeEditors = new List<NodeEditor>();
+    foreach (NodeEditor editor in Resources.FindObjectsOfTypeAll(typeof(NodeEditor)) as NodeEditor[]) {
+      editor.InitializeNodeGraph();
     }
   }
 
-  [MenuItem("Window/Dialogue Editor")]
+  [MenuItem("Window/Node Editor")]
   private static void OpenWindow() {
-    DialogueEditor window = GetWindow<DialogueEditor>();
-    window.titleContent = new GUIContent("Dialogue Editor");
+    NodeEditor window = GetWindow<NodeEditor>();
+    window.titleContent = new GUIContent("Node Editor");
   }
 
   private void OnGUI() {
-    if (selectedConversation == null) {
+    if (selectedGraph == null) {
       RenderNoConversationSelectedGUI();
     } else {
       RenderConversationSelectedGUI();
@@ -64,35 +62,34 @@ public class DialogueEditor : EditorWindow {
   private void RenderConversationSelectionGUI() {
     GUILayout.BeginArea(new Rect(18, 18, 196, 48));
     EditorGUILayout.BeginVertical("Box");
-    if (!selectedConversation) {
-      Conversation newConversation = (Conversation)EditorGUILayout.ObjectField(selectedConversation, typeof(Conversation), false);
-      EditorGUILayout.LabelField("Select Conversation");
-      if (newConversation != selectedConversation) {
-        conversationSelectMenuOpen = true;
-        selectedConversation = newConversation;
-        InitializeConversation();
+    if (!selectedGraph) {
+      NodeGraph newGraph = (NodeGraph)EditorGUILayout.ObjectField(selectedGraph, typeof(NodeGraph), false);
+      EditorGUILayout.LabelField("Select Node Graph");
+      if (newGraph != selectedGraph) {
+        graphSelectMenuOpen = true;
+        selectedGraph = newGraph;
+        InitializeNodeGraph();
         DrawNodes();
       }
     } else {
       if (GUILayout.Button("Select New Conv.")) {
-        selectedConversation = null;
+        selectedGraph = null;
       }
-      if (selectedConversation != null) EditorGUILayout.LabelField(selectedConversation.name);
+      if (selectedGraph != null) EditorGUILayout.LabelField(selectedGraph.name);
     }
     EditorGUILayout.EndVertical();
     GUILayout.EndArea();
   }
 
-  private void InitializeConversation() {
-    if (selectedConversation && selectedConversation.dialogue != null) {
+  private void InitializeNodeGraph() {
+    if (selectedGraph && selectedGraph.nodes != null) {
       selectedOption = null;
-      foreach (ConversationNode node in selectedConversation.dialogue) {
+      foreach (Node node in selectedGraph.nodes) {
         node.Initialize(
-          selectedConversation,
-          OnClickOption,
+          selectedGraph,
           OnClickNode,
           OnClickRemoveNode,
-          SaveConversation);
+          SaveGraph);
       }
     }
   }
@@ -120,8 +117,8 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void DrawNodes() {
-    if (selectedConversation != null && selectedConversation.dialogue != null) {
-      foreach (ConversationNode node in selectedConversation.dialogue) {
+    if (selectedGraph != null && selectedGraph.nodes != null) {
+      foreach (Node node in selectedGraph.nodes) {
         node.Draw();
       }
     }
@@ -151,13 +148,13 @@ public class DialogueEditor : EditorWindow {
     switch (e.type) {
       case EventType.MouseDown:
         contextMenuOpen = false;
-        conversationSelectMenuOpen = false;
+        graphSelectMenuOpen = false;
         if (e.button == 1) {
           ProcessContextMenu(e.mousePosition);
         }
         break;
       case EventType.MouseDrag:
-        if (e.button == 0 && !contextMenuOpen && !conversationSelectMenuOpen) {
+        if (e.button == 0 && !contextMenuOpen && !graphSelectMenuOpen) {
           OnDrag(e.delta);
         }
         break;
@@ -165,8 +162,8 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void ProcessNodeEvents(Event e) {
-    if (selectedConversation != null && selectedConversation.dialogue != null) {
-      foreach (ConversationNode node in selectedConversation.dialogue) {
+    if (selectedGraph != null && selectedGraph.nodes != null) {
+      foreach (Node node in selectedGraph.nodes) {
         bool guiChanged = node.ProcessEvents(e);
         if (guiChanged) { GUI.changed = true; }
       }
@@ -182,8 +179,8 @@ public class DialogueEditor : EditorWindow {
 
   private void OnDrag(Vector2 delta) {
     drag = delta;
-    if (selectedConversation != null && selectedConversation.dialogue != null) {
-      foreach (ConversationNode node in selectedConversation.dialogue) {
+    if (selectedGraph != null && selectedGraph.nodes != null) {
+      foreach (Node node in selectedGraph.nodes) {
         node.Drag(delta);
       }
     }
@@ -191,25 +188,25 @@ public class DialogueEditor : EditorWindow {
   }
 
   private void OnClickAddNode(Vector2 mousePosition) {
-    if (selectedConversation != null && selectedConversation.dialogue == null) { selectedConversation.dialogue = new List<ConversationNode>(); }
-    selectedConversation.dialogue.Add(new ConversationNode(
-      selectedConversation.GenerateUniqueId(),
+    if (selectedGraph != null && selectedGraph.nodes == null) { selectedGraph.nodes = new List<Node>(); }
+    selectedGraph.nodes.Add(new Node(
+      selectedGraph.GenerateUniqueId(),
       mousePosition,
-      selectedConversation,
+      selectedGraph,
       OnClickOption,
       OnClickNode,
       OnClickRemoveNode,
-      SaveConversation
+      SaveGraph
     ));
-    SaveConversation(selectedConversation);
+    SaveGraph(selectedGraph);
   }
 
-  private void OnClickRemoveNode(ConversationNode node) {
-    selectedConversation.dialogue.Remove(node);
-    SaveConversation(selectedConversation);
+  private void OnClickRemoveNode(Node node) {
+    selectedGraph.nodes.Remove(node);
+    SaveGraph(selectedGraph);
   }
 
-  private void OnClickOption(ConversationOption option) {
+  private void OnClickOption(NodeOption option) {
     if (selectedOption != null) {
       ClearConnectionSelection();
     } else {
@@ -217,24 +214,24 @@ public class DialogueEditor : EditorWindow {
     }
   }
 
-  private void OnClickNode(ConversationNode node) {
+  private void OnClickNode(Node node) {
     if (selectedOption != null) {
       CreateConnection(selectedOption, node);
       ClearConnectionSelection();
     }
   }
 
-  private void CreateConnection(ConversationOption option, ConversationNode node) {
+  private void CreateConnection(NodeOption option, Node node) {
     option.CreateConnection(node);
-    SaveConversation(selectedConversation);
+    SaveGraph(selectedGraph);
   }
 
   private void ClearConnectionSelection() {
     selectedOption = null;
   }
 
-  private void SaveConversation(Conversation conversation) {
-    EditorUtility.SetDirty(conversation);
+  private void SaveGraph(NodeGraph graph) {
+    EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
   }
 }

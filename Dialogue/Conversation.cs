@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Refactor Conversation to inherit from a generic NodeGraph class.
+// TODO: Refactor ConversationNode to inherit from a generic Node class.
+
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : ScriptableObject {
   public int id;
