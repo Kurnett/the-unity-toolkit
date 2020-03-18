@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[CreateAssetMenu(menuName = "Nodes/Graph")]
 public class NodeGraph : ScriptableObject {
   public int id;
   new public string name;

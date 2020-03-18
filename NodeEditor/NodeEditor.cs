@@ -45,7 +45,7 @@ public class NodeEditor : EditorWindow {
   private void RenderNoConversationSelectedGUI() {
     centerText = new GUIStyle();
     centerText.alignment = TextAnchor.MiddleCenter;
-    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a conversation to get started", centerText);
+    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a node graph to get started", centerText);
   }
 
   private void RenderConversationSelectedGUI() {
