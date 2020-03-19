@@ -88,6 +88,7 @@ public class Node {
   public NodeGraph graph;
   public Action<Node> OnClickNode;
   public Action<Node> OnRemoveNode;
+  public Action<NodeOption> OnClickOption;
   public Action<NodeGraph> SaveGraph;
 
   public Node(
@@ -101,19 +102,24 @@ public class Node {
   ) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
-    Initialize(graph, OnClickNode, OnRemoveNode, SaveGraph);
+    Initialize(graph, OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
   }
 
   public void Initialize(
     NodeGraph graph,
+    Action<NodeOption> OnClickOption,
     Action<Node> OnClickNode,
     Action<Node> OnRemoveNode,
     Action<NodeGraph> SaveGraph
   ) {
     this.graph = graph;
+    this.OnClickOption = OnClickOption;
     this.OnClickNode = OnClickNode;
     this.OnRemoveNode = OnRemoveNode;
     this.SaveGraph = SaveGraph;
+    for (int i = 0; i < options.Count; i++) {
+      options[i].Initialize(graph, SaveGraph);
+    }
   }
 
   public void Drag(Vector2 delta) {
@@ -181,6 +187,21 @@ public class Node {
       OnRemoveNode(this);
     }
   }
+
+  private void MoveOption(NodeOption option, int diff) {
+    int index = options.IndexOf(option);
+    int newIndex = Mathf.Clamp(index + diff, 0, options.Count - 1);
+    if (index != newIndex) {
+      options.RemoveAt(index);
+      options.Insert(index + diff, option);
+      GUI.changed = true;
+    }
+  }
+}
+
+private void AddOption() {
+  NodeOption newOption = new NodeOption(graph, SaveGraph);
+  options.Add(newOption);
 }
 
 [System.Serializable]
