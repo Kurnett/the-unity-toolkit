@@ -197,11 +197,11 @@ public class Node {
       GUI.changed = true;
     }
   }
-}
 
-private void AddOption() {
-  NodeOption newOption = new NodeOption(graph, SaveGraph);
-  options.Add(newOption);
+  private void AddOption() {
+    NodeOption newOption = new NodeOption(graph, SaveGraph);
+    options.Add(newOption);
+  }
 }
 
 [System.Serializable]
