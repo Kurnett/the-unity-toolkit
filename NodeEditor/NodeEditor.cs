@@ -87,6 +87,7 @@ public class NodeEditor : EditorWindow {
       foreach (Node node in selectedGraph.nodes) {
         node.Initialize(
           selectedGraph,
+          OnClickOption,
           OnClickNode,
           OnClickRemoveNode,
           SaveGraph);

@@ -126,6 +126,8 @@ public class Node {
     rect.position += delta;
   }
 
+  // TODO: Split Draw method into plug-n-play methods for different parts of the UI (primarily the option list).
+  
   public void Draw() {
     EditorStyles.textField.wordWrap = true;
 
@@ -135,7 +137,52 @@ public class Node {
     // Adds spacing to let users click and drag.
     GUILayout.Box("", GUIStyle.none);
 
+    for (int i = 0; i < options.Count; i++) {
+      NodeOption option = (NodeOption)options[i];
+      EditorGUILayout.BeginHorizontal();
+
+      EditorGUILayout.BeginVertical();
+      if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
+      if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
+      EditorGUILayout.EndVertical();
+
+      if (GUILayout.Button("R", GUILayout.Width(30))) { options.Remove(option); }
+      if (option.next == -1) {
+        if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
+      } else {
+        if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
+      }
+
+      EditorGUILayout.EndHorizontal();
+    }
+
+    if (GUILayout.Button("Add Response")) {
+      AddOption();
+      GUI.changed = true;
+    }
+
+    GUILayout.EndVertical();
     GUILayout.EndArea();
+
+    // TODO: Figure out a way to position handles correctly with the new GUI system.
+    for (int i = 0; i < options.Count; i++) {
+      NodeOption option = (NodeOption)options[i];
+      Node nextNode = graph.GetNodeById(option.next);
+      Rect addRect = new Rect(rect.x + 130f, rect.y, 30f, 30f);
+      option.rect = addRect;
+
+      if (nextNode != null) {
+        Handles.DrawBezier(
+          addRect.center,
+          nextNode.rect.position,
+          addRect.center - Vector2.left * 50f,
+          nextNode.rect.position + Vector2.left * 50f,
+          Color.white,
+          null,
+          2f
+        );
+      }
+    }
 
     // TODO: Add save checking back into default graph behavior.
 
