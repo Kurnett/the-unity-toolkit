@@ -126,7 +126,7 @@ public class Node {
     rect.position += delta;
   }
 
-  protected virtual void Draw() {
+  virtual public void Draw() {
     EditorStyles.textField.wordWrap = true;
 
     GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height * 3));
@@ -172,7 +172,7 @@ public class Node {
   }
 
   protected virtual void DrawOptionControls() {
-
+    // TODO: Move option control rendering to appropriate function.
   }
 
   protected virtual void DrawAddOption() {
@@ -239,19 +239,19 @@ public class Node {
     return false;
   }
 
-  private void ProcessContextMenu() {
+  protected void ProcessContextMenu() {
     GenericMenu genericMenu = new GenericMenu();
     genericMenu.AddItem(new GUIContent("Remove conversation node"), false, OnClickRemoveNode);
     genericMenu.ShowAsContext();
   }
 
-  private void OnClickRemoveNode() {
+  protected void OnClickRemoveNode() {
     if (OnRemoveNode != null) {
       OnRemoveNode(this);
     }
   }
 
-  private void MoveOption(NodeOption option, int diff) {
+  protected void MoveOption(NodeOption option, int diff) {
     int index = options.IndexOf(option);
     int newIndex = Mathf.Clamp(index + diff, 0, options.Count - 1);
     if (index != newIndex) {
@@ -261,7 +261,7 @@ public class Node {
     }
   }
 
-  private void AddOption() {
+  protected void AddOption() {
     NodeOption newOption = new NodeOption(graph, SaveGraph);
     options.Add(newOption);
   }

@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour {
         if (currentNode.endConversation) {
           EndConversation();
         } else if (currentNode.autoProceed) {
-          SetNode(currentNode.autoOption.next);
+          SetNode(currentNode.defaultOption.next);
         }
       }
     }
@@ -93,7 +93,7 @@ public class DialogueManager : MonoBehaviour {
   }
 
   ConversationNode GetNode(int id) {
-    foreach (ConversationNode node in currentConversation.dialogue) {
+    foreach (ConversationNode node in currentConversation.nodes) {
       if (node.id == id) {
         return node;
       }

@@ -5,17 +5,17 @@ using UnityEditor;
 
 public class NodeEditor : EditorWindow {
 
-  private NodeGraph selectedGraph;
+  protected NodeGraph selectedGraph;
   [System.NonSerialized]
-  private NodeOption selectedOption;
+  protected NodeOption selectedOption;
 
-  private GUIStyle centerText;
+  protected GUIStyle centerText;
 
-  private Vector2 offset;
-  private Vector2 drag;
+  protected Vector2 offset;
+  protected Vector2 drag;
 
-  private bool contextMenuOpen;
-  private bool graphSelectMenuOpen;
+  protected bool contextMenuOpen;
+  protected bool graphSelectMenuOpen;
 
   [UnityEditor.Callbacks.DidReloadScripts]
   private static void OnScriptReload() {
@@ -42,7 +42,7 @@ public class NodeEditor : EditorWindow {
     if (GUI.changed) Repaint();
   }
 
-  private void RenderNoConversationSelectedGUI() {
+  protected virtual void RenderNoConversationSelectedGUI() {
     centerText = new GUIStyle();
     centerText.alignment = TextAnchor.MiddleCenter;
     EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a node graph to get started", centerText);
