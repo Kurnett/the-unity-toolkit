@@ -126,45 +126,64 @@ public class Node {
     rect.position += delta;
   }
 
-  // TODO: Split Draw method into plug-n-play methods for different parts of the UI (primarily the option list).
-  
-  public void Draw() {
+  protected virtual void Draw() {
     EditorStyles.textField.wordWrap = true;
 
     GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height * 3));
     containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
+    DrawHeader();
+    DrawOptions();
+    DrawAddOption();
+    GUILayout.EndVertical();
+    GUILayout.EndArea();
+    DrawHandles();
 
+    // TODO: Add save checking back into default graph behavior.
+  }
+
+  protected virtual void DrawHeader() {
     // Adds spacing to let users click and drag.
     GUILayout.Box("", GUIStyle.none);
+  }
 
+  protected virtual void DrawOptions() {
     for (int i = 0; i < options.Count; i++) {
       NodeOption option = (NodeOption)options[i];
-      EditorGUILayout.BeginHorizontal();
+      DrawOption(option);
+    }
+  }
 
-      EditorGUILayout.BeginVertical();
-      if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
-      if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
-      EditorGUILayout.EndVertical();
+  protected virtual void DrawOption(NodeOption option) {
+    EditorGUILayout.BeginHorizontal();
 
-      if (GUILayout.Button("R", GUILayout.Width(30))) { options.Remove(option); }
-      if (option.next == -1) {
-        if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
-      } else {
-        if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
-      }
+    EditorGUILayout.BeginVertical();
+    if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
+    if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
+    EditorGUILayout.EndVertical();
 
-      EditorGUILayout.EndHorizontal();
+    if (GUILayout.Button("R", GUILayout.Width(30))) { options.Remove(option); }
+    if (option.next == -1) {
+      if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
+    } else {
+      if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
     }
 
-    if (GUILayout.Button("Add Response")) {
+    EditorGUILayout.EndHorizontal();
+  }
+
+  protected virtual void DrawOptionControls() {
+
+  }
+
+  protected virtual void DrawAddOption() {
+    if (GUILayout.Button("Add Option")) {
       AddOption();
       GUI.changed = true;
     }
+  }
 
-    GUILayout.EndVertical();
-    GUILayout.EndArea();
-
-    // TODO: Figure out a way to position handles correctly with the new GUI system.
+  // TODO: Figure out a way to position handles correctly with the new GUI system.
+  protected virtual void DrawHandles() {
     for (int i = 0; i < options.Count; i++) {
       NodeOption option = (NodeOption)options[i];
       Node nextNode = graph.GetNodeById(option.next);
@@ -183,9 +202,6 @@ public class Node {
         );
       }
     }
-
-    // TODO: Add save checking back into default graph behavior.
-
   }
 
   public bool ProcessEvents(Event e) {
