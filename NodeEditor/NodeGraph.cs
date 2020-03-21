@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Investigate whether refactoring to avoid IDs is realistic (potentially with a hash-map to allow multiple start nodes).
+
 [CreateAssetMenu(menuName = "Nodes/Graph")]
 public abstract class NodeGraph : ScriptableObject {
   public int id;

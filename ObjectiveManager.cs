@@ -3,7 +3,9 @@
 // using UnityEngine;
 // using UnityEngine.UI;
 
-// TODO: Get this ObjectiveManager shitshow on the road.
+// TODO: Convert ObjectiveManager to NodeGraph inheritance model.
+// TODO: Implement ObjectiveEditor derived from NodeEditor.
+// TODO: Split UI elements into local inherited class.
 
 // public class ObjectiveManager : MonoBehaviour {
 

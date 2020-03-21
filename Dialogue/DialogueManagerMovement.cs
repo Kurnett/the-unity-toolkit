@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Move DialogueManagerMovement to local files and inherit from DialogueManager (HOCH_DialogueManager).
+
 public class DialogueManagerMovement : MonoBehaviour {
 
     Transform player;

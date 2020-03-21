@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Review DialogueEditor for logic that can be moved to NodeEditor.
+
 public class DialogueEditor : NodeEditor<Conversation> {
 
   [MenuItem("Window/Dialogue Editor")]

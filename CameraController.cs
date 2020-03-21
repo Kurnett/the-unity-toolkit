@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
-{
+public class CameraController : MonoBehaviour {
 
   public Transform cameraObject;
   public Transform cameraPivot;
@@ -46,8 +45,7 @@ public class CameraController : MonoBehaviour
   public Quaternion secondaryTargetRotation = Quaternion.identity;
   public float cameraSecondarySpeed = 5f;
 
-  void Start()
-  {
+  void Start() {
     cameraDistance = defaultCameraDistance;
     targetCameraDistance = defaultCameraDistance;
     pitch = defaultTargetPitch;
@@ -58,12 +56,10 @@ public class CameraController : MonoBehaviour
     SetCameraModeSettings(cameraMode);
   }
 
-  void Update()
-  {
+  void Update() {
     cameraMode = CameraModeInput(cameraMode);
 
-    if (allowZoom)
-    {
+    if (allowZoom) {
       targetCameraDistance += CameraDistanceChange();
       targetCameraDistance = LimitCameraRange(targetCameraDistance, thirdPersonRange.x, thirdPersonRange.y);
     }
@@ -86,75 +82,61 @@ public class CameraController : MonoBehaviour
     ApproachSecondaryPivot(secondaryTargetPosition, secondaryTargetRotation);
   }
 
-  float CameraDistanceChange()
-  {
+  float CameraDistanceChange() {
     float delta = Input.GetAxis("Scroll");
     return -delta * cameraSpeed * Time.deltaTime;
   }
 
-  float LimitCameraRange(float distance, float min, float max)
-  {
+  float LimitCameraRange(float distance, float min, float max) {
     return Mathf.Clamp(distance, min, max);
   }
 
-  float PreventClipping(Transform origin, float distance)
-  {
+  float PreventClipping(Transform origin, float distance) {
     RaycastHit hit;
-    if (Physics.Raycast(origin.position, origin.TransformDirection(Vector3.back), out hit, distance))
-    {
+    if (Physics.Raycast(origin.position, origin.TransformDirection(Vector3.back), out hit, distance)) {
       return hit.distance - 0.1f;
     }
     return distance;
   }
 
-  CameraMode CameraModeInput(CameraMode mode)
-  {
+  CameraMode CameraModeInput(CameraMode mode) {
     if (Input.GetButtonDown("ThirdPerson") && canUseThirdPerson) { return SetCameraModeSettings(CameraMode.ThirdPerson); }
     if (Input.GetButtonDown("ThirdPersonShoulder") && canUseThirdPersonShoulder) { return SetCameraModeSettings(CameraMode.ThirdPersonShoulder); }
     if (Input.GetButtonDown("FirstPerson") && canUseFirstPerson) { return SetCameraModeSettings(CameraMode.FirstPerson); }
     return mode;
   }
 
-  public void SetCameraMode(CameraMode mode)
-  {
+  public void SetCameraMode(CameraMode mode) {
     if (mode == CameraMode.ThirdPerson && canUseThirdPerson) { cameraMode = mode; }
     if (mode == CameraMode.ThirdPersonShoulder && canUseThirdPersonShoulder) { cameraMode = mode; }
     if (mode == CameraMode.FirstPerson && canUseFirstPerson) { cameraMode = mode; }
   }
 
-  CameraMode SetCameraModeSettings(CameraMode mode)
-  {
-    if (mode == CameraMode.ThirdPerson || mode == CameraMode.ThirdPersonShoulder)
-    {
+  CameraMode SetCameraModeSettings(CameraMode mode) {
+    if (mode == CameraMode.ThirdPerson || mode == CameraMode.ThirdPersonShoulder) {
       if (firstPersonViewModel) { firstPersonViewModel.SetActive(false); }
       if (thirdPersonViewModel) { thirdPersonViewModel.SetActive(true); }
-    }
-    else
-    {
+    } else {
       if (firstPersonViewModel) { firstPersonViewModel.SetActive(true); }
       if (thirdPersonViewModel) { thirdPersonViewModel.SetActive(false); }
     }
     return mode;
   }
 
-  void ApproachSecondaryPivot(Vector3 position, Quaternion rotation)
-  {
+  void ApproachSecondaryPivot(Vector3 position, Quaternion rotation) {
     cameraSecondaryPivot.localPosition = Vector3.Lerp(cameraSecondaryPivot.localPosition, position, cameraSecondarySpeed * Time.deltaTime);
     cameraSecondaryPivot.localRotation = Quaternion.Lerp(cameraSecondaryPivot.localRotation, rotation, cameraSecondarySpeed * Time.deltaTime);
   }
 
-  public float GetCameraDistance()
-  {
+  public float GetCameraDistance() {
     return cameraDistance;
   }
 
-  public void SetCameraDistance(float newDistance)
-  {
+  public void SetCameraDistance(float newDistance) {
     targetCameraDistance = newDistance;
   }
 
-  public void SetSecondaryPivot(Vector3 position, Quaternion rotation)
-  {
+  public void SetSecondaryPivot(Vector3 position, Quaternion rotation) {
     secondaryTargetPosition = position;
     secondaryTargetRotation = rotation;
   }

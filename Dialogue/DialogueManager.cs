@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add ability to start conversation on specific node.
+// TODO: Remove unnecessary GetConversation overloads.
+// TODO: Move pressKeyToSkip and inputs to inherited class.
 
 public class DialogueManager : MonoBehaviour {
 

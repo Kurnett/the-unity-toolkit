@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: Move DialogueUI to inherit from DialogueManager (HOCH_DialogueManager).
+
 public class DialogueUI : MonoBehaviour {
 
   public GameObject dialogueCanvas;
