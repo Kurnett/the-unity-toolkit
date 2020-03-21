@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Node : ScriptableObject {
+public abstract class Node : ScriptableObject {
   public int id;
   public bool start;
   public List<NodeOption> options = new List<NodeOption>();
@@ -26,20 +26,6 @@ public class Node : ScriptableObject {
   public Action<Node> OnRemoveNode;
   public Action<NodeOption> OnClickOption;
   public Action<NodeGraph> SaveGraph;
-
-  // public Node(
-  //   int id,
-  //   Vector2 position,
-  //   NodeGraph graph,
-  //   Action<NodeOption> OnClickOption,
-  //   Action<Node> OnClickNode,
-  //   Action<Node> OnRemoveNode,
-  //   Action<NodeGraph> SaveGraph
-  // ) {
-  //   this.id = id;
-  //   rect = new Rect(position.x, position.y, width, height);
-  //   Initialize(graph, OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
-  // }
 
   virtual public void Construct(
     int id,
@@ -87,8 +73,6 @@ public class Node : ScriptableObject {
     GUILayout.EndVertical();
     GUILayout.EndArea();
     DrawHandles();
-
-    // TODO: Add save checking back into default graph behavior.
   }
 
   protected virtual void DrawHeader() {
@@ -212,7 +196,6 @@ public class Node : ScriptableObject {
   }
 
   protected virtual void AddOption() {
-    // NodeOption newOption = new NodeOption(graph, SaveGraph);
     NodeOption newOption = (NodeOption)ScriptableObject.CreateInstance(typeof(NodeOption));
     newOption.Construct(graph, SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, this);

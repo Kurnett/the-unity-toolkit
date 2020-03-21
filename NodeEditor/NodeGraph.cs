@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Nodes/Graph")]
-public class NodeGraph : ScriptableObject {
+public abstract class NodeGraph : ScriptableObject {
   public int id;
   new public string name;
   public List<Node> nodes = new List<Node>();

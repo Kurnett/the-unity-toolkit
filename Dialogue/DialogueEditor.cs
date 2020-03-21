@@ -5,10 +5,6 @@ using UnityEditor;
 
 public class DialogueEditor : NodeEditor<Conversation> {
 
-  // private Conversation selectedConversation;
-  // [System.NonSerialized]
-  // private ConversationOption selectedOption;
-
   [MenuItem("Window/Dialogue Editor")]
   private static void OpenWindow() {
     DialogueEditor window = GetWindow<DialogueEditor>();
@@ -20,6 +16,8 @@ public class DialogueEditor : NodeEditor<Conversation> {
     centerText.alignment = TextAnchor.MiddleCenter;
     EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a conversation to get started", centerText);
   }
+
+  // TODO: Move node instantiation to NodeGraph class.
 
   protected override void OnClickAddNode(Vector2 mousePosition) {
     if (selectedGraph != null && selectedGraph.nodes == null) { selectedGraph.nodes = new List<Node>(); }
@@ -34,15 +32,6 @@ public class DialogueEditor : NodeEditor<Conversation> {
       SaveGraph
     );
     selectedGraph.AddNode((Node)newNode);
-    // selectedGraph.nodes.Add(new ConversationNode(
-    //   selectedGraph.GenerateUniqueId(),
-    //   mousePosition,
-    //   selectedGraph,
-    //   OnClickOption,
-    //   OnClickNode,
-    //   OnClickRemoveNode,
-    //   SaveGraph
-    // ) as Node);
     SaveGraph(selectedGraph);
   }
 

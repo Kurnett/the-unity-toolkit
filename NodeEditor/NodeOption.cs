@@ -12,15 +12,6 @@ public class NodeOption : ScriptableObject {
   public NodeGraph graph;
   protected Action<NodeGraph> SaveGraph;
 
-  // public NodeOption(
-  //   NodeGraph graph,
-  //   Action<NodeGraph> SaveGraph
-  // ) {
-  //   this.next = -1;
-  //   this.graph = graph;
-  //   this.SaveGraph = SaveGraph;
-  // }
-
   virtual public void Construct(
     NodeGraph graph,
     Action<NodeGraph> SaveGraph

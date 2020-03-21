@@ -14,27 +14,7 @@ public class ConversationNode : Node {
 
   public string title = "";
 
-  // public ConversationNode(
-  //    int id,
-  //    Vector2 position,
-  //    NodeGraph graph,
-  //    Action<NodeOption> OnClickOption,
-  //    Action<Node> OnClickNode,
-  //    Action<Node> OnRemoveNode,
-  //    Action<NodeGraph> SaveGraph
-  //  ) : base(id, position, graph, OnClickOption, OnClickNode, OnRemoveNode, SaveGraph) { }
-
-  // override public void Construct(
-  //    int id,
-  //    Vector2 position,
-  //    NodeGraph graph,
-  //    Action<NodeOption> OnClickOption,
-  //    Action<Node> OnClickNode,
-  //    Action<Node> OnRemoveNode,
-  //    Action<NodeGraph> SaveGraph
-  //  ) {
-  //   base(id, position, graph, OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
-  // }
+  // TODO: Refactor Draw method to use new method hooks.
 
   override public void Draw() {
     bool diff = false;
@@ -159,7 +139,6 @@ public class ConversationNode : Node {
   }
 
   protected override void AddOption() {
-    // ConversationOption newOption = new ConversationOption((NodeGraph)graph, SaveGraph);
     ConversationOption newOption = (ConversationOption)ScriptableObject.CreateInstance(typeof(ConversationOption));
     newOption.Construct((NodeGraph)graph, SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, graph);

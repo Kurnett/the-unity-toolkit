@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// TODO: Refactor save system to follow standard Unity controls (a.k.a use ctrl-s to save).
+// TODO: Review node and dialogue systems and clean up old code.
+
 public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
   protected T selectedGraph;
@@ -16,20 +19,6 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
   protected bool contextMenuOpen;
   protected bool graphSelectMenuOpen;
-
-  // [UnityEditor.Callbacks.DidReloadScripts]
-  // private static void OnScriptReload() {
-  //   List<NodeEditor<T>> nodeEditors = new List<NodeEditor<T>>();
-  //   foreach (NodeEditor<T> editor in Resources.FindObjectsOfTypeAll(typeof(NodeEditor<T>)) as NodeEditor<T>[]) {
-  //     editor.InitializeNodeGraph();
-  //   }
-  // }
-
-  // [MenuItem("Window/Node Editor")]
-  // private static void OpenWindow() {
-  //   NodeEditor<T> window = GetWindow<NodeEditor<T>>();
-  //   window.titleContent = new GUIContent("Node Editor");
-  // }
 
   private void OnGUI() {
     if (selectedGraph == null) {
@@ -72,7 +61,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
         selectedGraph.Draw();
       }
     } else {
-      if (GUILayout.Button("Select New Conv.")) {
+      if (GUILayout.Button("Select New Graph")) {
         selectedGraph = null;
       }
       if (selectedGraph != null) EditorGUILayout.LabelField(selectedGraph.name);
