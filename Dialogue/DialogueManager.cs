@@ -93,9 +93,10 @@ public class DialogueManager : MonoBehaviour {
   }
 
   ConversationNode GetNode(int id) {
-    foreach (ConversationNode node in currentConversation.nodes) {
-      if (node.id == id) {
-        return node;
+    foreach (Node node in currentConversation.nodes) {
+      ConversationNode cNode = (ConversationNode)node;
+      if (cNode.id == id) {
+        return cNode;
       }
     }
     return null;

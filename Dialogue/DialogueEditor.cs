@@ -23,7 +23,8 @@ public class DialogueEditor : NodeEditor<Conversation> {
 
   protected override void OnClickAddNode(Vector2 mousePosition) {
     if (selectedGraph != null && selectedGraph.nodes == null) { selectedGraph.nodes = new List<Node>(); }
-    selectedGraph.nodes.Add(new ConversationNode(
+    ConversationNode newNode = (ConversationNode)ScriptableObject.CreateInstance(typeof(ConversationNode));
+    newNode.Construct(
       selectedGraph.GenerateUniqueId(),
       mousePosition,
       selectedGraph,
@@ -31,7 +32,17 @@ public class DialogueEditor : NodeEditor<Conversation> {
       OnClickNode,
       OnClickRemoveNode,
       SaveGraph
-    ) as Node);
+    );
+    selectedGraph.AddNode((Node)newNode);
+    // selectedGraph.nodes.Add(new ConversationNode(
+    //   selectedGraph.GenerateUniqueId(),
+    //   mousePosition,
+    //   selectedGraph,
+    //   OnClickOption,
+    //   OnClickNode,
+    //   OnClickRemoveNode,
+    //   SaveGraph
+    // ) as Node);
     SaveGraph(selectedGraph);
   }
 

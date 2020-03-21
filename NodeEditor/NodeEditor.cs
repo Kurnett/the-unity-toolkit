@@ -183,7 +183,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
   protected abstract void OnClickAddNode(Vector2 mousePosition);
 
   protected void OnClickRemoveNode(Node node) {
-    selectedGraph.nodes.Remove(node);
+    selectedGraph.RemoveNode(node);
     SaveGraph(selectedGraph);
   }
 
