@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class DialogueEditor : NodeEditor {
+public class DialogueEditor : NodeEditor<Conversation> {
 
   // private Conversation selectedConversation;
   // [System.NonSerialized]

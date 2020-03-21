@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeEditor : EditorWindow {
+public class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
-  protected NodeGraph selectedGraph;
+  protected T selectedGraph;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -17,19 +17,19 @@ public class NodeEditor : EditorWindow {
   protected bool contextMenuOpen;
   protected bool graphSelectMenuOpen;
 
-  [UnityEditor.Callbacks.DidReloadScripts]
-  private static void OnScriptReload() {
-    List<NodeEditor> nodeEditors = new List<NodeEditor>();
-    foreach (NodeEditor editor in Resources.FindObjectsOfTypeAll(typeof(NodeEditor)) as NodeEditor[]) {
-      editor.InitializeNodeGraph();
-    }
-  }
+  // [UnityEditor.Callbacks.DidReloadScripts]
+  // private static void OnScriptReload() {
+  //   List<NodeEditor<T>> nodeEditors = new List<NodeEditor<T>>();
+  //   foreach (NodeEditor<T> editor in Resources.FindObjectsOfTypeAll(typeof(NodeEditor<T>)) as NodeEditor<T>[]) {
+  //     editor.InitializeNodeGraph();
+  //   }
+  // }
 
-  [MenuItem("Window/Node Editor")]
-  private static void OpenWindow() {
-    NodeEditor window = GetWindow<NodeEditor>();
-    window.titleContent = new GUIContent("Node Editor");
-  }
+  // [MenuItem("Window/Node Editor")]
+  // private static void OpenWindow() {
+  //   NodeEditor<T> window = GetWindow<NodeEditor<T>>();
+  //   window.titleContent = new GUIContent("Node Editor");
+  // }
 
   private void OnGUI() {
     if (selectedGraph == null) {
@@ -67,7 +67,7 @@ public class NodeEditor : EditorWindow {
       EditorGUILayout.LabelField("Select Node Graph");
       if (newGraph != selectedGraph) {
         graphSelectMenuOpen = true;
-        selectedGraph = newGraph;
+        selectedGraph = newGraph as T;
         InitializeNodeGraph();
         DrawNodes();
       }
