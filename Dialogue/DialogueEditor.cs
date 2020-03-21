@@ -49,4 +49,9 @@ public class DialogueEditor : NodeEditor<Conversation> {
       GUI.changed = true;
     }
   }
+
+  protected override void SaveGraph(NodeGraph graph) {
+    EditorUtility.SetDirty((Conversation)graph);
+    AssetDatabase.SaveAssets();
+  }
 }

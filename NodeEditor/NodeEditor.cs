@@ -90,7 +90,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
           OnClickOption,
           OnClickNode,
           OnClickRemoveNode,
-          SaveGraph<NodeGraph>);
+          SaveGraph);
       }
     }
   }
@@ -211,7 +211,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
     selectedOption = null;
   }
 
-  protected void SaveGraph<U>(U graph) where U : NodeGraph {
+  protected virtual void SaveGraph(NodeGraph graph) {
     EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
   }
