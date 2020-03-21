@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeEditor<T> : EditorWindow where T : NodeGraph {
+public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
   protected T selectedGraph;
   [System.NonSerialized]
@@ -52,7 +52,7 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
     DrawGrid(20, 0.2f, Color.gray);
     DrawGrid(100, 0.4f, Color.gray);
 
-    DrawNodes();
+    selectedGraph.Draw();
     DrawConnectionLine(Event.current);
 
     ProcessNodeEvents(Event.current);
@@ -63,13 +63,13 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
     GUILayout.BeginArea(new Rect(18, 18, 196, 48));
     EditorGUILayout.BeginVertical("Box");
     if (!selectedGraph) {
-      NodeGraph newGraph = (NodeGraph)EditorGUILayout.ObjectField(selectedGraph, typeof(NodeGraph), false);
+      T newGraph = (T)EditorGUILayout.ObjectField(selectedGraph, typeof(T), false);
       EditorGUILayout.LabelField("Select Node Graph");
       if (newGraph != selectedGraph) {
         graphSelectMenuOpen = true;
         selectedGraph = newGraph as T;
         InitializeNodeGraph();
-        DrawNodes();
+        selectedGraph.Draw();
       }
     } else {
       if (GUILayout.Button("Select New Conv.")) {
@@ -90,7 +90,7 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
           OnClickOption,
           OnClickNode,
           OnClickRemoveNode,
-          SaveGraph);
+          SaveGraph<NodeGraph>);
       }
     }
   }
@@ -115,14 +115,6 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
     Handles.color = Color.white;
     Handles.EndGUI();
-  }
-
-  private void DrawNodes() {
-    if (selectedGraph != null && selectedGraph.nodes != null) {
-      foreach (Node node in selectedGraph.nodes) {
-        node.Draw();
-      }
-    }
   }
 
   private void DrawConnectionLine(Event e) {
@@ -188,26 +180,14 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
     GUI.changed = true;
   }
 
-  private void OnClickAddNode(Vector2 mousePosition) {
-    if (selectedGraph != null && selectedGraph.nodes == null) { selectedGraph.nodes = new List<Node>(); }
-    selectedGraph.nodes.Add(new Node(
-      selectedGraph.GenerateUniqueId(),
-      mousePosition,
-      selectedGraph,
-      OnClickOption,
-      OnClickNode,
-      OnClickRemoveNode,
-      SaveGraph
-    ));
-    SaveGraph(selectedGraph);
-  }
+  protected abstract void OnClickAddNode(Vector2 mousePosition);
 
-  private void OnClickRemoveNode(Node node) {
+  protected void OnClickRemoveNode(Node node) {
     selectedGraph.nodes.Remove(node);
     SaveGraph(selectedGraph);
   }
 
-  private void OnClickOption(NodeOption option) {
+  protected void OnClickOption(NodeOption option) {
     if (selectedOption != null) {
       ClearConnectionSelection();
     } else {
@@ -215,23 +195,23 @@ public class NodeEditor<T> : EditorWindow where T : NodeGraph {
     }
   }
 
-  private void OnClickNode(Node node) {
+  protected void OnClickNode(Node node) {
     if (selectedOption != null) {
       CreateConnection(selectedOption, node);
       ClearConnectionSelection();
     }
   }
 
-  private void CreateConnection(NodeOption option, Node node) {
+  protected void CreateConnection(NodeOption option, Node node) {
     option.CreateConnection(node);
     SaveGraph(selectedGraph);
   }
 
-  private void ClearConnectionSelection() {
+  protected void ClearConnectionSelection() {
     selectedOption = null;
   }
 
-  private void SaveGraph(NodeGraph graph) {
+  protected void SaveGraph<U>(U graph) where U : NodeGraph {
     EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
   }

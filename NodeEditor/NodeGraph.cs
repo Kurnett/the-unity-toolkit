@@ -65,6 +65,14 @@ public class NodeGraph : ScriptableObject {
       }
     }
   }
+
+  public void Draw() {
+    if (nodes != null) {
+      foreach (Node node in nodes) {
+        node.Draw();
+      }
+    }
+  }
 }
 
 [System.Serializable]
@@ -261,7 +269,7 @@ public class Node {
     }
   }
 
-  protected void AddOption() {
+  protected virtual void AddOption() {
     NodeOption newOption = new NodeOption(graph, SaveGraph);
     options.Add(newOption);
   }
@@ -273,7 +281,7 @@ public class NodeOption {
   public Rect rect;
 
   // Needs initialization
-  public NodeGraph graph;
+  protected NodeGraph graph;
   private Action<NodeGraph> SaveGraph;
 
   public NodeOption() {
