@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-// TODO: Review AI and plan for migration to inheritance.
+// TODO: Split AI into generic behavior handler.
+// TODO: Create abstract Behavior class with hooks for activation criteria, priority, behavior, etc.
 
 public class AI : MonoBehaviour {
 
