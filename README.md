@@ -5,16 +5,25 @@ A collection of common video game features, implemented in C# for Unity. The goa
 The Unity Toolkit is currently still in development. If you find parts of it that are already useful (such as the dialogue editor), feel free to use it or make PRs for improvements! However, be aware that everything is still subject to change without warning until the project is much further along in the development process.
 
 ## Components
-- Movement (Started)
-- Camera Controls (Started)
-- Inventory (Started)
-- Dialogue Management (Started)
-- NPC AI (Started)
-- Player Interactions (Started)
-- Objective Management (Not Started)
-- Level Management (Not Started)
-- Health (Not Started)
-- Menu Management (Not Started)
+Versioning is approximate. We'll switch over to semantic versioning as soon as APIs are moderately finalized - they just change too rapidly to realistically track right now.
+
+v0: Not started.
+v1: Something functional. Not using inheritance and next to no API support.
+v2: Functional and partially extensible. Uses inheritance for input, UI, etc.
+v3: Functional and mostly extensible. More-or-less completely implemented inheritance and a solid start with APIs.
+v4: Entirely extensible. APIs might change somewhat, but are essentially complete.
+v5: Ready for release?
+
+- Movement: v1
+- Camera Controls: v1
+- Inventory: v2
+- Dialogue Management: v3
+- NPC AI: v1
+- Player Interactions: v2
+- Objective Management: v2
+- Level Management: v0
+- Health: v0
+- Menu Management: v0
 
 ## Dialogue
 ### Creating a Conversation
