@@ -7,12 +7,12 @@ The Unity Toolkit is currently still in development. If you find parts of it tha
 ## Components
 Versioning is approximate. We'll switch over to semantic versioning as soon as APIs are moderately finalized - they just change too rapidly to realistically track right now.
 
-v0: Not started.
-v1: Something functional. Not using inheritance and next to no API support.
-v2: Functional and partially extensible. Uses inheritance for input, UI, etc.
-v3: Functional and mostly extensible. More-or-less completely implemented inheritance and a solid start with APIs.
-v4: Entirely extensible. APIs might change somewhat, but are essentially complete.
-v5: Ready for release?
+- v0: Not started.
+- v1: Something functional. Not using inheritance and next to no API support.
+- v2: Functional and partially extensible. Uses inheritance for input, UI, etc.
+- v3: Functional and mostly extensible. More-or-less completely implemented inheritance and a solid start with APIs.
+- v4: Entirely extensible. APIs might change somewhat, but are essentially complete.
+- v5: Ready for release?
 
 - Movement: v1
 - Camera Controls: v1
