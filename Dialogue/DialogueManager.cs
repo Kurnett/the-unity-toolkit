@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add ability to start conversation on specific node.
-// TODO: Remove unnecessary GetConversation overloads.
-// TODO: Move pressKeyToSkip and inputs to inherited class.
 
 public class DialogueManager : MonoBehaviour {
 
-  public bool pressKeyToSkip = true;
-
   public Conversation currentConversation;
   public ConversationNode currentNode;
-  float currentNodeStartTime;
+  protected float currentNodeStartTime;
 
   public List<Conversation> conversations = new List<Conversation>();
 
@@ -60,14 +56,12 @@ public class DialogueManager : MonoBehaviour {
     OnConversationUIUpdate(node);
   }
 
-  void CheckNodeProgress() {
+  virtual protected void CheckNodeProgress() {
     if (currentNode != null) {
-      if (pressKeyToSkip ? Input.GetButtonDown("Interact") : Time.time - currentNodeStartTime > currentNode.length) {
-        if (currentNode.endConversation) {
-          EndConversation();
-        } else if (currentNode.autoProceed) {
-          SetNode(currentNode.defaultOption.next);
-        }
+      if (currentNode.endConversation) {
+        EndConversation();
+      } else if (currentNode.autoProceed) {
+        SetNode(currentNode.defaultOption.next);
       }
     }
   }
@@ -79,15 +73,6 @@ public class DialogueManager : MonoBehaviour {
   Conversation GetConversation(int id) {
     foreach (Conversation conversation in conversations) {
       if (conversation.id == id) {
-        return conversation;
-      }
-    }
-    return null;
-  }
-
-  Conversation GetConversation(string name) {
-    foreach (Conversation conversation in conversations) {
-      if (conversation.name == name) {
         return conversation;
       }
     }
