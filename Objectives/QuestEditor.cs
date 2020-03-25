@@ -11,27 +11,18 @@ public class QuestEditor : NodeEditor<Questline> {
     window.titleContent = new GUIContent("Quest Editor");
   }
 
-  protected override void RenderNoNodeGraphSelectedGUI() {
-    centerText = new GUIStyle();
-    centerText.alignment = TextAnchor.MiddleCenter;
-    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a questline to get started", centerText);
+  protected override string GetNoSelectionMessage() {
+    return "Select a questline to get started";
   }
 
-  // TODO: Move node instantiation to NodeGraph class.
-
   protected override void OnClickAddNode(Vector2 mousePosition) {
-    if (selectedGraph != null && selectedGraph.nodes == null) { selectedGraph.nodes = new List<Node>(); }
-    QuestNode newNode = (QuestNode)ScriptableObject.CreateInstance(typeof(QuestNode));
-    newNode.Construct(
-      selectedGraph.GenerateUniqueId(),
+    selectedGraph.AddNode(
       mousePosition,
-      selectedGraph,
       OnClickOption,
       OnClickNode,
       OnClickRemoveNode,
       SaveGraph
     );
-    selectedGraph.AddNode((Node)newNode);
     SaveGraph(selectedGraph);
   }
 

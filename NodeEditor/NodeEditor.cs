@@ -34,7 +34,11 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
   protected virtual void RenderNoNodeGraphSelectedGUI() {
     centerText = new GUIStyle();
     centerText.alignment = TextAnchor.MiddleCenter;
-    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a node graph to get started", centerText);
+    EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), GetNoSelectionMessage(), centerText);
+  }
+
+  protected virtual string GetNoSelectionMessage () {
+    return "Select a node graph to get started";
   }
 
   private void RenderNodeGraphSelectedGUI() {

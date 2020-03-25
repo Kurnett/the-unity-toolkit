@@ -76,7 +76,23 @@ public abstract class NodeGraph : ScriptableObject {
     }
   }
 
-  public void AddNode(Node node) {
+  public virtual void AddNode(
+      Vector2 position,
+      Action<NodeOption> OnClickOption,
+      Action<Node> OnClickNode,
+      Action<Node> OnClickRemoveNode,
+      Action<NodeGraph> SaveGraph
+    ) {
+    Node node = (Node)ScriptableObject.CreateInstance(typeof(Node));
+    node.Construct(
+      GenerateUniqueId(),
+      position,
+      this,
+      OnClickOption,
+      OnClickNode,
+      OnClickRemoveNode,
+      SaveGraph
+    );
     AssetDatabase.AddObjectToAsset(node, this);
     nodes.Add(node);
   }
