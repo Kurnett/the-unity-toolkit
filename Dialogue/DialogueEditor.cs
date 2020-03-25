@@ -13,7 +13,7 @@ public class DialogueEditor : NodeEditor<Conversation> {
     window.titleContent = new GUIContent("Dialogue Editor");
   }
 
-  protected override void RenderNoConversationSelectedGUI() {
+  protected override void RenderNoNodeGraphSelectedGUI() {
     centerText = new GUIStyle();
     centerText.alignment = TextAnchor.MiddleCenter;
     EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a conversation to get started", centerText);

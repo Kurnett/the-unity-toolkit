@@ -22,22 +22,22 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
   private void OnGUI() {
     if (selectedGraph == null) {
-      RenderNoConversationSelectedGUI();
+      RenderNoNodeGraphSelectedGUI();
     } else {
-      RenderConversationSelectedGUI();
+      RenderNodeGraphSelectedGUI();
     }
-    RenderConversationSelectionGUI();
+    RenderNodeGraphSelectionGUI();
     ProcessEvents(Event.current);
     if (GUI.changed) Repaint();
   }
 
-  protected virtual void RenderNoConversationSelectedGUI() {
+  protected virtual void RenderNoNodeGraphSelectedGUI() {
     centerText = new GUIStyle();
     centerText.alignment = TextAnchor.MiddleCenter;
     EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), "Select a node graph to get started", centerText);
   }
 
-  private void RenderConversationSelectedGUI() {
+  private void RenderNodeGraphSelectedGUI() {
     DrawGrid(20, 0.2f, Color.gray);
     DrawGrid(100, 0.4f, Color.gray);
 
@@ -45,10 +45,10 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
     DrawConnectionLine(Event.current);
 
     ProcessNodeEvents(Event.current);
-    ProcessEventsConversation(Event.current);
+    ProcessEventsNodeGraph(Event.current);
   }
 
-  private void RenderConversationSelectionGUI() {
+  private void RenderNodeGraphSelectionGUI() {
     GUILayout.BeginArea(new Rect(18, 18, 196, 48));
     EditorGUILayout.BeginVertical("Box");
     if (!selectedGraph) {
@@ -125,7 +125,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
   }
 
-  private void ProcessEventsConversation(Event e) {
+  private void ProcessEventsNodeGraph(Event e) {
     drag = Vector2.zero;
     switch (e.type) {
       case EventType.MouseDown:
