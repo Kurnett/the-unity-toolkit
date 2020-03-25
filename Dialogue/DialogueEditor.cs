@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Review DialogueEditor for logic that can be moved to NodeEditor.
-
 public class DialogueEditor : NodeEditor<Conversation> {
 
   [MenuItem("Window/Dialogue Editor")]
@@ -16,8 +14,6 @@ public class DialogueEditor : NodeEditor<Conversation> {
   protected override string GetNoSelectionMessage() {
     return "Select a conversation to get started";
   }
-
-  // TODO: Move node instantiation to NodeGraph class.
 
   protected override void OnClickAddNode(Vector2 mousePosition) {
     selectedGraph.AddNode(
