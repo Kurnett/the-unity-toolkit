@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Add ability to start conversation on specific node.
-
 public class DialogueManager : MonoBehaviour {
 
   public Conversation currentConversation;

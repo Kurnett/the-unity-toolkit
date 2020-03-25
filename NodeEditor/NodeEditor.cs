@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 
 // TODO: Refactor save system to follow standard Unity controls (a.k.a use ctrl-s to save).
-// TODO: Review node and dialogue systems and clean up old code.
 
 public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
 
