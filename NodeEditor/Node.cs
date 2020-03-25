@@ -13,6 +13,7 @@ public abstract class Node : ScriptableObject {
   // Editor Data
   public Rect rect;
   public Rect containerRect;
+  protected Rect[] optionRects;
 
   public bool isDragged;
   public bool isSelected;
@@ -64,6 +65,7 @@ public abstract class Node : ScriptableObject {
 
   virtual public void Draw() {
     EditorStyles.textField.wordWrap = true;
+    optionRects = new Rect[options.Count];
 
     GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height * 3));
     containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
@@ -82,35 +84,38 @@ public abstract class Node : ScriptableObject {
 
   protected virtual void DrawOptions() {
     for (int i = 0; i < options.Count; i++) {
-      NodeOption option = (NodeOption)options[i];
-      DrawOption(option);
+      DrawOption(i);
     }
   }
 
-  protected virtual void DrawOption(NodeOption option) {
+  protected virtual void DrawOption(int i) {
     EditorGUILayout.BeginHorizontal();
-    DrawOptionControlsLeft(option);
-    DrawOptionControlsCenter(option);
-    DrawOptionControlsRight(option);
+    DrawOptionControlsLeft(i);
+    DrawOptionControlsCenter(i);
+    DrawOptionControlsRight(i);
     EditorGUILayout.EndHorizontal();
   }
 
-  protected virtual void DrawOptionControlsLeft(NodeOption option) {
+  protected virtual void DrawOptionControlsLeft(int i) {
+    NodeOption option = options[i];
     EditorGUILayout.BeginVertical();
     if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
     if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
     EditorGUILayout.EndVertical();
   }
 
-  protected virtual void DrawOptionControlsCenter(NodeOption option) { }
+  protected virtual void DrawOptionControlsCenter(int i) { }
 
-  protected virtual void DrawOptionControlsRight(NodeOption option) {
+  protected virtual void DrawOptionControlsRight(int i) {
+    NodeOption option = options[i];
     if (GUILayout.Button("R", GUILayout.Width(30))) { RemoveOption(option); }
+    optionRects[i] = EditorGUILayout.BeginVertical();
     if (option.next == -1) {
       if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
     } else {
       if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
     }
+    EditorGUILayout.EndVertical();
   }
 
   protected virtual void DrawAddOption() {
@@ -120,7 +125,6 @@ public abstract class Node : ScriptableObject {
     }
   }
 
-  // TODO: Figure out a way to position handles correctly with the new GUI system.
   protected virtual void DrawHandles() {
     for (int i = 0; i < options.Count; i++) {
       NodeOption option = (NodeOption)options[i];
@@ -129,10 +133,11 @@ public abstract class Node : ScriptableObject {
       option.rect = addRect;
 
       if (nextNode != null) {
+        Vector2 handlePos = new Vector2(rect.x + optionRects[i].xMax, rect.y + optionRects[i].y);
         Handles.DrawBezier(
-          addRect.center,
+          handlePos,
           nextNode.rect.position,
-          addRect.center - Vector2.left * 50f,
+          handlePos - Vector2.left * 50f,
           nextNode.rect.position + Vector2.left * 50f,
           Color.white,
           null,

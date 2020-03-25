@@ -66,8 +66,8 @@ public class ConversationNode : Node {
     if (diff) SaveGraph(graph);
   }
 
-  protected override void DrawOptionControlsCenter(NodeOption option) {
-    ConversationOption convOption = (ConversationOption)option;
+  protected override void DrawOptionControlsCenter(int i) {
+    ConversationOption convOption = (ConversationOption)options[i];
     convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
   }
 
