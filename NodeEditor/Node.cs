@@ -89,24 +89,28 @@ public abstract class Node : ScriptableObject {
 
   protected virtual void DrawOption(NodeOption option) {
     EditorGUILayout.BeginHorizontal();
+    DrawOptionControlsLeft(option);
+    DrawOptionControlsCenter(option);
+    DrawOptionControlsRight(option);
+    EditorGUILayout.EndHorizontal();
+  }
 
+  protected virtual void DrawOptionControlsLeft(NodeOption option) {
     EditorGUILayout.BeginVertical();
     if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
     if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
     EditorGUILayout.EndVertical();
+  }
 
+  protected virtual void DrawOptionControlsCenter(NodeOption option) { }
+
+  protected virtual void DrawOptionControlsRight(NodeOption option) {
     if (GUILayout.Button("R", GUILayout.Width(30))) { RemoveOption(option); }
     if (option.next == -1) {
       if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
     } else {
       if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
     }
-
-    EditorGUILayout.EndHorizontal();
-  }
-
-  protected virtual void DrawOptionControls() {
-    // TODO: Move option control rendering to appropriate function.
   }
 
   protected virtual void DrawAddOption() {

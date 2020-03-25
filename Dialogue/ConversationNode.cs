@@ -14,14 +14,9 @@ public class ConversationNode : Node {
 
   public string title = "";
 
-  // TODO: Refactor Draw method to use new method hooks.
-
-  override public void Draw() {
+  protected override void DrawHeader() {
     bool diff = false;
     EditorStyles.textField.wordWrap = true;
-
-    GUILayout.BeginArea(new Rect(rect.x, rect.y, 250f, Screen.height * 3));
-    containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
 
     // Adds spacing to let users click and drag.
     GUILayout.Box("", GUIStyle.none);
@@ -30,7 +25,6 @@ public class ConversationNode : Node {
     bool startNew = EditorGUILayout.ToggleLeft("Start Conv.", start);
     bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", endConversation);
     bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", autoProceed);
-    Rect autoNextRect = EditorGUILayout.BeginHorizontal();
     GUILayout.Label("Auto-Length");
     float lengthNew = EditorGUILayout.FloatField(length);
 
@@ -45,75 +39,9 @@ public class ConversationNode : Node {
         defaultOption.RemoveConnection();
       }
     }
-    EditorGUILayout.EndHorizontal();
 
     GUILayout.Label("Dialogue");
     text = EditorGUILayout.TextArea(text, GUILayout.Height(90));
-
-
-    for (int i = 0; i < options.Count; i++) {
-      ConversationOption option = (ConversationOption)options[i];
-      EditorGUILayout.BeginHorizontal();
-
-      EditorGUILayout.BeginVertical();
-      if (GUILayout.Button("↑", GUILayout.Width(30))) { MoveOption(option, -1); }
-      if (GUILayout.Button("↓", GUILayout.Width(30))) { MoveOption(option, 1); }
-      EditorGUILayout.EndVertical();
-
-      option.response = EditorGUILayout.TextArea(option.response, GUILayout.Width(140), GUILayout.Height(60));
-      if (GUILayout.Button("R", GUILayout.Width(30))) { RemoveOption(option); }
-      if (option.next == -1) {
-        if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
-      } else {
-        if (GUILayout.Button("-", GUILayout.Width(30))) { option.RemoveConnection(); }
-      }
-
-      EditorGUILayout.EndHorizontal();
-    }
-
-    if (GUILayout.Button("Add Response")) {
-      AddOption();
-      GUI.changed = true;
-    }
-
-    EditorGUILayout.EndVertical();
-    GUILayout.EndArea();
-
-    // TODO: Figure out a way to position handles correctly with the new GUI system.
-    if (defaultOption != null) {
-      defaultOption.rect = autoNextRect;
-      ConversationNode autoNextNode = graph.GetNodeById(defaultOption.next) as ConversationNode;
-      if (autoNextNode != null) {
-        Handles.DrawBezier(
-          autoNextRect.center,
-          autoNextNode.rect.position,
-          autoNextRect.center - Vector2.left * 50f,
-          autoNextNode.rect.position + Vector2.left * 50f,
-          Color.white,
-          null,
-          2f
-        );
-      }
-    }
-    for (int i = 0; i < options.Count; i++) {
-      ConversationOption option = (ConversationOption)options[i];
-      ConversationNode nextNode = graph.GetNodeById(option.next) as ConversationNode;
-      Rect addRect = new Rect(rect.x + 130f, rect.y, 30f, 30f);
-      option.rect = addRect;
-
-      if (nextNode != null) {
-        Handles.DrawBezier(
-          addRect.center,
-          nextNode.rect.position,
-          addRect.center - Vector2.left * 50f,
-          nextNode.rect.position + Vector2.left * 50f,
-          Color.white,
-          null,
-          2f
-        );
-      }
-    }
-
     // Check if conversation needs to be saved.
     if (speaker != speakerNew) {
       speaker = speakerNew;
@@ -136,6 +64,11 @@ public class ConversationNode : Node {
       diff = true;
     }
     if (diff) SaveGraph(graph);
+  }
+
+  protected override void DrawOptionControlsCenter(NodeOption option) {
+    ConversationOption convOption = (ConversationOption)option;
+    convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
   }
 
   protected override void AddOption() {
