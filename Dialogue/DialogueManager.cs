@@ -2,70 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueManager : MonoBehaviour {
+public class DialogueManager : NodeManager {
 
-  public Conversation currentConversation;
-  public ConversationNode currentNode;
   protected float currentNodeStartTime;
 
   public List<Conversation> conversations = new List<Conversation>();
 
   void Start() {
-    currentConversation = null;
+    currentGraph = null;
   }
 
   void Update() {
-    if (currentConversation != null) {
+    if (currentGraph != null) {
       OnConversationResponse();
       CheckNodeProgress();
     }
   }
 
-  virtual public bool StartConversation(Conversation conversation) {
-    if (currentConversation == null) {
-      currentConversation = conversation;
-      int startNodeID = conversation.GetStartNodeID();
-      if (startNodeID != -1) {
-        SetNode(conversation.GetStartNodeID());
-        return true;
-      } else {
-        Debug.LogWarning("Conversation has no start node.");
-      }
-    }
-    return false;
+  public bool StartConversation(Conversation conversation) {
+    return SetNodeGraph((NodeGraph)conversation);
   }
 
-  virtual public void EndConversation() {
+  public void EndConversation() {
+    base.CloseNodeGraph();
     Invoke("ClearConversation", 1);
   }
 
   void ClearConversation() {
-    currentConversation = null;
+    base.ClearNodeGraph();
   }
 
-  void SetNode(int id) {
-    currentNode = GetNode(id);
+  protected override void SetNode(int id) {
     currentNodeStartTime = Time.time;
-    OnConversationUIUpdate(currentNode);
+    base.SetNode(id);
   }
 
-  void SetNode(ConversationNode node) {
+  protected override void SetNode(Node node) {
     currentNodeStartTime = Time.time;
-    OnConversationUIUpdate(node);
+    base.SetNode(node);
   }
 
   virtual protected void CheckNodeProgress() {
-    if (currentNode != null) {
-      if (currentNode.endConversation) {
+    ConversationNode currentConvNode = (ConversationNode)currentNode;
+    if (currentConvNode != null) {
+      if (currentConvNode.endConversation) {
         EndConversation();
-      } else if (currentNode.autoProceed) {
-        SetNode(currentNode.defaultOption.next);
+      } else if (currentConvNode.autoProceed) {
+        SetNode(currentConvNode.defaultOption.next);
       }
     }
   }
 
   public void Respond(int option) {
-    SetNode(currentNode.options[option - 1].next);
+    base.SelectNodeOption(option);
   }
 
   Conversation GetConversation(int id) {
@@ -77,17 +66,6 @@ public class DialogueManager : MonoBehaviour {
     return null;
   }
 
-  ConversationNode GetNode(int id) {
-    foreach (Node node in currentConversation.nodes) {
-      ConversationNode cNode = (ConversationNode)node;
-      if (cNode.id == id) {
-        return cNode;
-      }
-    }
-    return null;
-  }
-
-  virtual public void OnConversationUIUpdate(ConversationNode node) { }
   virtual public void OnConversationResponse() { }
 
 }
