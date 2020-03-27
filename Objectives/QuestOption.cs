@@ -5,5 +5,5 @@ using UnityEngine;
 using UnityEditor;
 
 public class QuestOption : NodeOption {
-  public string response;
+  public string id;
 }
