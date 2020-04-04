@@ -10,6 +10,13 @@ public class ObjectiveManager : NodeManager {
     OnNodeGraphUIUpdate((QuestNode)currentNode);
   }
 
+  virtual public void CompleteObjective(QuestOption option) {
+    if (option != null) {
+      currentNode = currentGraph.GetNodeById(option.next);
+      OnNodeGraphUIUpdate((QuestNode)currentNode);
+    }
+  }
+
   override protected void OnNodeGraphUIUpdate(Node node) {
     OnObjectiveUIUpdate((QuestNode)node);
   }
