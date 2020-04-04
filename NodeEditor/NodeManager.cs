@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class NodeManager : MonoBehaviour {
 
-  public NodeGraph currentGraph;
-  public Node currentNode;
+  protected NodeGraph currentGraph;
+  protected Node currentNode;
 
   virtual public bool SetNodeGraph(NodeGraph graph) {
     if (currentGraph == null) {
