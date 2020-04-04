@@ -12,7 +12,12 @@ public class QuestNode : Node {
     bool diff = false;
     GUILayout.Box("", GUIStyle.none);
     GUILayout.Label("Quest Log");
+    bool startNew = EditorGUILayout.ToggleLeft("Start", start);
     string textNew = EditorGUILayout.TextArea(text, GUILayout.Height(90));
+    if (start != startNew) {
+      start = startNew;
+      diff = true;
+    }
     if (text != textNew) {
       text = textNew;
       diff = true;
