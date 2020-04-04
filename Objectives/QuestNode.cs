@@ -9,9 +9,15 @@ public class QuestNode : Node {
   public string text;
 
   protected override void DrawHeader() {
+    bool diff = false;
     GUILayout.Box("", GUIStyle.none);
     GUILayout.Label("Quest Log");
-    text = EditorGUILayout.TextArea(text, GUILayout.Height(90));
+    string textNew = EditorGUILayout.TextArea(text, GUILayout.Height(90));
+    if (text != textNew) {
+      text = textNew;
+      diff = true;
+    }
+    if (diff) SaveGraph(graph);
   }
 
   protected override void DrawOptionControlsCenter(int i) {
