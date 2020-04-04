@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ObjectiveManager : MonoBehaviour {
+public class ObjectiveManager : NodeManager {
 
-  public Questline currentQuestline;
-  public QuestNode currentNode;
-
-  virtual protected void ObjectiveDidUpdate(QuestNode node) { }
-
-  virtual protected void CompleteObjective() {
-    currentNode = (QuestNode)currentQuestline.GetNodeById(currentNode.defaultOption.next);
-    ObjectiveDidUpdate(currentNode);
+  virtual public void CompleteObjective() {
+    currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
+    OnNodeGraphUIUpdate((QuestNode)currentNode);
   }
+
+  override protected void OnNodeGraphUIUpdate(Node node) {
+    OnObjectiveUIUpdate((QuestNode)node);
+  }
+
+  virtual protected void OnObjectiveUIUpdate(QuestNode node) { }
 
 }

@@ -14,16 +14,15 @@ public class DialogueManager : NodeManager {
 
   void Update() {
     if (currentGraph != null) {
-      OnConversationResponse();
       CheckNodeProgress();
     }
   }
 
-  public bool StartConversation(Conversation conversation) {
+  virtual public bool StartConversation(Conversation conversation) {
     return SetNodeGraph((NodeGraph)conversation);
   }
 
-  public void EndConversation() {
+  virtual public void EndConversation() {
     base.CloseNodeGraph();
     Invoke("ClearConversation", 1);
   }
@@ -66,6 +65,10 @@ public class DialogueManager : NodeManager {
     return null;
   }
 
-  virtual public void OnConversationResponse() { }
+  override protected void OnNodeGraphUIUpdate(Node node) {
+    OnConversationUIUpdate((ConversationNode)node);
+  }
+
+  virtual public void OnConversationUIUpdate(ConversationNode node) { }
 
 }

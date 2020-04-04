@@ -49,6 +49,6 @@ public abstract class NodeManager : MonoBehaviour {
     return null;
   }
 
-  virtual public void OnNodeGraphUIUpdate(Node node) { }
+  virtual protected void OnNodeGraphUIUpdate(Node node) { }
 
 }
