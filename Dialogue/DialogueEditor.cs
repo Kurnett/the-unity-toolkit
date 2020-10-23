@@ -45,4 +45,15 @@ public class DialogueEditor : NodeEditor<Conversation, ConversationNode> {
     EditorUtility.SetDirty((Conversation)graph);
     AssetDatabase.SaveAssets();
   }
+
+  protected override void CheckAndInitializeRenderer() {
+    if (graphRenderer == null) {
+      graphRenderer = new ConversationRenderer();
+    }
+  }
+
+  override protected void DrawNodeGraph() {
+    CheckAndInitializeRenderer();
+    graphRenderer.DrawNodeGraph(selectedGraph);
+  }
 }

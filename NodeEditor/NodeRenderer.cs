@@ -7,8 +7,8 @@ public class NodeRenderer<T> where T : Node {
 
   protected T node;
 
-  public NodeRenderer(Node nodeInit) {
-    node = (T)nodeInit;
+  public NodeRenderer(T nodeInit) {
+    node = nodeInit;
   }
 
   protected virtual void DrawHeader() {
@@ -81,7 +81,7 @@ public class NodeRenderer<T> where T : Node {
     }
   }
 
-  public void DrawNode(T node) {
+  public void DrawNode(Node node) {
     EditorStyles.textField.wordWrap = true;
     node.optionRects = new Rect[node.options.Count];
 

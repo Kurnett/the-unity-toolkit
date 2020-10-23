@@ -63,6 +63,17 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
     ProcessEventsNodeGraph(Event.current);
   }
 
+  protected virtual void CheckAndInitializeRenderer() {
+    if (graphRenderer == null) {
+      graphRenderer = new NodeGraphRenderer<T, J>();
+    }
+  }
+
+  protected virtual void DrawNodeGraph() {
+    CheckAndInitializeRenderer();
+    graphRenderer.DrawNodeGraph(selectedGraph);
+  }
+
   private void RenderNodeGraphSelectionGUI() {
     GUILayout.BeginArea(new Rect(18, 18, 196, 48));
     EditorGUILayout.BeginVertical("Box");
@@ -72,9 +83,8 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
       if (newGraph != selectedGraph) {
         graphSelectMenuOpen = true;
         selectedGraph = newGraph as T;
-        graphRenderer = new NodeGraphRenderer<T, J>();
         InitializeNodeGraph();
-        graphRenderer.DrawNodeGraph(selectedGraph);
+        DrawNodeGraph();
       }
     } else {
       if (GUILayout.Button("Select New Graph")) {
