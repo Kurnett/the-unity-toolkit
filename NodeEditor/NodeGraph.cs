@@ -4,7 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Investigate whether refactoring to avoid IDs is realistic (potentially with a hash-map to allow multiple start nodes).
+/*
+
+New methods
+- DragNode
+- CreateNodeConnection
+- RemoveNodeConnection
+- AddOption
+- RemoveOption
+- MoveOption
+
+*/
 
 [CreateAssetMenu(menuName = "Nodes/Graph")]
 public abstract class NodeGraph : ScriptableObject {
@@ -64,14 +74,6 @@ public abstract class NodeGraph : ScriptableObject {
         node.start = true;
       } else {
         node.start = false;
-      }
-    }
-  }
-
-  public void Draw() {
-    if (nodes != null) {
-      foreach (Node node in nodes) {
-        node.Draw();
       }
     }
   }

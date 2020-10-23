@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/*
+
+Remove methods
+- CreateConnection
+- RemoveConnection
+- Initialize
+- Construct
+
+*/
+
 public class NodeOption : ScriptableObject {
   public int next;
   public Rect rect;

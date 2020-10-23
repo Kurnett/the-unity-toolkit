@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class DialogueEditor : NodeEditor<Conversation> {
+public class DialogueEditor : NodeEditor<Conversation, ConversationNode> {
 
   [MenuItem("Window/Dialogue Editor")]
   private static void OpenWindow() {

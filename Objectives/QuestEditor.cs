@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestEditor : NodeEditor<Questline> {
+public class QuestEditor : NodeEditor<Questline, QuestNode> {
 
   [MenuItem("Window/Quest Editor")]
   private static void OpenWindow() {

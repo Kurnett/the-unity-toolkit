@@ -5,9 +5,19 @@ using UnityEditor;
 
 // TODO: Refactor save system to follow standard Unity controls (a.k.a use ctrl-s to save).
 
-public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
+/*
+
+New methods
+- Draw
+- DrawNode
+- DrawNodeConnection
+
+*/
+
+public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where J : Node {
 
   protected T selectedGraph;
+  protected NodeGraphRenderer<T, J> graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -36,7 +46,7 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
     EditorGUI.LabelField(new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 25, 400, 50), GetNoSelectionMessage(), centerText);
   }
 
-  protected virtual string GetNoSelectionMessage () {
+  protected virtual string GetNoSelectionMessage() {
     return "Select a node graph to get started";
   }
 
@@ -44,7 +54,9 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
     DrawGrid(20, 0.2f, Color.gray);
     DrawGrid(100, 0.4f, Color.gray);
 
-    selectedGraph.Draw();
+    if (graphRenderer != null) {
+      graphRenderer.DrawNodeGraph(selectedGraph);
+    }
     DrawConnectionLine(Event.current);
 
     ProcessNodeEvents(Event.current);
@@ -60,8 +72,9 @@ public abstract class NodeEditor<T> : EditorWindow where T : NodeGraph {
       if (newGraph != selectedGraph) {
         graphSelectMenuOpen = true;
         selectedGraph = newGraph as T;
+        graphRenderer = new NodeGraphRenderer<T, J>();
         InitializeNodeGraph();
-        selectedGraph.Draw();
+        graphRenderer.DrawNodeGraph(selectedGraph);
       }
     } else {
       if (GUILayout.Button("Select New Graph")) {
