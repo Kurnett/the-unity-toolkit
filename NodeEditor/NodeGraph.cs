@@ -4,18 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-/*
-
-New methods
-- DragNode
-- CreateNodeConnection
-- RemoveNodeConnection
-- AddOption
-- RemoveOption
-- MoveOption
-
-*/
-
 [CreateAssetMenu(menuName = "Nodes/Graph")]
 public abstract class NodeGraph : ScriptableObject {
   public int id;

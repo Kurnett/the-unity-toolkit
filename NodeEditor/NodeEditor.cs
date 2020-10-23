@@ -8,9 +8,12 @@ using UnityEditor;
 /*
 
 New methods
-- Draw
-- DrawNode
-- DrawNodeConnection
+- DragNode
+- CreateNodeConnection
+- RemoveNodeConnection
+- AddOption
+- RemoveOption
+- MoveOption
 
 */
 

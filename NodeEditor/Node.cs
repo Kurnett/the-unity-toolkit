@@ -4,18 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-/*
-
-Remove methods
-- Draw
-- DrawHandles
-- Draw...etc
-- AddOption
-- RemoveOption
-- MoveOption
-
-*/
-
 public abstract class Node : ScriptableObject {
   public int id;
   public bool start;
