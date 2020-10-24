@@ -59,10 +59,6 @@ public abstract class Node : ScriptableObject {
     }
   }
 
-  public void Drag(Vector2 delta) {
-    rect.position += delta;
-  }
-
   public bool ProcessEvents(Event e) {
     Rect dragRect = new Rect(rect.x + containerRect.x, rect.y + containerRect.y, containerRect.width, containerRect.height);
     switch (e.type) {
@@ -86,13 +82,6 @@ public abstract class Node : ScriptableObject {
         break;
       case EventType.MouseUp:
         isDragged = false;
-        break;
-      case EventType.MouseDrag:
-        if (e.button == 0 && isDragged) {
-          Drag(e.delta);
-          e.Use();
-          return true;
-        }
         break;
     }
     return false;
@@ -130,5 +119,9 @@ public abstract class Node : ScriptableObject {
   public virtual void RemoveOption(NodeOption option) {
     AssetDatabase.RemoveObjectFromAsset(option);
     options.Remove(option);
+  }
+
+  public virtual Boolean PointIsInBoundingBox(float x, float y) {
+    return x > rect.x && x < rect.x + width && y > rect.y && y < rect.y + height;
   }
 }

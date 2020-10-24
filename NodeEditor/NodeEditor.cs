@@ -8,7 +8,6 @@ using UnityEditor;
 /*
 
 New methods
-- DragNode
 - CreateNodeConnection
 - RemoveNodeConnection
 - AddOption
@@ -20,6 +19,7 @@ New methods
 public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where J : Node {
 
   protected T selectedGraph;
+  protected J selectedNode;
   protected NodeGraphRenderer<T, J> graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
@@ -160,14 +160,26 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
       case EventType.MouseDown:
         contextMenuOpen = false;
         graphSelectMenuOpen = false;
+        if (e.button == 0) {
+          selectedNode = (J)GetNodeAtPoint(e.mousePosition.x, e.mousePosition.y);
+        }
         if (e.button == 1) {
           ProcessContextMenu(e.mousePosition);
         }
         break;
+      case EventType.MouseUp:
+        selectedNode = null;
+        break;
       case EventType.MouseDrag:
-        if (e.button == 0 && !contextMenuOpen && !graphSelectMenuOpen) {
-          OnDrag(e.delta);
+        if (selectedNode != null) {
+          Drag(selectedNode, e.delta);
+        } else {
+          offset += e.delta;
+          foreach (Node node in selectedGraph.nodes) {
+            Drag(node, e.delta);
+          }
         }
+        e.Use();
         break;
     }
   }
@@ -186,16 +198,6 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
     genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
     genericMenu.ShowAsContext();
     contextMenuOpen = true;
-  }
-
-  private void OnDrag(Vector2 delta) {
-    drag = delta;
-    if (selectedGraph != null && selectedGraph.nodes != null) {
-      foreach (Node node in selectedGraph.nodes) {
-        node.Drag(delta);
-      }
-    }
-    GUI.changed = true;
   }
 
   protected abstract void OnClickAddNode(Vector2 mousePosition);
@@ -232,5 +234,18 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
   protected virtual void SaveGraph(NodeGraph graph) {
     EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
+  }
+
+  public void Drag(Node node, Vector2 delta) {
+    node.rect.position += delta;
+  }
+
+  public Node GetNodeAtPoint(float x, float y) {
+    foreach (Node node in selectedGraph.nodes) {
+      if (node.PointIsInBoundingBox(x, y)) {
+        return node;
+      }
+    }
+    return null;
   }
 }
