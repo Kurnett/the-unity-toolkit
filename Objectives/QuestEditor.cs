@@ -20,7 +20,6 @@ public class QuestEditor : NodeEditor<Questline, QuestNode, QuestlineRenderer> {
       mousePosition,
       OnClickOption,
       OnClickNode,
-      OnClickRemoveNode,
       SaveGraph
     );
     SaveGraph(selectedGraph);

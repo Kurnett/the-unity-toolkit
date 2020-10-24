@@ -70,7 +70,6 @@ public abstract class NodeGraph : ScriptableObject {
       Vector2 position,
       Action<NodeOption> OnClickOption,
       Action<Node> OnClickNode,
-      Action<Node> OnClickRemoveNode,
       Action<NodeGraph> SaveGraph
     ) {
     Node node = (Node)ScriptableObject.CreateInstance(typeof(Node));
@@ -79,7 +78,6 @@ public abstract class NodeGraph : ScriptableObject {
       position,
       OnClickOption,
       OnClickNode,
-      OnClickRemoveNode,
       SaveGraph
     );
     AssetDatabase.AddObjectToAsset(node, this);

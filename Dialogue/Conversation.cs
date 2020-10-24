@@ -10,7 +10,6 @@ public class Conversation : NodeGraph {
       Vector2 position,
       Action<NodeOption> OnClickOption,
       Action<Node> OnClickNode,
-      Action<Node> OnClickRemoveNode,
       Action<NodeGraph> SaveGraph
     ) {
     ConversationNode node = (ConversationNode)ScriptableObject.CreateInstance(typeof(ConversationNode));
@@ -19,7 +18,6 @@ public class Conversation : NodeGraph {
       position,
       OnClickOption,
       OnClickNode,
-      OnClickRemoveNode,
       SaveGraph
     );
     AssetDatabase.AddObjectToAsset(node, this);

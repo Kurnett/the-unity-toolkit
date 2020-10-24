@@ -10,7 +10,6 @@ public class Questline : NodeGraph {
       Vector2 position,
       Action<NodeOption> OnClickOption,
       Action<Node> OnClickNode,
-      Action<Node> OnClickRemoveNode,
       Action<NodeGraph> SaveGraph
     ) {
     QuestNode node = (QuestNode)ScriptableObject.CreateInstance(typeof(QuestNode));
@@ -19,7 +18,6 @@ public class Questline : NodeGraph {
       position,
       OnClickOption,
       OnClickNode,
-      OnClickRemoveNode,
       SaveGraph
     );
     AssetDatabase.AddObjectToAsset(node, this);

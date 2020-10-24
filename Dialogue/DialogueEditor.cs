@@ -20,7 +20,6 @@ public class DialogueEditor : NodeEditor<Conversation, ConversationNode, Convers
       mousePosition,
       OnClickOption,
       OnClickNode,
-      OnClickRemoveNode,
       SaveGraph
     );
     SaveGraph(selectedGraph);

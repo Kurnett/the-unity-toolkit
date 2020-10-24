@@ -32,36 +32,21 @@ public abstract class Node : ScriptableObject {
     Vector2 position,
     Action<NodeOption> OnClickOption,
     Action<Node> OnClickNode,
-    Action<Node> OnRemoveNode,
     Action<NodeGraph> SaveGraph
   ) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
-    Initialize(OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
+    Initialize(OnClickOption, OnClickNode, SaveGraph);
   }
 
   public void Initialize(
     Action<NodeOption> OnClickOption,
     Action<Node> OnClickNode,
-    Action<Node> OnRemoveNode,
     Action<NodeGraph> SaveGraph
   ) {
     this.OnClickOption = OnClickOption;
     this.OnClickNode = OnClickNode;
-    this.OnRemoveNode = OnRemoveNode;
     this.SaveGraph = SaveGraph;
-  }
-
-  protected void ProcessContextMenu() {
-    GenericMenu genericMenu = new GenericMenu();
-    genericMenu.AddItem(new GUIContent("Remove conversation node"), false, OnClickRemoveNode);
-    genericMenu.ShowAsContext();
-  }
-
-  protected void OnClickRemoveNode() {
-    if (OnRemoveNode != null) {
-      OnRemoveNode(this);
-    }
   }
 
   public void MoveOption(NodeOption option, int diff) {

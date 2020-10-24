@@ -105,7 +105,6 @@ public abstract class NodeEditor<T, J, K> : EditorWindow where T : NodeGraph whe
         node.Initialize(
           OnClickOption,
           OnClickNode,
-          OnClickRemoveNode,
           SaveGraph);
       }
     }
@@ -183,9 +182,15 @@ public abstract class NodeEditor<T, J, K> : EditorWindow where T : NodeGraph whe
   }
 
   private void ProcessContextMenu(Vector2 mousePosition) {
+    Node node = GetNodeAtPoint(mousePosition.x, mousePosition.y);
     GenericMenu genericMenu = new GenericMenu();
-    genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
-    genericMenu.ShowAsContext();
+    if (node == null) {
+      genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
+      genericMenu.ShowAsContext();
+    } else {
+      genericMenu.AddItem(new GUIContent("Remove conversation node"), false, () => OnClickRemoveNode(node));
+      genericMenu.ShowAsContext();
+    }
     contextMenuOpen = true;
   }
 
