@@ -17,7 +17,6 @@ public class Questline : NodeGraph {
     node.Construct(
       GenerateUniqueId(),
       position,
-      this,
       OnClickOption,
       OnClickNode,
       OnClickRemoveNode,

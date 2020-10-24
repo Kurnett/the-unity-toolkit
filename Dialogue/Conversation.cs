@@ -17,7 +17,6 @@ public class Conversation : NodeGraph {
     node.Construct(
       GenerateUniqueId(),
       position,
-      this,
       OnClickOption,
       OnClickNode,
       OnClickRemoveNode,

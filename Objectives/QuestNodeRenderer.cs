@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNodeRenderer : NodeRenderer<QuestNode> {
+public class QuestNodeRenderer : NodeRenderer<QuestEditor, Questline, QuestNode> {
 
-  public QuestNodeRenderer(QuestNode nodeInit) : base(nodeInit) { }
+  public QuestNodeRenderer(QuestEditor editorInit, Questline graphInit) : base(editorInit, graphInit) { }
 
-  protected override void DrawHeader() {
+  protected override void DrawHeader(QuestNode node) {
     bool diff = false;
     GUILayout.Box("", GUIStyle.none);
     GUILayout.Label("Quest Log");
@@ -21,10 +21,10 @@ public class QuestNodeRenderer : NodeRenderer<QuestNode> {
       node.text = textNew;
       diff = true;
     }
-    if (diff) node.SaveGraph(node.graph);
+    if (diff) node.SaveGraph(graph);
   }
 
-  protected override void DrawOptionControlsCenter(int i) {
+  protected override void DrawOptionControlsCenter(QuestNode node, int i) {
     QuestOption option = (QuestOption)node.options[i];
     option.id = EditorGUILayout.TextArea(option.id);
   }

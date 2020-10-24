@@ -16,8 +16,8 @@ public class ConversationNode : Node {
 
   public override void AddOption() {
     ConversationOption newOption = (ConversationOption)ScriptableObject.CreateInstance(typeof(ConversationOption));
-    newOption.Construct((NodeGraph)graph, SaveGraph);
-    AssetDatabase.AddObjectToAsset(newOption, graph);
+    // newOption.Construct(SaveGraph);
+    // AssetDatabase.AddObjectToAsset(newOption, graph);
     options.Add(newOption);
   }
 }

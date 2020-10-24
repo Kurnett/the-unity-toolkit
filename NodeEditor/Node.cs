@@ -22,7 +22,6 @@ public abstract class Node : ScriptableObject {
   public float height = 30f;
 
   // Needs initialization
-  public NodeGraph graph;
   public Action<Node> OnClickNode;
   public Action<Node> OnRemoveNode;
   public Action<NodeOption> OnClickOption;
@@ -31,7 +30,6 @@ public abstract class Node : ScriptableObject {
   virtual public void Construct(
     int id,
     Vector2 position,
-    NodeGraph graph,
     Action<NodeOption> OnClickOption,
     Action<Node> OnClickNode,
     Action<Node> OnRemoveNode,
@@ -39,52 +37,19 @@ public abstract class Node : ScriptableObject {
   ) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
-    Initialize(graph, OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
+    Initialize(OnClickOption, OnClickNode, OnRemoveNode, SaveGraph);
   }
 
   public void Initialize(
-    NodeGraph graph,
     Action<NodeOption> OnClickOption,
     Action<Node> OnClickNode,
     Action<Node> OnRemoveNode,
     Action<NodeGraph> SaveGraph
   ) {
-    this.graph = graph;
     this.OnClickOption = OnClickOption;
     this.OnClickNode = OnClickNode;
     this.OnRemoveNode = OnRemoveNode;
     this.SaveGraph = SaveGraph;
-    for (int i = 0; i < options.Count; i++) {
-      options[i].Initialize(graph, SaveGraph);
-    }
-  }
-
-  public bool ProcessEvents(Event e) {
-    Rect dragRect = new Rect(rect.x + containerRect.x, rect.y + containerRect.y, containerRect.width, containerRect.height);
-    switch (e.type) {
-      case EventType.MouseDown:
-        if (e.button == 0) {
-          if (dragRect.Contains(e.mousePosition)) {
-            isDragged = true;
-            GUI.changed = true;
-            isSelected = true;
-            OnClickNode(this);
-          } else {
-            GUI.changed = true;
-            isSelected = false;
-          }
-        }
-
-        if (e.button == 1 && dragRect.Contains(e.mousePosition)) {
-          ProcessContextMenu();
-          e.Use();
-        }
-        break;
-      case EventType.MouseUp:
-        isDragged = false;
-        break;
-    }
-    return false;
   }
 
   protected void ProcessContextMenu() {
@@ -111,7 +76,7 @@ public abstract class Node : ScriptableObject {
 
   public virtual void AddOption() {
     NodeOption newOption = (NodeOption)ScriptableObject.CreateInstance(typeof(NodeOption));
-    newOption.Construct(graph, SaveGraph);
+    // newOption.Construct(SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, this);
     options.Add(newOption);
   }

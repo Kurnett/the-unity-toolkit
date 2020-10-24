@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNodeRenderer : NodeRenderer<ConversationNode> {
+public class ConversationNodeRenderer : NodeRenderer<DialogueEditor, Conversation, ConversationNode> {
 
-  public ConversationNodeRenderer(ConversationNode nodeInit) : base(nodeInit) { }
+  public ConversationNodeRenderer(DialogueEditor editorInit, Conversation graphInit) : base(editorInit, graphInit) { }
 
-  protected override void DrawHeader() {
+  protected override void DrawHeader(ConversationNode node) {
     bool diff = false;
     EditorStyles.textField.wordWrap = true;
 
@@ -29,7 +29,7 @@ public class ConversationNodeRenderer : NodeRenderer<ConversationNode> {
       }
     } else {
       if (GUILayout.Button("-")) {
-        node.defaultOption.RemoveConnection();
+        editor.RemoveConnection(node.defaultOption);
       }
     }
 
@@ -41,7 +41,7 @@ public class ConversationNodeRenderer : NodeRenderer<ConversationNode> {
       diff = true;
     }
     if (node.start != startNew) {
-      if (startNew) node.graph.SetStartNode(this.node);
+      if (startNew) graph.SetStartNode(node);
       diff = true;
     }
     if (node.endConversation != endConversationNew) {
@@ -56,10 +56,10 @@ public class ConversationNodeRenderer : NodeRenderer<ConversationNode> {
       node.length = lengthNew;
       diff = true;
     }
-    if (diff) node.SaveGraph(node.graph);
+    if (diff) node.SaveGraph(graph);
   }
 
-  protected override void DrawOptionControlsCenter(int i) {
+  protected override void DrawOptionControlsCenter(ConversationNode node, int i) {
     ConversationOption convOption = (ConversationOption)node.options[i];
     convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
   }

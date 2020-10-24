@@ -10,8 +10,8 @@ public class QuestNode : Node {
 
   public override void AddOption() {
     QuestOption newOption = (QuestOption)ScriptableObject.CreateInstance(typeof(QuestOption));
-    newOption.Construct((NodeGraph)graph, SaveGraph);
-    AssetDatabase.AddObjectToAsset(newOption, graph);
+    // newOption.Construct(SaveGraph);
+    // AssetDatabase.AddObjectToAsset(newOption, graph);
     options.Add(newOption);
   }
 }

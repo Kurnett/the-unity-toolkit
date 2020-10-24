@@ -77,7 +77,6 @@ public abstract class NodeGraph : ScriptableObject {
     node.Construct(
       GenerateUniqueId(),
       position,
-      this,
       OnClickOption,
       OnClickNode,
       OnClickRemoveNode,

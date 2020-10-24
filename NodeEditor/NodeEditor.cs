@@ -20,7 +20,7 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
 
   protected T selectedGraph;
   protected J selectedNode;
-  protected NodeGraphRenderer<T, J> graphRenderer;
+  protected NodeGraphRenderer<NodeEditor<T, J>, T, J> graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -62,13 +62,12 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
     }
     DrawConnectionLine(Event.current);
 
-    ProcessNodeEvents(Event.current);
     ProcessEventsNodeGraph(Event.current);
   }
 
   protected virtual void CheckAndInitializeRenderer() {
     if (graphRenderer == null) {
-      graphRenderer = new NodeGraphRenderer<T, J>();
+      graphRenderer = new NodeGraphRenderer<NodeEditor<T, J>, T, J>(this);
     }
   }
 
@@ -104,7 +103,6 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
       selectedOption = null;
       foreach (Node node in selectedGraph.nodes) {
         node.Initialize(
-          selectedGraph,
           OnClickOption,
           OnClickNode,
           OnClickRemoveNode,
@@ -184,15 +182,6 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
     }
   }
 
-  private void ProcessNodeEvents(Event e) {
-    if (selectedGraph != null && selectedGraph.nodes != null) {
-      foreach (Node node in selectedGraph.nodes) {
-        bool guiChanged = node.ProcessEvents(e);
-        if (guiChanged) { GUI.changed = true; }
-      }
-    }
-  }
-
   private void ProcessContextMenu(Vector2 mousePosition) {
     GenericMenu genericMenu = new GenericMenu();
     genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
@@ -222,11 +211,6 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
     }
   }
 
-  protected void CreateConnection(NodeOption option, Node node) {
-    option.CreateConnection(node);
-    SaveGraph(selectedGraph);
-  }
-
   protected void ClearConnectionSelection() {
     selectedOption = null;
   }
@@ -247,5 +231,15 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
       }
     }
     return null;
+  }
+
+  public void CreateConnection(NodeOption option, Node node) {
+    option.next = node.id;
+    SaveGraph(selectedGraph);
+  }
+
+  public void RemoveConnection(NodeOption option) {
+    option.next = -1;
+    SaveGraph(selectedGraph);
   }
 }
