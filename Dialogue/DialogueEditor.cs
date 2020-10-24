@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class DialogueEditor : NodeEditor<Conversation, ConversationNode> {
+public class DialogueEditor : NodeEditor<Conversation, ConversationNode, ConversationRenderer> {
 
   [MenuItem("Window/Dialogue Editor")]
   private static void OpenWindow() {
@@ -49,5 +49,11 @@ public class DialogueEditor : NodeEditor<Conversation, ConversationNode> {
   override protected void DrawNodeGraph() {
     CheckAndInitializeRenderer();
     graphRenderer.DrawNodeGraph(selectedGraph);
+  }
+
+  protected override void CheckAndInitializeRenderer() {
+    if (graphRenderer == null) {
+      graphRenderer = new ConversationRenderer();
+    }
   }
 }

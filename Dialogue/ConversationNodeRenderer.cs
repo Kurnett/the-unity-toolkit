@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNodeRenderer : NodeRenderer<DialogueEditor, Conversation, ConversationNode> {
+public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationNode> {
 
-  public ConversationNodeRenderer(DialogueEditor editorInit, Conversation graphInit) : base(editorInit, graphInit) { }
+  public ConversationNodeRenderer(Conversation graphInit) : base(graphInit) { }
 
   protected override void DrawHeader(ConversationNode node) {
     bool diff = false;
@@ -29,7 +29,7 @@ public class ConversationNodeRenderer : NodeRenderer<DialogueEditor, Conversatio
       }
     } else {
       if (GUILayout.Button("-")) {
-        editor.RemoveConnection(node.defaultOption);
+        // editor.RemoveConnection(node.defaultOption);
       }
     }
 

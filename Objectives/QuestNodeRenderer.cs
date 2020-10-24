@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNodeRenderer : NodeRenderer<QuestEditor, Questline, QuestNode> {
+public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode> {
 
-  public QuestNodeRenderer(QuestEditor editorInit, Questline graphInit) : base(editorInit, graphInit) { }
+  public QuestNodeRenderer(Questline graphInit) : base(graphInit) { }
 
   protected override void DrawHeader(QuestNode node) {
     bool diff = false;

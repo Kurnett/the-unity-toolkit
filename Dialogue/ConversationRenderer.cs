@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationRenderer : NodeGraphRenderer<DialogueEditor, Conversation, ConversationNode> {
-
-  public ConversationRenderer(DialogueEditor editorInit) : base(editorInit) { }
+public class ConversationRenderer : NodeGraphRenderer<Conversation, ConversationNode> {
 
   public override void DrawNodeGraph(Conversation graph) {
     if (graph.nodes != null) {
       foreach (ConversationNode node in graph.nodes) {
-        ConversationNodeRenderer r = new ConversationNodeRenderer(editor, graph);
+        ConversationNodeRenderer r = new ConversationNodeRenderer(graph);
         r.DrawNode(node);
       }
     }

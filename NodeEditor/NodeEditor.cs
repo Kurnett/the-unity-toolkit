@@ -16,11 +16,11 @@ New methods
 
 */
 
-public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where J : Node {
+public abstract class NodeEditor<T, J, K> : EditorWindow where T : NodeGraph where J : Node where K : NodeGraphRenderer<T, J> {
 
   protected T selectedGraph;
   protected J selectedNode;
-  protected NodeGraphRenderer<NodeEditor<T, J>, T, J> graphRenderer;
+  protected K graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -67,7 +67,7 @@ public abstract class NodeEditor<T, J> : EditorWindow where T : NodeGraph where 
 
   protected virtual void CheckAndInitializeRenderer() {
     if (graphRenderer == null) {
-      graphRenderer = new NodeGraphRenderer<NodeEditor<T, J>, T, J>(this);
+      graphRenderer = (K)new NodeGraphRenderer<T, J>();
     }
   }
 

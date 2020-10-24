@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeRenderer<K, T, J> where K : NodeEditor<T, J> where T : NodeGraph where J : Node {
+public class NodeRenderer<T, J> where T : NodeGraph where J : Node {
 
-  protected K editor;
+  // protected K editor;
   protected T graph;
 
-  public NodeRenderer(K editorInit, T graphInit) {
-    editor = editorInit;
+  public NodeRenderer(T graphInit) {
+    // editor = editorInit;
     graph = graphInit;
   }
 
@@ -49,7 +49,7 @@ public class NodeRenderer<K, T, J> where K : NodeEditor<T, J> where T : NodeGrap
     if (option.next == -1) {
       if (GUILayout.Button("+", GUILayout.Width(30))) { node.OnClickOption(option); }
     } else {
-      if (GUILayout.Button("-", GUILayout.Width(30))) { editor.RemoveConnection(option); }
+      // if (GUILayout.Button("-", GUILayout.Width(30))) { editor.RemoveConnection(option); }
     }
     EditorGUILayout.EndVertical();
   }
