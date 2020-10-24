@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ObjectiveManager : NodeManager {
+public class ObjectiveManager : NodeManager<Questline, QuestNode, QuestOption> {
 
   virtual public void CompleteObjective() {
     currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
@@ -17,7 +17,7 @@ public class ObjectiveManager : NodeManager {
     }
   }
 
-  override protected void OnNodeGraphUIUpdate(Node node) {
+  override protected void OnNodeGraphUIUpdate(QuestNode node) {
     OnObjectiveUIUpdate((QuestNode)node);
   }
 

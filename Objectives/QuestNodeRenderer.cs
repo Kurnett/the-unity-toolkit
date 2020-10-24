@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode> {
+public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode, QuestOption> {
 
   public QuestNodeRenderer(Questline graphInit) : base(graphInit) { }
 
@@ -21,7 +21,7 @@ public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode> {
       node.text = textNew;
       diff = true;
     }
-    if (diff) node.SaveGraph(graph);
+    if (diff) SaveGraph(graph);
   }
 
   protected override void DrawOptionControlsCenter(QuestNode node, int i) {

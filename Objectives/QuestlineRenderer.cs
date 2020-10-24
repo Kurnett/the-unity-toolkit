@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestlineRenderer : NodeGraphRenderer<Questline, QuestNode> {
+public class QuestlineRenderer : NodeGraphRenderer<Questline, QuestNode, QuestOption> {
 
   public override void DrawNodeGraph(Questline graph) {
     if (graph.nodes != null) {

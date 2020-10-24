@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNode : Node {
+public class ConversationNode : Node<ConversationOption> {
   // Conversation Data
   public Speaker speaker;
   public string text;

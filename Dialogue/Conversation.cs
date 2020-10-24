@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
-public class Conversation : NodeGraph {
+public class Conversation : NodeGraph<ConversationNode, ConversationOption> {
   public override void AddNode(Vector2 position) {
     ConversationNode node = (ConversationNode)ScriptableObject.CreateInstance(typeof(ConversationNode));
     node.Construct(

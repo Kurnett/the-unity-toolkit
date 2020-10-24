@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationNode> {
+public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationNode, ConversationOption> {
 
   public ConversationNodeRenderer(Conversation graphInit) : base(graphInit) { }
 
@@ -25,7 +25,7 @@ public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationN
 
     if (node.defaultOption == null || node.defaultOption.next == -1) {
       if (GUILayout.Button("+")) {
-        node.OnClickOption(node.defaultOption);
+        OnClickOption(node.defaultOption);
       }
     } else {
       if (GUILayout.Button("-")) {
@@ -56,7 +56,7 @@ public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationN
       node.length = lengthNew;
       diff = true;
     }
-    if (diff) node.SaveGraph(graph);
+    if (diff) SaveGraph(graph);
   }
 
   protected override void DrawOptionControlsCenter(ConversationNode node, int i) {

@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeRenderer<T, J> where T : NodeGraph where J : Node {
+public class NodeRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> where K : NodeOption {
+
+  // Needs initialization, avoids needing editor reference
+  public Action<J> OnClickNode;
+  public Action<J> OnRemoveNode;
+  public Action<K> OnClickOption;
+  public Action<T> SaveGraph;
 
   // protected K editor;
   protected T graph;
@@ -33,7 +40,7 @@ public class NodeRenderer<T, J> where T : NodeGraph where J : Node {
   }
 
   protected virtual void DrawOptionControlsLeft(J node, int i) {
-    NodeOption option = node.options[i];
+    K option = node.options[i];
     EditorGUILayout.BeginVertical();
     if (GUILayout.Button("↑", GUILayout.Width(30))) { node.MoveOption(option, -1); }
     if (GUILayout.Button("↓", GUILayout.Width(30))) { node.MoveOption(option, 1); }
@@ -43,11 +50,11 @@ public class NodeRenderer<T, J> where T : NodeGraph where J : Node {
   protected virtual void DrawOptionControlsCenter(J node, int i) { }
 
   protected virtual void DrawOptionControlsRight(J node, int i) {
-    NodeOption option = node.options[i];
+    K option = node.options[i];
     if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
     node.optionRects[i] = EditorGUILayout.BeginVertical();
     if (option.next == -1) {
-      if (GUILayout.Button("+", GUILayout.Width(30))) { node.OnClickOption(option); }
+      if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
     } else {
       // if (GUILayout.Button("-", GUILayout.Width(30))) { editor.RemoveConnection(option); }
     }
@@ -63,8 +70,8 @@ public class NodeRenderer<T, J> where T : NodeGraph where J : Node {
 
   protected virtual void DrawHandles(J node) {
     for (int i = 0; i < node.options.Count; i++) {
-      NodeOption option = (NodeOption)node.options[i];
-      Node nextNode = graph.GetNodeById(option.next);
+      K option = (K)node.options[i];
+      J nextNode = graph.GetNodeById(option.next);
       Rect addRect = new Rect(node.rect.x + 130f, node.rect.y, 30f, 30f);
       option.rect = addRect;
 

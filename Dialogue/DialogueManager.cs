@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueManager : NodeManager {
+public class DialogueManager : NodeManager<Conversation, ConversationNode, ConversationOption> {
 
   protected float currentNodeStartTime;
 
@@ -19,7 +19,7 @@ public class DialogueManager : NodeManager {
   }
 
   virtual public bool StartConversation(Conversation conversation) {
-    return SetNodeGraph((NodeGraph)conversation);
+    return SetNodeGraph(conversation);
   }
 
   virtual public void EndConversation() {
@@ -36,7 +36,7 @@ public class DialogueManager : NodeManager {
     base.SetNode(id);
   }
 
-  protected override void SetNode(Node node) {
+  protected override void SetNode(ConversationNode node) {
     currentNodeStartTime = Time.time;
     base.SetNode(node);
   }
@@ -65,8 +65,8 @@ public class DialogueManager : NodeManager {
     return null;
   }
 
-  override protected void OnNodeGraphUIUpdate(Node node) {
-    OnConversationUIUpdate((ConversationNode)node);
+  override protected void OnNodeGraphUIUpdate(ConversationNode node) {
+    OnConversationUIUpdate(node);
   }
 
   virtual public void OnConversationUIUpdate(ConversationNode node) { }

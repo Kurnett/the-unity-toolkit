@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestEditor : NodeEditor<Questline, QuestNode, QuestlineRenderer> {
+public class QuestEditor : NodeEditor<Questline, QuestNode, QuestlineRenderer, QuestOption> {
 
   [MenuItem("Window/Quest Editor")]
   private static void OpenWindow() {
@@ -35,7 +35,7 @@ public class QuestEditor : NodeEditor<Questline, QuestNode, QuestlineRenderer> {
     }
   }
 
-  protected override void SaveGraph(NodeGraph graph) {
+  protected override void SaveGraph(NodeGraph<QuestNode, QuestOption> graph) {
     EditorUtility.SetDirty((Questline)graph);
     AssetDatabase.SaveAssets();
   }

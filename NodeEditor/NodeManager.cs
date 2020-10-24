@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class NodeManager : MonoBehaviour {
+public abstract class NodeManager<T, J, K> : MonoBehaviour where T : NodeGraph<J, K> where J : Node<K> where K : NodeOption {
 
-  protected NodeGraph currentGraph;
-  protected Node currentNode;
+  protected T currentGraph;
+  protected J currentNode;
 
-  virtual public bool SetNodeGraph(NodeGraph graph) {
+  virtual public bool SetNodeGraph(T graph) {
     if (currentGraph == null) {
       currentGraph = graph;
       int startNodeID = graph.GetStartNodeID();
@@ -32,7 +32,7 @@ public abstract class NodeManager : MonoBehaviour {
     OnNodeGraphUIUpdate(currentNode);
   }
 
-  protected virtual void SetNode(Node node) {
+  protected virtual void SetNode(J node) {
     OnNodeGraphUIUpdate(node);
   }
 
@@ -40,8 +40,8 @@ public abstract class NodeManager : MonoBehaviour {
     SetNode(currentNode.options[option - 1].next);
   }
 
-  Node GetNode(int id) {
-    foreach (Node node in currentGraph.nodes) {
+  J GetNode(int id) {
+    foreach (J node in currentGraph.nodes) {
       if (node.id == id) {
         return node;
       }
@@ -49,6 +49,6 @@ public abstract class NodeManager : MonoBehaviour {
     return null;
   }
 
-  virtual protected void OnNodeGraphUIUpdate(Node node) { }
+  virtual protected void OnNodeGraphUIUpdate(J node) { }
 
 }

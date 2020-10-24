@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public abstract class Node : ScriptableObject {
+public abstract class Node<T> : ScriptableObject where T : NodeOption {
   public int id;
   public bool start;
-  public List<NodeOption> options = new List<NodeOption>();
-  public NodeOption defaultOption;
+  public List<T> options = new List<T>();
+  public T defaultOption;
 
   // Editor Data
   public Rect rect;
@@ -21,18 +21,12 @@ public abstract class Node : ScriptableObject {
   public float width = 200f;
   public float height = 30f;
 
-  // Needs initialization
-  public Action<Node> OnClickNode;
-  public Action<Node> OnRemoveNode;
-  public Action<NodeOption> OnClickOption;
-  public Action<NodeGraph> SaveGraph;
-
   virtual public void Construct(int id, Vector2 position) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
   }
 
-  public void MoveOption(NodeOption option, int diff) {
+  public void MoveOption(T option, int diff) {
     int index = options.IndexOf(option);
     int newIndex = Mathf.Clamp(index + diff, 0, options.Count - 1);
     if (index != newIndex) {
@@ -43,13 +37,13 @@ public abstract class Node : ScriptableObject {
   }
 
   public virtual void AddOption() {
-    NodeOption newOption = (NodeOption)ScriptableObject.CreateInstance(typeof(NodeOption));
+    T newOption = (T)ScriptableObject.CreateInstance(typeof(T));
     // newOption.Construct(SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, this);
     options.Add(newOption);
   }
 
-  public virtual void RemoveOption(NodeOption option) {
+  public virtual void RemoveOption(T option) {
     AssetDatabase.RemoveObjectFromAsset(option);
     options.Remove(option);
   }

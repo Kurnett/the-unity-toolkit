@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationRenderer : NodeGraphRenderer<Conversation, ConversationNode> {
+public class ConversationRenderer : NodeGraphRenderer<Conversation, ConversationNode, ConversationOption> {
 
   public override void DrawNodeGraph(Conversation graph) {
     if (graph.nodes != null) {

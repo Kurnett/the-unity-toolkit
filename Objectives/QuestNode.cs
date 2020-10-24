@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNode : Node {
+public class QuestNode : Node<QuestOption> {
   // Quest Data
   public string text;
 
