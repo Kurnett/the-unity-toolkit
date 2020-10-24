@@ -27,26 +27,9 @@ public abstract class Node : ScriptableObject {
   public Action<NodeOption> OnClickOption;
   public Action<NodeGraph> SaveGraph;
 
-  virtual public void Construct(
-    int id,
-    Vector2 position,
-    Action<NodeOption> OnClickOption,
-    Action<Node> OnClickNode,
-    Action<NodeGraph> SaveGraph
-  ) {
+  virtual public void Construct(int id, Vector2 position) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
-    Initialize(OnClickOption, OnClickNode, SaveGraph);
-  }
-
-  public void Initialize(
-    Action<NodeOption> OnClickOption,
-    Action<Node> OnClickNode,
-    Action<NodeGraph> SaveGraph
-  ) {
-    this.OnClickOption = OnClickOption;
-    this.OnClickNode = OnClickNode;
-    this.SaveGraph = SaveGraph;
   }
 
   public void MoveOption(NodeOption option, int diff) {

@@ -6,19 +6,11 @@ using UnityEditor;
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
 public class Conversation : NodeGraph {
-  public override void AddNode(
-      Vector2 position,
-      Action<NodeOption> OnClickOption,
-      Action<Node> OnClickNode,
-      Action<NodeGraph> SaveGraph
-    ) {
+  public override void AddNode(Vector2 position) {
     ConversationNode node = (ConversationNode)ScriptableObject.CreateInstance(typeof(ConversationNode));
     node.Construct(
       GenerateUniqueId(),
-      position,
-      OnClickOption,
-      OnClickNode,
-      SaveGraph
+      position
     );
     AssetDatabase.AddObjectToAsset(node, this);
     nodes.Add(node);

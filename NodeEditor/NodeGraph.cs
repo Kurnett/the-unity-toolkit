@@ -66,19 +66,11 @@ public abstract class NodeGraph : ScriptableObject {
     }
   }
 
-  public virtual void AddNode(
-      Vector2 position,
-      Action<NodeOption> OnClickOption,
-      Action<Node> OnClickNode,
-      Action<NodeGraph> SaveGraph
-    ) {
+  public virtual void AddNode(Vector2 position) {
     Node node = (Node)ScriptableObject.CreateInstance(typeof(Node));
     node.Construct(
       GenerateUniqueId(),
-      position,
-      OnClickOption,
-      OnClickNode,
-      SaveGraph
+      position
     );
     AssetDatabase.AddObjectToAsset(node, this);
     nodes.Add(node);

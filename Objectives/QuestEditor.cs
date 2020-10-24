@@ -16,12 +16,7 @@ public class QuestEditor : NodeEditor<Questline, QuestNode, QuestlineRenderer> {
   }
 
   protected override void OnClickAddNode(Vector2 mousePosition) {
-    selectedGraph.AddNode(
-      mousePosition,
-      OnClickOption,
-      OnClickNode,
-      SaveGraph
-    );
+    selectedGraph.AddNode(mousePosition);
     SaveGraph(selectedGraph);
   }
 

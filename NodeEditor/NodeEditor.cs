@@ -101,12 +101,6 @@ public abstract class NodeEditor<T, J, K> : EditorWindow where T : NodeGraph whe
   private void InitializeNodeGraph() {
     if (selectedGraph && selectedGraph.nodes != null) {
       selectedOption = null;
-      foreach (Node node in selectedGraph.nodes) {
-        node.Initialize(
-          OnClickOption,
-          OnClickNode,
-          SaveGraph);
-      }
     }
   }
 
