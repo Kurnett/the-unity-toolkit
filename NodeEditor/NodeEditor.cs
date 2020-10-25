@@ -185,13 +185,16 @@ public abstract class NodeEditor<
       genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
       genericMenu.ShowAsContext();
     } else {
-      genericMenu.AddItem(new GUIContent("Remove conversation node"), false, () => OnClickRemoveNode(node));
+      genericMenu.AddItem(new GUIContent("Remove node"), false, () => OnClickRemoveNode(node));
       genericMenu.ShowAsContext();
     }
     contextMenuOpen = true;
   }
 
-  protected abstract void OnClickAddNode(Vector2 mousePosition);
+  protected virtual void OnClickAddNode(Vector2 mousePosition) {
+    selectedGraph.AddNode(mousePosition);
+    SaveGraph(selectedGraph);
+  }
 
   protected void OnClickRemoveNode(NODE node) {
     selectedGraph.RemoveNode(node);

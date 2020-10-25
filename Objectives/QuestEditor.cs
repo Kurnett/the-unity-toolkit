@@ -14,29 +14,4 @@ public class QuestEditor : NodeEditor<QuestlineRenderer, QuestNodeRenderer, Ques
   protected override string GetNoSelectionMessage() {
     return "Select a questline to get started";
   }
-
-  protected override void OnClickAddNode(Vector2 mousePosition) {
-    selectedGraph.AddNode(mousePosition);
-    SaveGraph(selectedGraph);
-  }
-
-  private void DrawConnectionLine(Event e) {
-    if (selectedOption != null) {
-      Handles.DrawBezier(
-        selectedOption.rect.center,
-        e.mousePosition,
-        selectedOption.rect.center - Vector2.left * 50f,
-        e.mousePosition + Vector2.left * 50f,
-        Color.white,
-        null,
-        2f
-      );
-      GUI.changed = true;
-    }
-  }
-
-  protected override void SaveGraph(NodeGraph<QuestNode, QuestOption> graph) {
-    EditorUtility.SetDirty((Questline)graph);
-    AssetDatabase.SaveAssets();
-  }
 }
