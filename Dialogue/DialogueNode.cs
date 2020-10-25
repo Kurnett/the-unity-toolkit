@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNode : Node<ConversationOption> {
+public class DialogueNode : Node<DialogueOption> {
   public Speaker speaker;
   public string text;
   public float length;
@@ -14,7 +14,7 @@ public class ConversationNode : Node<ConversationOption> {
   public string title = "";
 
   public override void AddOption() {
-    ConversationOption newOption = (ConversationOption)ScriptableObject.CreateInstance(typeof(ConversationOption));
+    DialogueOption newOption = (DialogueOption)ScriptableObject.CreateInstance(typeof(DialogueOption));
     options.Add(newOption);
   }
 }

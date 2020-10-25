@@ -5,4 +5,4 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Dialogue/Conversation")]
-public class Conversation : NodeGraph<ConversationNode, ConversationOption> { }
+public class Dialogue : NodeGraph<DialogueNode, DialogueOption> { }

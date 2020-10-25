@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationNode, ConversationOption> {
+public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, DialogueOption> {
 
-  protected override void DrawHeader(ConversationNode node) {
+  protected override void DrawHeader(DialogueNode node) {
     bool diff = false;
     EditorStyles.textField.wordWrap = true;
 
@@ -58,8 +58,8 @@ public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationN
     if (diff) SaveGraph(graph);
   }
 
-  protected override void DrawOptionControlsCenter(ConversationNode node, int i) {
-    ConversationOption convOption = (ConversationOption)node.options[i];
+  protected override void DrawOptionControlsCenter(DialogueNode node, int i) {
+    DialogueOption convOption = (DialogueOption)node.options[i];
     convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
   }
 

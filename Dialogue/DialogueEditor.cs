@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEditor;
 
 public class DialogueEditor : NodeEditor<
-  ConversationRenderer,
-  ConversationNodeRenderer,
-  Conversation,
-  ConversationNode,
-  ConversationOption
+  DialogueRenderer,
+  DialogueNodeRenderer,
+  Dialogue,
+  DialogueNode,
+  DialogueOption
 > {
 
   [MenuItem("Window/Dialogue Editor")]

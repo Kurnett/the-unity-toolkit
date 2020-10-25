@@ -4,6 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ConversationOption : NodeOption {
+public class DialogueOption : NodeOption {
   public string response;
 }

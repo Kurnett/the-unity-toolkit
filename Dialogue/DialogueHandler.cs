@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConversationHandler : MonoBehaviour {
+public class DialogueHandler : MonoBehaviour {
 
-  public List<Conversation> conversations = new List<Conversation>();
-  public Conversation defaultConversation;
+  public List<Dialogue> conversations = new List<Dialogue>();
+  public Dialogue defaultConversation;
   public DialogueManager manager;
 
   void Start() {
@@ -31,7 +31,7 @@ public class ConversationHandler : MonoBehaviour {
     return false;
   }
 
-  virtual public bool StartConversation(Conversation conversation) {
+  virtual public bool StartConversation(Dialogue conversation) {
     if (manager) {
       manager.StartConversation(conversation);
       return true;

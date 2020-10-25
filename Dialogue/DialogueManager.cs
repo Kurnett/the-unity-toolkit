@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueManager : NodeManager<Conversation, ConversationNode, ConversationOption> {
+public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOption> {
 
   protected float currentNodeStartTime;
 
-  public List<Conversation> conversations = new List<Conversation>();
+  public List<Dialogue> conversations = new List<Dialogue>();
 
   void Start() {
     currentGraph = null;
@@ -18,7 +18,7 @@ public class DialogueManager : NodeManager<Conversation, ConversationNode, Conve
     }
   }
 
-  virtual public bool StartConversation(Conversation conversation) {
+  virtual public bool StartConversation(Dialogue conversation) {
     return SetNodeGraph(conversation);
   }
 
@@ -36,13 +36,13 @@ public class DialogueManager : NodeManager<Conversation, ConversationNode, Conve
     base.SetNode(id);
   }
 
-  protected override void SetNode(ConversationNode node) {
+  protected override void SetNode(DialogueNode node) {
     currentNodeStartTime = Time.time;
     base.SetNode(node);
   }
 
   virtual protected void CheckNodeProgress() {
-    ConversationNode currentConvNode = (ConversationNode)currentNode;
+    DialogueNode currentConvNode = (DialogueNode)currentNode;
     if (currentConvNode != null) {
       if (currentConvNode.endConversation) {
         EndConversation();
@@ -56,8 +56,8 @@ public class DialogueManager : NodeManager<Conversation, ConversationNode, Conve
     base.SelectNodeOption(option);
   }
 
-  Conversation GetConversation(int id) {
-    foreach (Conversation conversation in conversations) {
+  Dialogue GetConversation(int id) {
+    foreach (Dialogue conversation in conversations) {
       if (conversation.id == id) {
         return conversation;
       }
@@ -65,10 +65,10 @@ public class DialogueManager : NodeManager<Conversation, ConversationNode, Conve
     return null;
   }
 
-  override protected void OnNodeGraphUIUpdate(ConversationNode node) {
+  override protected void OnNodeGraphUIUpdate(DialogueNode node) {
     OnConversationUIUpdate(node);
   }
 
-  virtual public void OnConversationUIUpdate(ConversationNode node) { }
+  virtual public void OnConversationUIUpdate(DialogueNode node) { }
 
 }
