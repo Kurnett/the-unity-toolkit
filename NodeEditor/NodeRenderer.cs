@@ -4,34 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> where K : NodeOption {
+public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
+  where NODE : Node<NODE_OPTION>
+  where NODE_OPTION : NodeOption {
 
   // Needs initialization, avoids needing editor reference
-  public Action<J> OnClickNode;
-  public Action<J> OnRemoveNode;
-  public Action<K> OnClickOption;
-  public Action<T> SaveGraph;
+  public Action<NODE> OnClickNode;
+  public Action<NODE> OnRemoveNode;
+  public Action<NODE_OPTION> OnClickOption;
+  public Action<NODE_GRAPH> SaveGraph;
 
-  // protected K editor;
-  protected T graph;
+  protected NODE_GRAPH graph;
 
-  public NodeRenderer(T graphInit) {
-    // editor = editorInit;
+  public NodeRenderer(NODE_GRAPH graphInit) {
     graph = graphInit;
   }
 
-  protected virtual void DrawHeader(J node) {
+  protected virtual void DrawHeader(NODE node) {
     // Adds spacing to let users click and drag.
     GUILayout.Box("", GUIStyle.none);
   }
 
-  protected virtual void DrawOptions(J node) {
+  protected virtual void DrawOptions(NODE node) {
     for (int i = 0; i < node.options.Count; i++) {
       DrawOption(node, i);
     }
   }
 
-  protected virtual void DrawOption(J node, int i) {
+  protected virtual void DrawOption(NODE node, int i) {
     EditorGUILayout.BeginHorizontal();
     DrawOptionControlsLeft(node, i);
     DrawOptionControlsCenter(node, i);
@@ -39,18 +40,18 @@ public class NodeRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> w
     EditorGUILayout.EndHorizontal();
   }
 
-  protected virtual void DrawOptionControlsLeft(J node, int i) {
-    K option = node.options[i];
+  protected virtual void DrawOptionControlsLeft(NODE node, int i) {
+    NODE_OPTION option = node.options[i];
     EditorGUILayout.BeginVertical();
     if (GUILayout.Button("↑", GUILayout.Width(30))) { node.MoveOption(option, -1); }
     if (GUILayout.Button("↓", GUILayout.Width(30))) { node.MoveOption(option, 1); }
     EditorGUILayout.EndVertical();
   }
 
-  protected virtual void DrawOptionControlsCenter(J node, int i) { }
+  protected virtual void DrawOptionControlsCenter(NODE node, int i) { }
 
-  protected virtual void DrawOptionControlsRight(J node, int i) {
-    K option = node.options[i];
+  protected virtual void DrawOptionControlsRight(NODE node, int i) {
+    NODE_OPTION option = node.options[i];
     if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
     node.optionRects[i] = EditorGUILayout.BeginVertical();
     if (option.next == -1) {
@@ -61,17 +62,17 @@ public class NodeRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> w
     EditorGUILayout.EndVertical();
   }
 
-  protected virtual void DrawAddOption(J node) {
+  protected virtual void DrawAddOption(NODE node) {
     if (GUILayout.Button("Add Option")) {
       node.AddOption();
       GUI.changed = true;
     }
   }
 
-  protected virtual void DrawHandles(J node) {
+  protected virtual void DrawHandles(NODE node) {
     for (int i = 0; i < node.options.Count; i++) {
-      K option = (K)node.options[i];
-      J nextNode = graph.GetNodeById(option.next);
+      NODE_OPTION option = (NODE_OPTION)node.options[i];
+      NODE nextNode = graph.GetNodeById(option.next);
       Rect addRect = new Rect(node.rect.x + 130f, node.rect.y, 30f, 30f);
       option.rect = addRect;
 
@@ -90,7 +91,7 @@ public class NodeRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> w
     }
   }
 
-  public void DrawNode(J node) {
+  public void DrawNode(NODE node) {
     EditorStyles.textField.wordWrap = true;
     node.optionRects = new Rect[node.options.Count];
 

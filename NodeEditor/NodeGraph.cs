@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Nodes/Graph")]
-public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where J : NodeOption {
+public abstract class NodeGraph<NODE, NODE_OPTION> : ScriptableObject where NODE : Node<NODE_OPTION> where NODE_OPTION : NodeOption {
   public int id;
   new public string name;
-  public List<T> nodes = new List<T>();
-  public T startNode;
+  public List<NODE> nodes = new List<NODE>();
+  public NODE startNode;
 
   public int GenerateUniqueId() {
     bool idFound = false;
@@ -24,7 +24,7 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
   }
 
   public int GetStartNodeID() {
-    foreach (T node in nodes) {
+    foreach (NODE node in nodes) {
       if (node.start) {
         return node.id;
       }
@@ -32,9 +32,9 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
     return -1;
   }
 
-  public T GetNodeById(int id) {
+  public NODE GetNodeById(int id) {
     if (id != -1) {
-      T node = nodes.Find(nodeInit => nodeInit.id == id);
+      NODE node = nodes.Find(nodeInit => nodeInit.id == id);
       if (node != null) {
         return node;
       }
@@ -44,11 +44,11 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
   }
 
   public void ClearInvalidOptionIDs(int id) {
-    foreach (T node in nodes) {
+    foreach (NODE node in nodes) {
       if (node.defaultOption != null && node.defaultOption.next == id) {
         node.defaultOption.next = -1;
       }
-      foreach (J option in node.options) {
+      foreach (NODE_OPTION option in node.options) {
         if (option.next == id) {
           option.next = -1;
         }
@@ -56,8 +56,8 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
     }
   }
 
-  public void SetStartNode(T startNode) {
-    foreach (T node in nodes) {
+  public void SetStartNode(NODE startNode) {
+    foreach (NODE node in nodes) {
       if (startNode == node) {
         node.start = true;
       } else {
@@ -67,7 +67,7 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
   }
 
   public virtual void AddNode(Vector2 position) {
-    T node = (T)ScriptableObject.CreateInstance(typeof(T));
+    NODE node = (NODE)ScriptableObject.CreateInstance(typeof(NODE));
     node.Construct(
       GenerateUniqueId(),
       position
@@ -76,8 +76,8 @@ public abstract class NodeGraph<T, J> : ScriptableObject where T : Node<J> where
     nodes.Add(node);
   }
 
-  public void RemoveNode(T node) {
-    foreach (J option in node.options) {
+  public void RemoveNode(NODE node) {
+    foreach (NODE_OPTION option in node.options) {
       AssetDatabase.RemoveObjectFromAsset(option);
     }
     AssetDatabase.RemoveObjectFromAsset(node);

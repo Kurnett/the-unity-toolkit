@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeGraphRenderer<T, J, K> where T : NodeGraph<J, K> where J : Node<K> where K : NodeOption {
+public class NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION>
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
+  where NODE : Node<NODE_OPTION>
+  where NODE_OPTION : NodeOption {
 
-  // protected K editor;
-
-  // public NodeGraphRenderer(K editorInit) {
-  //   editor = editorInit;
-  // }
-
-  public virtual void DrawNodeGraph(T graph) {
+  public virtual void DrawNodeGraph(NODE_GRAPH graph) {
     if (graph.nodes != null) {
-      foreach (J node in graph.nodes) {
-        NodeRenderer<T, J, K> r = new NodeRenderer<T, J, K>(graph);
+      foreach (NODE node in graph.nodes) {
+        NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION> r = new NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>(graph);
         r.DrawNode(node);
       }
     }

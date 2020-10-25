@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class NodeManager<T, J, K> : MonoBehaviour where T : NodeGraph<J, K> where J : Node<K> where K : NodeOption {
+public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION> : MonoBehaviour
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
+  where NODE : Node<NODE_OPTION>
+  where NODE_OPTION : NodeOption {
 
-  protected T currentGraph;
-  protected J currentNode;
+  protected NODE_GRAPH currentGraph;
+  protected NODE currentNode;
 
-  virtual public bool SetNodeGraph(T graph) {
+  virtual public bool SetNodeGraph(NODE_GRAPH graph) {
     if (currentGraph == null) {
       currentGraph = graph;
       int startNodeID = graph.GetStartNodeID();
@@ -32,7 +35,7 @@ public abstract class NodeManager<T, J, K> : MonoBehaviour where T : NodeGraph<J
     OnNodeGraphUIUpdate(currentNode);
   }
 
-  protected virtual void SetNode(J node) {
+  protected virtual void SetNode(NODE node) {
     OnNodeGraphUIUpdate(node);
   }
 
@@ -40,8 +43,8 @@ public abstract class NodeManager<T, J, K> : MonoBehaviour where T : NodeGraph<J
     SetNode(currentNode.options[option - 1].next);
   }
 
-  J GetNode(int id) {
-    foreach (J node in currentGraph.nodes) {
+  NODE GetNode(int id) {
+    foreach (NODE node in currentGraph.nodes) {
       if (node.id == id) {
         return node;
       }
@@ -49,6 +52,6 @@ public abstract class NodeManager<T, J, K> : MonoBehaviour where T : NodeGraph<J
     return null;
   }
 
-  virtual protected void OnNodeGraphUIUpdate(J node) { }
+  virtual protected void OnNodeGraphUIUpdate(NODE node) { }
 
 }

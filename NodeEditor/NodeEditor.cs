@@ -16,11 +16,15 @@ New methods
 
 */
 
-public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<J, L> where J : Node<L> where K : NodeGraphRenderer<T, J, L> where L : NodeOption {
+public abstract class NodeEditor<NODE_GRAPH, NODE, RENDERER, NODE_OPTION> : EditorWindow
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
+  where NODE : Node<NODE_OPTION>
+  where RENDERER : NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION>
+  where NODE_OPTION : NodeOption {
 
-  protected T selectedGraph;
-  protected J selectedNode;
-  protected K graphRenderer;
+  protected NODE_GRAPH selectedGraph;
+  protected NODE selectedNode;
+  protected RENDERER graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -67,7 +71,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
 
   protected virtual void CheckAndInitializeRenderer() {
     if (graphRenderer == null) {
-      graphRenderer = (K)new NodeGraphRenderer<T, J, L>();
+      graphRenderer = (RENDERER)new NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION>();
     }
   }
 
@@ -80,11 +84,11 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
     GUILayout.BeginArea(new Rect(18, 18, 196, 48));
     EditorGUILayout.BeginVertical("Box");
     if (!selectedGraph) {
-      T newGraph = (T)EditorGUILayout.ObjectField(selectedGraph, typeof(T), false);
+      NODE_GRAPH newGraph = (NODE_GRAPH)EditorGUILayout.ObjectField(selectedGraph, typeof(NODE_GRAPH), false);
       EditorGUILayout.LabelField("Select Node Graph");
       if (newGraph != selectedGraph) {
         graphSelectMenuOpen = true;
-        selectedGraph = newGraph as T;
+        selectedGraph = newGraph as NODE_GRAPH;
         InitializeNodeGraph();
         DrawNodeGraph();
       }
@@ -152,7 +156,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
         contextMenuOpen = false;
         graphSelectMenuOpen = false;
         if (e.button == 0) {
-          selectedNode = (J)GetNodeAtPoint(e.mousePosition.x, e.mousePosition.y);
+          selectedNode = (NODE)GetNodeAtPoint(e.mousePosition.x, e.mousePosition.y);
         }
         if (e.button == 1) {
           ProcessContextMenu(e.mousePosition);
@@ -166,7 +170,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
           Drag(selectedNode, e.delta);
         } else {
           offset += e.delta;
-          foreach (J node in selectedGraph.nodes) {
+          foreach (NODE node in selectedGraph.nodes) {
             Drag(node, e.delta);
           }
         }
@@ -176,7 +180,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
   }
 
   private void ProcessContextMenu(Vector2 mousePosition) {
-    J node = GetNodeAtPoint(mousePosition.x, mousePosition.y);
+    NODE node = GetNodeAtPoint(mousePosition.x, mousePosition.y);
     GenericMenu genericMenu = new GenericMenu();
     if (node == null) {
       genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
@@ -190,7 +194,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
 
   protected abstract void OnClickAddNode(Vector2 mousePosition);
 
-  protected void OnClickRemoveNode(J node) {
+  protected void OnClickRemoveNode(NODE node) {
     selectedGraph.RemoveNode(node);
     SaveGraph(selectedGraph);
   }
@@ -203,7 +207,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
     }
   }
 
-  protected void OnClickNode(J node) {
+  protected void OnClickNode(NODE node) {
     if (selectedOption != null) {
       CreateConnection(selectedOption, node);
       ClearConnectionSelection();
@@ -214,17 +218,17 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
     selectedOption = null;
   }
 
-  protected virtual void SaveGraph(NodeGraph<J, L> graph) {
+  protected virtual void SaveGraph(NodeGraph<NODE, NODE_OPTION> graph) {
     EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
   }
 
-  public void Drag(Node<L> node, Vector2 delta) {
+  public void Drag(NODE node, Vector2 delta) {
     node.rect.position += delta;
   }
 
-  public J GetNodeAtPoint(float x, float y) {
-    foreach (J node in selectedGraph.nodes) {
+  public NODE GetNodeAtPoint(float x, float y) {
+    foreach (NODE node in selectedGraph.nodes) {
       if (node.PointIsInBoundingBox(x, y)) {
         return node;
       }
@@ -232,7 +236,7 @@ public abstract class NodeEditor<T, J, K, L> : EditorWindow where T : NodeGraph<
     return null;
   }
 
-  public void CreateConnection(NodeOption option, Node<L> node) {
+  public void CreateConnection(NodeOption option, NODE node) {
     option.next = node.id;
     SaveGraph(selectedGraph);
   }

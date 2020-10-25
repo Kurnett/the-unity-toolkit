@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public abstract class Node<T> : ScriptableObject where T : NodeOption {
+public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : NodeOption {
   public int id;
   public bool start;
-  public List<T> options = new List<T>();
-  public T defaultOption;
+  public List<NODE_OPTION> options = new List<NODE_OPTION>();
+  public NODE_OPTION defaultOption;
 
   // Editor Data
   public Rect rect;
@@ -26,7 +26,7 @@ public abstract class Node<T> : ScriptableObject where T : NodeOption {
     rect = new Rect(position.x, position.y, width, height);
   }
 
-  public void MoveOption(T option, int diff) {
+  public void MoveOption(NODE_OPTION option, int diff) {
     int index = options.IndexOf(option);
     int newIndex = Mathf.Clamp(index + diff, 0, options.Count - 1);
     if (index != newIndex) {
@@ -37,13 +37,13 @@ public abstract class Node<T> : ScriptableObject where T : NodeOption {
   }
 
   public virtual void AddOption() {
-    T newOption = (T)ScriptableObject.CreateInstance(typeof(T));
+    NODE_OPTION newOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
     // newOption.Construct(SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, this);
     options.Add(newOption);
   }
 
-  public virtual void RemoveOption(T option) {
+  public virtual void RemoveOption(NODE_OPTION option) {
     AssetDatabase.RemoveObjectFromAsset(option);
     options.Remove(option);
   }
