@@ -38,7 +38,6 @@ public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : N
 
   public virtual void AddOption() {
     NODE_OPTION newOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
-    // newOption.Construct(SaveGraph);
     AssetDatabase.AddObjectToAsset(newOption, this);
     options.Add(newOption);
   }

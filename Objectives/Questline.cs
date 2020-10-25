@@ -5,14 +5,4 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Quests/Questline")]
-public class Questline : NodeGraph<QuestNode, QuestOption> {
-  public override void AddNode(Vector2 position) {
-    QuestNode node = (QuestNode)ScriptableObject.CreateInstance(typeof(QuestNode));
-    node.Construct(
-      GenerateUniqueId(),
-      position
-    );
-    AssetDatabase.AddObjectToAsset(node, this);
-    nodes.Add(node);
-  }
-}
+public class Questline : NodeGraph<QuestNode, QuestOption> { }

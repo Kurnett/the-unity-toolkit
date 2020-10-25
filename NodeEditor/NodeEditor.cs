@@ -50,7 +50,6 @@ public abstract class NodeEditor<
       RenderNodeGraphSelectedGUI();
     }
     RenderNodeGraphSelectionGUI();
-    ProcessEvents(Event.current);
     if (GUI.changed) Repaint();
   }
 
@@ -147,10 +146,6 @@ public abstract class NodeEditor<
       );
       GUI.changed = true;
     }
-  }
-
-  private void ProcessEvents(Event e) {
-
   }
 
   private void ProcessEventsNodeGraph(Event e) {

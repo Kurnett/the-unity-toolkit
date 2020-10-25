@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEditor;
 
 public class ConversationNode : Node<ConversationOption> {
-  // Conversation Data
   public Speaker speaker;
   public string text;
   public float length;
@@ -16,8 +15,6 @@ public class ConversationNode : Node<ConversationOption> {
 
   public override void AddOption() {
     ConversationOption newOption = (ConversationOption)ScriptableObject.CreateInstance(typeof(ConversationOption));
-    // newOption.Construct(SaveGraph);
-    // AssetDatabase.AddObjectToAsset(newOption, graph);
     options.Add(newOption);
   }
 }
