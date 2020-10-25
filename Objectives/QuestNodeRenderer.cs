@@ -5,8 +5,6 @@ using UnityEditor;
 
 public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode, QuestOption> {
 
-  public QuestNodeRenderer(Questline graphInit) : base(graphInit) { }
-
   protected override void DrawHeader(QuestNode node) {
     bool diff = false;
     GUILayout.Box("", GUIStyle.none);

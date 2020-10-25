@@ -17,8 +17,20 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
 
   protected NODE_GRAPH graph;
 
-  public NodeRenderer(NODE_GRAPH graphInit) {
-    graph = graphInit;
+  public NodeRenderer() { }
+
+  public void Initialize(
+    NODE_GRAPH graph,
+    Action<NODE> OnClickNode,
+    Action<NODE> OnRemoveNode,
+    Action<NODE_OPTION> OnClickOption,
+    Action<NODE_GRAPH> SaveGraph
+   ) {
+    this.graph = graph;
+    this.OnClickNode = OnClickNode;
+    this.OnRemoveNode = OnRemoveNode;
+    this.OnClickOption = OnClickOption;
+    this.SaveGraph = SaveGraph;
   }
 
   protected virtual void DrawHeader(NODE node) {

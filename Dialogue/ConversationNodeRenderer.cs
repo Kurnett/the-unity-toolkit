@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 public class ConversationNodeRenderer : NodeRenderer<Conversation, ConversationNode, ConversationOption> {
-
-  public ConversationNodeRenderer(Conversation graphInit) : base(graphInit) { }
 
   protected override void DrawHeader(ConversationNode node) {
     bool diff = false;

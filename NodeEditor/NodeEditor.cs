@@ -16,15 +16,22 @@ New methods
 
 */
 
-public abstract class NodeEditor<NODE_GRAPH, NODE, RENDERER, NODE_OPTION> : EditorWindow
+public abstract class NodeEditor<
+  GRAPH_RENDERER,
+  NODE_RENDERER,
+  NODE_GRAPH,
+  NODE,
+  NODE_OPTION
+> : EditorWindow
+  where GRAPH_RENDERER : NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER>, new()
+  where NODE_RENDERER : NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>, new()
   where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
   where NODE : Node<NODE_OPTION>
-  where RENDERER : NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION>
   where NODE_OPTION : NodeOption {
 
   protected NODE_GRAPH selectedGraph;
   protected NODE selectedNode;
-  protected RENDERER graphRenderer;
+  protected GRAPH_RENDERER graphRenderer;
   [System.NonSerialized]
   protected NodeOption selectedOption;
 
@@ -61,9 +68,7 @@ public abstract class NodeEditor<NODE_GRAPH, NODE, RENDERER, NODE_OPTION> : Edit
     DrawGrid(20, 0.2f, Color.gray);
     DrawGrid(100, 0.4f, Color.gray);
 
-    if (graphRenderer != null) {
-      graphRenderer.DrawNodeGraph(selectedGraph);
-    }
+    DrawNodeGraph();
     DrawConnectionLine(Event.current);
 
     ProcessEventsNodeGraph(Event.current);
@@ -71,13 +76,13 @@ public abstract class NodeEditor<NODE_GRAPH, NODE, RENDERER, NODE_OPTION> : Edit
 
   protected virtual void CheckAndInitializeRenderer() {
     if (graphRenderer == null) {
-      graphRenderer = (RENDERER)new NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION>();
+      graphRenderer = new GRAPH_RENDERER();
     }
   }
 
   protected virtual void DrawNodeGraph() {
     CheckAndInitializeRenderer();
-    graphRenderer.DrawNodeGraph(selectedGraph);
+    graphRenderer.DrawNodeGraph(selectedGraph, OnClickNode, OnClickRemoveNode, OnClickOption, SaveGraph);
   }
 
   private void RenderNodeGraphSelectionGUI() {
@@ -90,7 +95,6 @@ public abstract class NodeEditor<NODE_GRAPH, NODE, RENDERER, NODE_OPTION> : Edit
         graphSelectMenuOpen = true;
         selectedGraph = newGraph as NODE_GRAPH;
         InitializeNodeGraph();
-        DrawNodeGraph();
       }
     } else {
       if (GUILayout.Button("Select New Graph")) {
