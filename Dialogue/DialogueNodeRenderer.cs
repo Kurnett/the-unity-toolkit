@@ -28,7 +28,7 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
       }
     } else {
       if (GUILayout.Button("-")) {
-        // editor.RemoveConnection(node.defaultOption);
+        OnRemoveConnection(node.defaultOption);
       }
     }
 
@@ -60,7 +60,9 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
 
   protected override void DrawOptionControlsCenter(DialogueNode node, int i) {
     DialogueOption convOption = (DialogueOption)node.options[i];
-    convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
+    if (convOption) {
+      convOption.response = EditorGUILayout.TextArea(convOption.response, GUILayout.Width(140), GUILayout.Height(60));
+    }
   }
 
 }

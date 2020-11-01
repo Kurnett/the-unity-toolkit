@@ -10,8 +10,8 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
   where NODE_OPTION : NodeOption {
 
   // Needs initialization, avoids needing editor reference
-  public Action<NODE> OnClickNode;
   public Action<NODE> OnRemoveNode;
+  public Action<NODE_OPTION> OnRemoveConnection;
   public Action<NODE_OPTION> OnClickOption;
   public Action<NODE_GRAPH> SaveGraph;
 
@@ -21,14 +21,14 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
 
   public void Initialize(
     NODE_GRAPH graph,
-    Action<NODE> OnClickNode,
     Action<NODE> OnRemoveNode,
+    Action<NODE_OPTION> OnRemoveConnection,
     Action<NODE_OPTION> OnClickOption,
     Action<NODE_GRAPH> SaveGraph
    ) {
     this.graph = graph;
-    this.OnClickNode = OnClickNode;
     this.OnRemoveNode = OnRemoveNode;
+    this.OnRemoveConnection = OnRemoveConnection;
     this.OnClickOption = OnClickOption;
     this.SaveGraph = SaveGraph;
   }
@@ -69,7 +69,7 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
     if (option.next == -1) {
       if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
     } else {
-      // if (GUILayout.Button("-", GUILayout.Width(30))) { editor.RemoveConnection(option); }
+      if (GUILayout.Button("-", GUILayout.Width(30))) { option.next = -1; }
     }
     EditorGUILayout.EndVertical();
   }
@@ -82,6 +82,23 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
   }
 
   protected virtual void DrawHandles(NODE node) {
+    if (node.defaultOption != null) {
+      NODE nextNode = graph.GetNodeById(node.defaultOption.next);
+      Rect addRect = new Rect(node.rect.x + 130f, node.rect.y, 30f, 30f);
+      node.defaultOption.rect = addRect;
+      Vector2 handlePos = new Vector2(node.rect.x + node.rect.width, node.rect.y);
+      if (nextNode != null) {
+        Handles.DrawBezier(
+          handlePos,
+          nextNode.rect.position,
+          handlePos - Vector2.left * 50f,
+          nextNode.rect.position + Vector2.left * 50f,
+          Color.white,
+          null,
+          2f
+        );
+      }
+    }
     for (int i = 0; i < node.options.Count; i++) {
       NODE_OPTION option = (NODE_OPTION)node.options[i];
       NODE nextNode = graph.GetNodeById(option.next);

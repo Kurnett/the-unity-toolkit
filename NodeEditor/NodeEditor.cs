@@ -81,7 +81,7 @@ public abstract class NodeEditor<
 
   protected virtual void DrawNodeGraph() {
     CheckAndInitializeRenderer();
-    graphRenderer.DrawNodeGraph(selectedGraph, OnClickNode, OnClickRemoveNode, OnClickOption, SaveGraph);
+    graphRenderer.DrawNodeGraph(selectedGraph, OnClickRemoveNode, OnClickRemoveConnection, OnClickOption, SaveGraph);
   }
 
   private void RenderNodeGraphSelectionGUI() {
@@ -156,6 +156,9 @@ public abstract class NodeEditor<
         graphSelectMenuOpen = false;
         if (e.button == 0) {
           selectedNode = (NODE)GetNodeAtPoint(e.mousePosition.x, e.mousePosition.y);
+          if (selectedNode != null) {
+            OnClickNode(selectedNode);
+          }
         }
         if (e.button == 1) {
           ProcessContextMenu(e.mousePosition);
@@ -198,6 +201,11 @@ public abstract class NodeEditor<
 
   protected void OnClickRemoveNode(NODE node) {
     selectedGraph.RemoveNode(node);
+    SaveGraph(selectedGraph);
+  }
+
+  protected void OnClickRemoveConnection(NODE_OPTION option) {
+    option.next = -1;
     SaveGraph(selectedGraph);
   }
 

@@ -24,6 +24,9 @@ public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : N
   virtual public void Construct(int id, Vector2 position) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
+    if (defaultOption == null) {
+      defaultOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
+    }
   }
 
   public void MoveOption(NODE_OPTION option, int diff) {

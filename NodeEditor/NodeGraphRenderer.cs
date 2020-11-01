@@ -12,15 +12,15 @@ public class NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER>
 
   public virtual void DrawNodeGraph(
     NODE_GRAPH graph,
-    Action<NODE> OnClickNode,
     Action<NODE> OnRemoveNode,
+    Action<NODE_OPTION> OnRemoveConnection,
     Action<NODE_OPTION> OnClickOption,
     Action<NODE_GRAPH> SaveGraph
   ) {
     if (graph.nodes != null) {
       foreach (NODE node in graph.nodes) {
         NODE_RENDERER r = new NODE_RENDERER();
-        r.Initialize(graph, OnClickNode, OnRemoveNode, OnClickOption, SaveGraph);
+        r.Initialize(graph, OnRemoveNode, OnRemoveConnection, OnClickOption, SaveGraph);
         r.DrawNode(node);
       }
     }
