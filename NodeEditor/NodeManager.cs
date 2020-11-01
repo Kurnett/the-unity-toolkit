@@ -44,12 +44,8 @@ public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION> : MonoBehaviour
   }
 
   NODE GetNode(int id) {
-    Debug.Log("TEST");
-    Debug.Log(currentGraph);
     foreach (NODE node in currentGraph.nodes) {
-      Debug.Log(node);
       if (node.id == id) {
-        Debug.Log("MATCH");
         return node;
       }
     }
