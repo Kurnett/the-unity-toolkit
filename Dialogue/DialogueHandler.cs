@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueHandler : MonoBehaviour {
+public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
+  where DIALOGUE : Dialogue
+  where DIALOGUE_MANAGER : DialogueManager {
 
-  public List<Dialogue> dialogues = new List<Dialogue>();
-  public Dialogue defaultDialogue;
-  public DialogueManager manager;
+  public List<DIALOGUE> dialogues = new List<DIALOGUE>();
+  public DIALOGUE defaultDialogue;
+  public DIALOGUE_MANAGER manager;
 
   void Start() {
     FindDialogueManager();
@@ -14,7 +16,7 @@ public class DialogueHandler : MonoBehaviour {
 
   virtual public void FindDialogueManager() {
     if (!manager) {
-      DialogueManager[] managers = FindObjectsOfType(typeof(DialogueManager)) as DialogueManager[];
+      DIALOGUE_MANAGER[] managers = FindObjectsOfType(typeof(DIALOGUE_MANAGER)) as DIALOGUE_MANAGER[];
       if (managers.Length > 0) {
         manager = managers[0];
       }
@@ -29,7 +31,7 @@ public class DialogueHandler : MonoBehaviour {
     }
   }
 
-  virtual public void StartDialogue(Dialogue dialogue) {
+  virtual public void StartDialogue(DIALOGUE dialogue) {
     if (manager) {
       manager.StartDialogue(dialogue);
     }

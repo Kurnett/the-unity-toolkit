@@ -24,8 +24,6 @@ public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION> : MonoBehaviour
     return false;
   }
 
-  virtual public void CloseNodeGraph() { }
-
   protected virtual void ClearNodeGraph() {
     currentGraph = null;
   }
