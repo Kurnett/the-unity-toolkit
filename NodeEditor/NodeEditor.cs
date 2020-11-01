@@ -226,7 +226,7 @@ public abstract class NodeEditor<
     foreach (NODE node in graph.nodes) {
       if (node.defaultOption == null) {
         NODE_OPTION newOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
-        AssetDatabase.AddObjectToAsset(newOption, this);
+        AssetDatabase.AddObjectToAsset(newOption, graph);
         node.defaultOption = newOption;
       }
     }

@@ -15,7 +15,7 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
     Speaker speakerNew = (Speaker)EditorGUILayout.ObjectField(node.speaker, typeof(Speaker), false);
 
     bool startNew = EditorGUILayout.ToggleLeft("Start Conv.", node.start);
-    bool endConversationNew = EditorGUILayout.ToggleLeft("End Conv.", node.endConversation);
+    bool endDialogueNew = EditorGUILayout.ToggleLeft("End Conv.", node.endDialogue);
     bool autoProceedNew = EditorGUILayout.ToggleLeft("Auto-Proceed", node.autoProceed);
     GUILayout.Label("Auto-Length");
     float lengthNew = EditorGUILayout.FloatField(node.length);
@@ -43,8 +43,8 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
       if (startNew) graph.SetStartNode(node);
       diff = true;
     }
-    if (node.endConversation != endConversationNew) {
-      node.endConversation = endConversationNew;
+    if (node.endDialogue != endDialogueNew) {
+      node.endDialogue = endDialogueNew;
       diff = true;
     }
     if (node.autoProceed != autoProceedNew) {

@@ -14,16 +14,16 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
     }
   }
 
-  virtual public bool StartConversation(Dialogue conversation) {
-    return SetNodeGraph(conversation);
+  virtual public bool StartDialogue(Dialogue dialogue) {
+    return SetNodeGraph(dialogue);
   }
 
-  virtual public void EndConversation() {
+  virtual public void EndDialogue() {
     base.CloseNodeGraph();
-    Invoke("ClearConversation", 1);
+    Invoke("ClearDialogue", 1);
   }
 
-  void ClearConversation() {
+  void ClearDialogue() {
     base.ClearNodeGraph();
   }
 
@@ -38,8 +38,8 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
   virtual protected void CheckNodeProgress() {
     DialogueNode currentConvNode = (DialogueNode)currentNode;
     if (currentConvNode != null) {
-      if (currentConvNode.endConversation) {
-        EndConversation();
+      if (currentConvNode.endDialogue) {
+        EndDialogue();
       } else if (currentConvNode.autoProceed) {
         SetNode(currentConvNode.defaultOption.next);
       }
@@ -51,9 +51,9 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
   }
 
   override protected void OnNodeGraphUIUpdate(DialogueNode node) {
-    OnConversationUIUpdate(node);
+    OnDialogueUIUpdate(node);
   }
 
-  virtual public void OnConversationUIUpdate(DialogueNode node) { }
+  virtual public void OnDialogueUIUpdate(DialogueNode node) { }
 
 }

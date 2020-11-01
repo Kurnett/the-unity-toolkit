@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DialogueHandler : MonoBehaviour {
 
-  public List<Dialogue> conversations = new List<Dialogue>();
-  public Dialogue defaultConversation;
+  public List<Dialogue> dialogues = new List<Dialogue>();
+  public Dialogue defaultDialogue;
   public DialogueManager manager;
 
   void Start() {
@@ -21,17 +21,17 @@ public class DialogueHandler : MonoBehaviour {
     }
   }
 
-  virtual public void StartConversation() {
+  virtual public void StartDialogue() {
     if (manager) {
-      if (defaultConversation != null) {
-        manager.StartConversation(defaultConversation);
+      if (defaultDialogue != null) {
+        manager.StartDialogue(defaultDialogue);
       }
     }
   }
 
-  virtual public void StartConversation(Dialogue conversation) {
+  virtual public void StartDialogue(Dialogue dialogue) {
     if (manager) {
-      manager.StartConversation(conversation);
+      manager.StartDialogue(dialogue);
     }
   }
 

@@ -9,7 +9,7 @@ public class DialogueNode : Node<DialogueOption> {
   public string text;
   public float length;
   public bool autoProceed;
-  public bool endConversation;
+  public bool endDialogue;
 
   public string title = "";
 
