@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// TODO: Refactor save system to follow standard Unity controls (a.k.a use ctrl-s to save).
-
 /*
 
-New methods
-- CreateNodeConnection
-- RemoveNodeConnection
-- AddOption
-- RemoveOption
-- MoveOption
+- Centralize saving into a single method in NodeEditor.
 
 */
 
@@ -229,6 +222,14 @@ public abstract class NodeEditor<
   }
 
   protected virtual void SaveGraph(NodeGraph<NODE, NODE_OPTION> graph) {
+    // Repair any broken default nodes before saving.
+    foreach (NODE node in graph.nodes) {
+      if (node.defaultOption == null) {
+        NODE_OPTION newOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
+        AssetDatabase.AddObjectToAsset(newOption, this);
+        node.defaultOption = newOption;
+      }
+    }
     EditorUtility.SetDirty(graph);
     AssetDatabase.SaveAssets();
   }

@@ -64,14 +64,16 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
 
   protected virtual void DrawOptionControlsRight(NODE node, int i) {
     NODE_OPTION option = node.options[i];
-    if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
-    node.optionRects[i] = EditorGUILayout.BeginVertical();
-    if (option.next == -1) {
-      if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
-    } else {
-      if (GUILayout.Button("-", GUILayout.Width(30))) { option.next = -1; }
+    if (option != null) {
+      if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
+      node.optionRects[i] = EditorGUILayout.BeginVertical();
+      if (option.next == -1) {
+        if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
+      } else {
+        if (GUILayout.Button("-", GUILayout.Width(30))) { option.next = -1; }
+      }
+      EditorGUILayout.EndVertical();
     }
-    EditorGUILayout.EndVertical();
   }
 
   protected virtual void DrawAddOption(NODE node) {
@@ -101,21 +103,23 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>
     }
     for (int i = 0; i < node.options.Count; i++) {
       NODE_OPTION option = (NODE_OPTION)node.options[i];
-      NODE nextNode = graph.GetNodeById(option.next);
-      Rect addRect = new Rect(node.rect.x + 130f, node.rect.y, 30f, 30f);
-      option.rect = addRect;
+      if (option != null) {
+        NODE nextNode = graph.GetNodeById(option.next);
+        Rect addRect = new Rect(node.rect.x + 130f, node.rect.y, 30f, 30f);
+        option.rect = addRect;
 
-      if (nextNode != null) {
-        Vector2 handlePos = new Vector2(node.rect.x + node.optionRects[i].xMax, node.rect.y + node.optionRects[i].y);
-        Handles.DrawBezier(
-          handlePos,
-          nextNode.rect.position,
-          handlePos - Vector2.left * 50f,
-          nextNode.rect.position + Vector2.left * 50f,
-          Color.white,
-          null,
-          2f
-        );
+        if (nextNode != null) {
+          Vector2 handlePos = new Vector2(node.rect.x + node.optionRects[i].xMax, node.rect.y + node.optionRects[i].y);
+          Handles.DrawBezier(
+            handlePos,
+            nextNode.rect.position,
+            handlePos - Vector2.left * 50f,
+            nextNode.rect.position + Vector2.left * 50f,
+            Color.white,
+            null,
+            2f
+          );
+        }
       }
     }
   }

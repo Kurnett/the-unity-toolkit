@@ -26,6 +26,7 @@ public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : N
     rect = new Rect(position.x, position.y, width, height);
     if (defaultOption == null) {
       defaultOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
+      AssetDatabase.AddObjectToAsset(defaultOption, this);
     }
   }
 

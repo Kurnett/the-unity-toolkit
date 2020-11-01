@@ -15,6 +15,7 @@ public class DialogueNode : Node<DialogueOption> {
 
   public override void AddOption() {
     DialogueOption newOption = (DialogueOption)ScriptableObject.CreateInstance(typeof(DialogueOption));
+    AssetDatabase.AddObjectToAsset(newOption, this);
     options.Add(newOption);
   }
 }
