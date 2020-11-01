@@ -21,22 +21,18 @@ public class DialogueHandler : MonoBehaviour {
     }
   }
 
-  virtual public bool StartConversation() {
+  virtual public void StartConversation() {
     if (manager) {
       if (defaultConversation != null) {
         manager.StartConversation(defaultConversation);
-        return true;
       }
     }
-    return false;
   }
 
-  virtual public bool StartConversation(Dialogue conversation) {
+  virtual public void StartConversation(Dialogue conversation) {
     if (manager) {
       manager.StartConversation(conversation);
-      return true;
     }
-    return false;
   }
 
 }

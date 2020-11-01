@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class Interact : MonoBehaviour {
+abstract public class Interactor : MonoBehaviour {
 
   void Update() { InteractInput(); }
 

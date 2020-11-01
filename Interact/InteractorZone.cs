@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractZone : Interact {
+public class InteractorZone : Interactor {
 
   List<GameObject> currentZones = new List<GameObject>();
 
@@ -15,12 +15,15 @@ public class InteractZone : Interact {
   override public void TriggerInteract() {
     foreach (GameObject zone in currentZones) {
       if (zone) {
-        zone.SendMessage("Interact", null, SendMessageOptions.DontRequireReceiver);
+        Interaction intZone = zone.GetComponent<Interaction>();
+        if (intZone) {
+          intZone.Interact();
+        }
       }
     }
   }
 
-  public List<GameObject> GetZones () {
+  public List<GameObject> GetZones() {
     return currentZones;
   }
 

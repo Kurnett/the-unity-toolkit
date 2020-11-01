@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOption> {
 
-  protected float currentNodeStartTime;
-
-  public List<Dialogue> conversations = new List<Dialogue>();
-
   void Start() {
     currentGraph = null;
   }
@@ -32,12 +28,10 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
   }
 
   protected override void SetNode(int id) {
-    currentNodeStartTime = Time.time;
     base.SetNode(id);
   }
 
   protected override void SetNode(DialogueNode node) {
-    currentNodeStartTime = Time.time;
     base.SetNode(node);
   }
 
@@ -54,15 +48,6 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
 
   public void Respond(int option) {
     base.SelectNodeOption(option);
-  }
-
-  Dialogue GetConversation(int id) {
-    foreach (Dialogue conversation in conversations) {
-      if (conversation.id == id) {
-        return conversation;
-      }
-    }
-    return null;
   }
 
   override protected void OnNodeGraphUIUpdate(DialogueNode node) {

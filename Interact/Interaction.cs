@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 abstract public class Interaction : MonoBehaviour {
-  
-  abstract public void Interact ();
+
+  public UnityEvent action;
+  virtual public void Interact() {
+    action.Invoke();
+  }
 
 }
