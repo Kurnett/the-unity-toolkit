@@ -4,5 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(menuName = "Quests/Questline")]
-public class Questline : NodeGraph<QuestNode, QuestOption> { }
+public class ObjectiveOption : NodeOption {
+  public string id;
+}

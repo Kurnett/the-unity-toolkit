@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ObjectiveManager : NodeManager<Questline, QuestNode, QuestOption> {
+public class ObjectiveManager : NodeManager<ObjectiveGraph, ObjectiveNode, ObjectiveOption> {
 
   virtual public void CompleteObjective() {
     currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
-    OnNodeGraphUIUpdate((QuestNode)currentNode);
+    OnNodeGraphUIUpdate((ObjectiveNode)currentNode);
   }
 
-  virtual public void CompleteObjective(QuestOption option) {
+  virtual public void CompleteObjective(ObjectiveOption option) {
     if (option != null) {
       currentNode = currentGraph.GetNodeById(option.next);
-      OnNodeGraphUIUpdate((QuestNode)currentNode);
+      OnNodeGraphUIUpdate((ObjectiveNode)currentNode);
     }
   }
 
-  override protected void OnNodeGraphUIUpdate(QuestNode node) {
-    OnObjectiveUIUpdate((QuestNode)node);
+  override protected void OnNodeGraphUIUpdate(ObjectiveNode node) {
+    OnObjectiveUIUpdate((ObjectiveNode)node);
   }
 
-  virtual protected void OnObjectiveUIUpdate(QuestNode node) { }
+  virtual protected void OnObjectiveUIUpdate(ObjectiveNode node) { }
 
 }

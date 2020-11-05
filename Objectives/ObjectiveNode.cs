@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNode : Node<QuestOption> {
+public class ObjectiveNode : Node<ObjectiveOption> {
   public string text;
 
   public override void AddOption() {
-    QuestOption newOption = (QuestOption)ScriptableObject.CreateInstance(typeof(QuestOption));
+    ObjectiveOption newOption = (ObjectiveOption)ScriptableObject.CreateInstance(typeof(ObjectiveOption));
     options.Add(newOption);
   }
 }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode, QuestOption> {
+public class ObjectiveNodeRenderer : NodeRenderer<ObjectiveGraph, ObjectiveNode, ObjectiveOption> {
 
-  protected override void DrawHeader(QuestNode node) {
+  protected override void DrawHeader(ObjectiveNode node) {
     bool diff = false;
     GUILayout.Box("", GUIStyle.none);
-    GUILayout.Label("Quest Log");
+    GUILayout.Label("Objectives");
     bool startNew = EditorGUILayout.ToggleLeft("Start", node.start);
     string textNew = EditorGUILayout.TextArea(node.text, GUILayout.Height(90));
     if (node.start != startNew) {
@@ -22,8 +22,8 @@ public class QuestNodeRenderer : NodeRenderer<Questline, QuestNode, QuestOption>
     if (diff) SaveGraph(graph);
   }
 
-  protected override void DrawOptionControlsCenter(QuestNode node, int i) {
-    QuestOption option = (QuestOption)node.options[i];
+  protected override void DrawOptionControlsCenter(ObjectiveNode node, int i) {
+    ObjectiveOption option = (ObjectiveOption)node.options[i];
     option.id = EditorGUILayout.TextArea(option.id);
   }
 
