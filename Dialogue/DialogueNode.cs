@@ -11,10 +11,4 @@ public class DialogueNode : Node<DialogueOption> {
   public bool autoProceed;
 
   public string title = "";
-
-  public override void AddOption() {
-    DialogueOption newOption = (DialogueOption)ScriptableObject.CreateInstance(typeof(DialogueOption));
-    AssetDatabase.AddObjectToAsset(newOption, this);
-    options.Add(newOption);
-  }
 }

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ObjectiveEditor : NodeEditor<ObjectiveGraphRenderer, ObjectiveNodeRenderer, ObjectiveGraph, ObjectiveNode, ObjectiveOption> {
+public class ObjectiveEditor : NodeEditor<
+  ObjectiveGraphRenderer,
+  ObjectiveNodeRenderer,
+  ObjectiveGraph,
+  ObjectiveNode,
+  ObjectiveOption
+> {
 
   [MenuItem("Window/Objective Editor")]
   private static void OpenWindow() {

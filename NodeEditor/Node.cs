@@ -24,8 +24,11 @@ public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : N
   virtual public void Construct(int id, Vector2 position) {
     this.id = id;
     rect = new Rect(position.x, position.y, width, height);
+  }
+
+  virtual public void Initialize() {
     if (defaultOption == null) {
-      defaultOption = (NODE_OPTION)ScriptableObject.CreateInstance(typeof(NODE_OPTION));
+      defaultOption = ScriptableObject.CreateInstance<NODE_OPTION>();
       AssetDatabase.AddObjectToAsset(defaultOption, this);
     }
   }

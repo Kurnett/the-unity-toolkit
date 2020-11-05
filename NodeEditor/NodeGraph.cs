@@ -76,6 +76,7 @@ public abstract class NodeGraph<NODE, NODE_OPTION> : ScriptableObject
       position
     );
     AssetDatabase.AddObjectToAsset(node, this);
+    node.Initialize();
     nodes.Add(node);
   }
 
