@@ -7,18 +7,18 @@ public class ObjectiveManager : NodeManager<ObjectiveGraph, ObjectiveNode, Objec
 
   virtual public void CompleteObjective() {
     currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
-    OnNodeGraphUIUpdate((ObjectiveNode)currentNode);
+    OnNodeGraphUIUpdate(currentNode);
   }
 
   virtual public void CompleteObjective(ObjectiveOption option) {
     if (option != null) {
       currentNode = currentGraph.GetNodeById(option.next);
-      OnNodeGraphUIUpdate((ObjectiveNode)currentNode);
+      OnNodeGraphUIUpdate(currentNode);
     }
   }
 
   override protected void OnNodeGraphUIUpdate(ObjectiveNode node) {
-    OnObjectiveUIUpdate((ObjectiveNode)node);
+    OnObjectiveUIUpdate(node);
   }
 
   virtual protected void OnObjectiveUIUpdate(ObjectiveNode node) { }

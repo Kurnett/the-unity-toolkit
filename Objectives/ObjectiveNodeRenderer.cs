@@ -15,6 +15,19 @@ public class ObjectiveNodeRenderer : NodeRenderer<ObjectiveGraph, ObjectiveNode,
       node.start = startNew;
       diff = true;
     }
+
+    // Check if the objective node has a default next node.
+
+    if (node.defaultOption == null || node.defaultOption.next == -1) {
+      if (GUILayout.Button("+")) {
+        OnClickOption(node.defaultOption);
+      }
+    } else {
+      if (GUILayout.Button("-")) {
+        OnRemoveConnection(node.defaultOption);
+      }
+    }
+    
     if (node.text != textNew) {
       node.text = textNew;
       diff = true;
