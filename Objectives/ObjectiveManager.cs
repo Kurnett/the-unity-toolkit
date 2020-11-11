@@ -4,9 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ObjectiveManager : NodeManager<ObjectiveGraph, ObjectiveNode, ObjectiveOption> {
+  
+  public List<ObjectiveGraph> objectiveList;
+  protected ObjectiveGraph currentObjective;
 
   virtual public void CompleteObjective() {
     currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
+    OnNodeGraphUIUpdate(currentNode);
+  }
+
+  virtual public void CompleteObjective(string id) {
+    foreach(ObjectiveGraph graph in objectiveList) {
+    currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
+    }
     OnNodeGraphUIUpdate(currentNode);
   }
 
