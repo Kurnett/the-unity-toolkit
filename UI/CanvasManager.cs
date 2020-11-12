@@ -16,22 +16,13 @@ public class CanvasManager : MonoBehaviour {
     }
   }
 
-  void SetCurrentCanvas(string id) {
+  protected void SetCurrentCanvas(string id) {
     if (current) {
       current.gameObject.SetActive(false);
     }
     current = controllers.Find(c => c.id == id);
     if (current != null) {
       current.gameObject.SetActive(true);
-    }
-  }
-
-  void Update() {
-    if (Input.GetButtonDown("Cancel")) {
-      SetCurrentCanvas("EscapeMenu");
-    }
-    if (Input.GetButtonDown("Interact")) {
-      SetCurrentCanvas("Objective");
     }
   }
 }

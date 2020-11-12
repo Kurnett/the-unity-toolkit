@@ -15,7 +15,7 @@ public class ObjectiveManager : NodeManager<ObjectiveGraph, ObjectiveNode, Objec
 
   virtual public void CompleteObjective(string id) {
     foreach(ObjectiveGraph graph in objectiveList) {
-    currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
+      currentNode = currentGraph.GetNodeById(currentNode.defaultOption.next);
     }
     OnNodeGraphUIUpdate(currentNode);
   }
