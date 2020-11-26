@@ -26,7 +26,7 @@ public abstract class NodeGraph<NODE, NODE_OPTION> : ScriptableObject
     return -1;
   }
 
-  public int GetStartNodeID() {
+  public int GetStartNodeId() {
     foreach (NODE node in nodes) {
       if (node.start) {
         return node.id;

@@ -13,7 +13,7 @@ public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION> : MonoBehaviour
   virtual public bool SetNodeGraph(NODE_GRAPH graph) {
     if (currentGraph == null) {
       currentGraph = graph;
-      int startNodeID = graph.GetStartNodeID();
+      int startNodeID = graph.GetStartNodeId();
       if (startNodeID != -1) {
         SetNode(startNodeID);
         return true;
