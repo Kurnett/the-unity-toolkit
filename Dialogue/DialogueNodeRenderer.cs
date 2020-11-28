@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, DialogueOption> {
+public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, DialogueOption, NodeSideEffect> {
 
   protected override void DrawHeader(DialogueNode node) {
     bool diff = false;

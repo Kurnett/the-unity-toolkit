@@ -8,7 +8,8 @@ public class ObjectiveEditor : NodeEditor<
   ObjectiveNodeRenderer,
   ObjectiveGraph,
   ObjectiveNode,
-  ObjectiveOption
+  ObjectiveOption,
+  NodeSideEffect
 > {
 
   [MenuItem("Window/Objective Editor")]

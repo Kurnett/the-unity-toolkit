@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION> : MonoBehaviour
-  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
-  where NODE : Node<NODE_OPTION>
-  where NODE_OPTION : NodeOption {
+public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION, NODE_SIDE_EFFECT> : MonoBehaviour
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT>
+  where NODE : Node<NODE_OPTION, NODE_SIDE_EFFECT>
+  where NODE_OPTION : NodeOption
+  where NODE_SIDE_EFFECT : NodeSideEffect {
 
   protected NODE_GRAPH currentGraph;
   protected NODE currentNode;

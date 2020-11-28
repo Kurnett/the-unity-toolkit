@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public abstract class Node<NODE_OPTION> : ScriptableObject where NODE_OPTION : NodeOption {
+public abstract class Node<NODE_OPTION, NODE_SIDE_EFFECT> : ScriptableObject
+  where NODE_OPTION : NodeOption
+  where NODE_SIDE_EFFECT : NodeSideEffect {
   public int id;
   public bool start;
   public List<NODE_OPTION> options = new List<NODE_OPTION>();
+  public List<NODE_SIDE_EFFECT> entrySideEffects = new List<NODE_SIDE_EFFECT>();
+  public List<NODE_SIDE_EFFECT> exitSideEffects = new List<NODE_SIDE_EFFECT>();
   public NODE_OPTION defaultOption;
 
   // Editor Data

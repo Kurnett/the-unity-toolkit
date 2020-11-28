@@ -8,7 +8,8 @@ public class DialogueEditor : NodeEditor<
   DialogueNodeRenderer,
   Dialogue,
   DialogueNode,
-  DialogueOption
+  DialogueOption,
+  NodeSideEffect
 > {
 
   [MenuItem("Window/Dialogue Editor")]

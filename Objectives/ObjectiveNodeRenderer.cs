@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ObjectiveNodeRenderer : NodeRenderer<ObjectiveGraph, ObjectiveNode, ObjectiveOption> {
+public class ObjectiveNodeRenderer : NodeRenderer<ObjectiveGraph, ObjectiveNode, ObjectiveOption, NodeSideEffect> {
 
   protected override void DrawHeader(ObjectiveNode node) {
     bool diff = false;

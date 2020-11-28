@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER>
-  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION>
-  where NODE : Node<NODE_OPTION>
+public class NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER, NODE_SIDE_EFFECT>
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT>
+  where NODE : Node<NODE_OPTION, NODE_SIDE_EFFECT>
   where NODE_OPTION : NodeOption
-  where NODE_RENDERER : NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION>, new() {
+  where NODE_RENDERER : NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_SIDE_EFFECT>, new()
+  where NODE_SIDE_EFFECT : NodeSideEffect {
 
   public virtual void DrawNodeGraph(
     NODE_GRAPH graph,

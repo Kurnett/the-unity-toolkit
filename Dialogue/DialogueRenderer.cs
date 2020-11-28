@@ -7,5 +7,6 @@ public class DialogueRenderer : NodeGraphRenderer<
   Dialogue,
   DialogueNode,
   DialogueOption,
-  DialogueNodeRenderer
+  DialogueNodeRenderer,
+  NodeSideEffect
 > { }
