@@ -25,7 +25,11 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
     if (conversationDidEnd) {
       return false;
     }
-    return SetNodeGraph(dialogue);
+    bool success = SetNodeGraph(dialogue);
+    if (success) {
+      OnDialogueUIUpdate(currentNode);
+    }
+    return success;
   }
 
   virtual public void EndDialogue() {

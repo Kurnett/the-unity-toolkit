@@ -6,8 +6,6 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
   where DIALOGUE : Dialogue
   where DIALOGUE_MANAGER : DialogueManager {
 
-  public List<DIALOGUE> dialogues = new List<DIALOGUE>();
-  public DIALOGUE defaultDialogue;
   public DIALOGUE_MANAGER manager;
 
   void Start() {
@@ -19,14 +17,6 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
       DIALOGUE_MANAGER[] managers = FindObjectsOfType(typeof(DIALOGUE_MANAGER)) as DIALOGUE_MANAGER[];
       if (managers.Length > 0) {
         manager = managers[0];
-      }
-    }
-  }
-
-  virtual public void StartDialogue() {
-    if (manager) {
-      if (defaultDialogue != null) {
-        manager.StartDialogue(defaultDialogue);
       }
     }
   }
