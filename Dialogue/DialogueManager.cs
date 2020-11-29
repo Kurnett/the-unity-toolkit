@@ -41,14 +41,6 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
     base.ClearNodeGraph();
   }
 
-  // protected override void SetNode(int id) {
-  //   base.SetNode(id);
-  // }
-
-  // protected override void SetNode(DialogueNode node) {
-  //   base.SetNode(node);
-  // }
-
   virtual protected void CheckNodeProgress() {
     DialogueNode currentConvNode = (DialogueNode)currentNode;
     if (currentConvNode != null) {
@@ -73,5 +65,9 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
   }
 
   virtual public void OnDialogueUIUpdate(DialogueNode node) { }
+
+  override protected void SetNode(int id) {
+    base.SetNode(id);
+  }
 
 }

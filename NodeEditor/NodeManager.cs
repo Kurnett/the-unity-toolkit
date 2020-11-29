@@ -35,6 +35,7 @@ public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION, NODE_SIDE_EFFEC
   }
 
   protected virtual void SetNode(NODE node) {
+    currentNode = node;
     OnNodeGraphUIUpdate(node);
   }
 

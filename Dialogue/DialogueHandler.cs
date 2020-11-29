@@ -8,6 +8,9 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
 
   public DIALOGUE_MANAGER manager;
 
+  [SerializeField]
+  List<NodeSideEffectHandler> effectHandlers = new List<NodeSideEffectHandler>();
+
   void Start() {
     FindDialogueManager();
   }
@@ -24,6 +27,14 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
   virtual public void StartDialogue(DIALOGUE dialogue) {
     if (manager) {
       manager.StartDialogue(dialogue);
+    }
+  }
+
+  virtual public void HandleSideEffects(List<NodeSideEffect> effects) {
+    foreach (NodeSideEffect effect in effects) {
+      foreach (NodeSideEffectHandler handler in effectHandlers) {
+        handler.HandleEffect(effect);
+      }
     }
   }
 
