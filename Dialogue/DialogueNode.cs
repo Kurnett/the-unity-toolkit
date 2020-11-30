@@ -7,6 +7,7 @@ using UnityEditor;
 public class DialogueNode : Node<DialogueOption, NodeSideEffect> {
   public Speaker speaker;
   public string text;
+  public Flag textFlag;
   public float length;
   public bool autoProceed;
 
