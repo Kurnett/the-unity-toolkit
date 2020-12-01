@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Nodes/Graph")]
-public abstract class NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT> : ScriptableObject
-  where NODE : Node<NODE_OPTION, NODE_SIDE_EFFECT>
+public abstract class NodeGraph<NODE, NODE_OPTION, FLAG> : ScriptableObject
+  where NODE : Node<NODE_OPTION, FLAG>
   where NODE_OPTION : NodeOption
-  where NODE_SIDE_EFFECT : NodeSideEffect {
+  where FLAG : Flag {
 
   public int id;
   new public string name;

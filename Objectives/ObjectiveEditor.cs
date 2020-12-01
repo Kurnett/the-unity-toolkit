@@ -9,7 +9,7 @@ public class ObjectiveEditor : NodeEditor<
   ObjectiveGraph,
   ObjectiveNode,
   ObjectiveOption,
-  NodeSideEffect
+  Flag
 > {
 
   [MenuItem("Window/Objective Editor")]

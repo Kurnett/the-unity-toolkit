@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class DialogueNode : Node<DialogueOption, NodeSideEffect> {
+public class DialogueNode : Node<DialogueOption, Flag> {
   public Speaker speaker;
   public string text;
   public Flag textFlag;

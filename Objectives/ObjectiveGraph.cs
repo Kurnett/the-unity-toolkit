@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Objectives/ObjectiveGraph")]
-public class ObjectiveGraph : NodeGraph<ObjectiveNode, ObjectiveOption, NodeSideEffect> {
+public class ObjectiveGraph : NodeGraph<ObjectiveNode, ObjectiveOption, Flag> {
   protected ObjectiveNode currentObjective;
 
   public void SetCurrentObjective (ObjectiveNode objective) {

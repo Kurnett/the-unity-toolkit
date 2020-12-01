@@ -9,7 +9,7 @@ public class DialogueEditor : NodeEditor<
   Dialogue,
   DialogueNode,
   DialogueOption,
-  NodeSideEffect
+  Flag
 > {
 
   [MenuItem("Window/Dialogue Editor")]

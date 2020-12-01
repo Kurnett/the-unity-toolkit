@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOption, NodeSideEffect> {
+public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOption, Flag> {
 
   // Necessary to avoid instantly restarting a conversation when the user
   // presses the "interact" button to end the conversation.

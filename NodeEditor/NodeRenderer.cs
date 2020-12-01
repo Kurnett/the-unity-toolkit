@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_SIDE_EFFECT>
-  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT>
-  where NODE : Node<NODE_OPTION, NODE_SIDE_EFFECT>
+public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, FLAG>
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, FLAG>
+  where NODE : Node<NODE_OPTION, FLAG>
   where NODE_OPTION : NodeOption
-  where NODE_SIDE_EFFECT : NodeSideEffect {
+  where FLAG : Flag {
 
   // Needs initialization, avoids needing editor reference
   public Action<NODE> OnRemoveNode;

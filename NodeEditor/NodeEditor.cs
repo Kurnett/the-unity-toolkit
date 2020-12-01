@@ -15,14 +15,14 @@ public abstract class NodeEditor<
   NODE_GRAPH,
   NODE,
   NODE_OPTION,
-  NODE_SIDE_EFFECT
+  FLAG
 > : EditorWindow
-  where GRAPH_RENDERER : NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER, NODE_SIDE_EFFECT>, new()
-  where NODE_RENDERER : NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_SIDE_EFFECT>, new()
-  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT>
-  where NODE : Node<NODE_OPTION, NODE_SIDE_EFFECT>
+  where GRAPH_RENDERER : NodeGraphRenderer<NODE_GRAPH, NODE, NODE_OPTION, NODE_RENDERER, FLAG>, new()
+  where NODE_RENDERER : NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, FLAG>, new()
+  where NODE_GRAPH : NodeGraph<NODE, NODE_OPTION, FLAG>
+  where NODE : Node<NODE_OPTION, FLAG>
   where NODE_OPTION : NodeOption
-  where NODE_SIDE_EFFECT : NodeSideEffect {
+  where FLAG : Flag {
 
   protected NODE_GRAPH selectedGraph;
   protected NODE selectedNode;
@@ -223,7 +223,7 @@ public abstract class NodeEditor<
     selectedOption = null;
   }
 
-  protected virtual void SaveGraph(NodeGraph<NODE, NODE_OPTION, NODE_SIDE_EFFECT> graph) {
+  protected virtual void SaveGraph(NodeGraph<NODE, NODE_OPTION, FLAG> graph) {
     // Repair any broken default nodes before saving.
     foreach (NODE node in graph.nodes) {
       if (node.defaultOption == null) {

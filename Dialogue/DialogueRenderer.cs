@@ -8,5 +8,5 @@ public class DialogueRenderer : NodeGraphRenderer<
   DialogueNode,
   DialogueOption,
   DialogueNodeRenderer,
-  NodeSideEffect
+  Flag
 > { }

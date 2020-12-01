@@ -4,6 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ObjectiveNode :  Node<ObjectiveOption, NodeSideEffect> {
+public class ObjectiveNode :  Node<ObjectiveOption, Flag> {
   public string text;
 }
