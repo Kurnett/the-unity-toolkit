@@ -9,9 +9,9 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
   public DIALOGUE_MANAGER manager;
 
   [SerializeField]
-  List<FlagEffectHandler> effectHandlers = new List<FlagEffectHandler>();
+  List<FlagEventHandler> effectHandlers = new List<FlagEventHandler>();
   [SerializeField]
-  List<FlagEffectHandler> textFlags = new List<FlagEffectHandler>();
+  List<FlagStringHandler> textFlagHandlers = new List<FlagStringHandler>();
 
   void Start() {
     FindDialogueManager();
@@ -34,16 +34,19 @@ public class DialogueHandler<DIALOGUE, DIALOGUE_MANAGER> : MonoBehaviour
 
   virtual public void HandleSideEffects(List<Flag> effects) {
     foreach (Flag effect in effects) {
-      foreach (FlagEffectHandler handler in effectHandlers) {
+      foreach (FlagEventHandler handler in effectHandlers) {
         handler.HandleFlag(effect);
       }
     }
   }
 
-  virtual public void GetTextFlag(Flag flag) {
-      foreach (FlagEffectHandler handler in effectHandlers) {
-        handler.HandleFlag(flag);
+  virtual public string GetTextFlag(Flag flag) {
+    foreach (FlagStringHandler handler in textFlagHandlers) {
+      if (handler.flag == flag) {
+        return handler.HandleFlag(flag);
       }
+    }
+    return "";
   }
 
 }

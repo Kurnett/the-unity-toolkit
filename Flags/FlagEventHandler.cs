@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
-public class FlagEffectHandler {
+public class FlagEventHandler {
   public Flag flag;
   public UnityEvent actions;
 
