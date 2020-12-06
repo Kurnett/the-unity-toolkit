@@ -10,8 +10,10 @@ public abstract class Node<NODE_OPTION, FLAG> : ScriptableObject
   public int id;
   public bool start;
   public List<NODE_OPTION> options = new List<NODE_OPTION>();
-  public List<FLAG> entrySideEffects = new List<FLAG>();
-  public List<FLAG> exitSideEffects = new List<FLAG>();
+  [SerializeField]
+  public List<FLAG> entryFlags = new List<FLAG>();
+  [SerializeField]
+  public List<FLAG> exitFlags = new List<FLAG>();
   public NODE_OPTION defaultOption;
 
   // Editor Data
@@ -23,7 +25,7 @@ public abstract class Node<NODE_OPTION, FLAG> : ScriptableObject
   public bool isSelected;
 
   public float width = 200f;
-  public float height = 30f;
+  public float height = 500f;
 
   virtual public void Construct(int id, Vector2 position) {
     this.id = id;

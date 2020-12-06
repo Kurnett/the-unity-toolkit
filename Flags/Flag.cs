@@ -2,5 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 [CreateAssetMenu(menuName = "Flags/Flag")]
 public class Flag : ScriptableObject { }

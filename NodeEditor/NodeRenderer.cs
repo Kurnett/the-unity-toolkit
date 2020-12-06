@@ -34,6 +34,8 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, FLAG>
     this.SaveGraph = SaveGraph;
   }
 
+  protected virtual void DrawBody(NODE node) {}
+
   protected virtual void DrawHeader(NODE node) {
     // Adds spacing to let users click and drag.
     GUILayout.Box("", GUIStyle.none);
@@ -66,13 +68,13 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, FLAG>
   protected virtual void DrawOptionControlsRight(NODE node, int i) {
     NODE_OPTION option = node.options[i];
     if (option != null) {
-      if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
       node.optionRects[i] = EditorGUILayout.BeginVertical();
       if (option.next == -1) {
         if (GUILayout.Button("+", GUILayout.Width(30))) { OnClickOption(option); }
       } else {
         if (GUILayout.Button("-", GUILayout.Width(30))) { option.next = -1; }
       }
+      if (GUILayout.Button("R", GUILayout.Width(30))) { node.RemoveOption(option); }
       EditorGUILayout.EndVertical();
     }
   }
@@ -125,13 +127,14 @@ public class NodeRenderer<NODE_GRAPH, NODE, NODE_OPTION, FLAG>
     }
   }
 
-  public void DrawNode(NODE node) {
+  virtual public void DrawNode(NODE node) {
     EditorStyles.textField.wordWrap = true;
     node.optionRects = new Rect[node.options.Count];
 
-    GUILayout.BeginArea(new Rect(node.rect.x, node.rect.y, 250f, Screen.height * 3));
+    GUILayout.BeginArea(new Rect(node.rect.x, node.rect.y, node.width, node.height));
     node.containerRect = (Rect)EditorGUILayout.BeginVertical("Box");
     DrawHeader(node);
+    DrawBody(node);
     DrawOptions(node);
     DrawAddOption(node);
     GUILayout.EndVertical();
