@@ -17,46 +17,58 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
 
     bool startNew = EditorGUILayout.ToggleLeft("Conv. Start", node.start);
 
+    node.flagDropdownOpen = EditorGUILayout.Foldout(node.flagDropdownOpen, "Flags", true);
+    if (node.flagDropdownOpen) {
+      GUILayout.Label("Entry");
+      int shouldRemoveEntryAtIndex = -1;
+      for (int i = 0; i < node.entryFlags.Count; i++) {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("-")) {
+          shouldRemoveEntryAtIndex = i;
+        }
+        Flag eventFlag = (Flag)EditorGUILayout.ObjectField(node.entryFlags[i], typeof(Flag), false);
+        if (eventFlag != node.entryFlags[i]) {
+          diff = true;
+        }
+        node.entryFlags[i] = eventFlag;
+        EditorGUILayout.EndHorizontal();
+      }
+      Flag entryFlagNew = (Flag)EditorGUILayout.ObjectField(null, typeof(Flag), false);
+      if (entryFlagNew) {
+        node.entryFlags.Add(entryFlagNew);
+        diff = true;
+      }
+      if (shouldRemoveEntryAtIndex != -1) {
+        node.entryFlags.Remove(node.entryFlags[shouldRemoveEntryAtIndex]);
+        diff = true;
+      }
+      GUILayout.Label("Exit");
+      int shouldRemoveExitAtIndex = -1;
+      for (int i = 0; i < node.exitFlags.Count; i++) {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("-")) {
+          shouldRemoveExitAtIndex = i;
+        }
+        Flag eventFlag = (Flag)EditorGUILayout.ObjectField(node.exitFlags[i], typeof(Flag), false);
+        if (eventFlag != node.exitFlags[i]) {
+          diff = true;
+        }
+        node.exitFlags[i] = eventFlag;
+        EditorGUILayout.EndHorizontal();
+      }
+      Flag exitFlagNew = (Flag)EditorGUILayout.ObjectField(null, typeof(Flag), false);
+      if (exitFlagNew) {
+        node.exitFlags.Add(exitFlagNew);
+        diff = true;
+      }
+      if (shouldRemoveExitAtIndex != -1) {
+        node.exitFlags.Remove(node.exitFlags[shouldRemoveExitAtIndex]);
+        diff = true;
+      }
+    }
+
     GUILayout.Label("Dialogue");
     node.text = EditorGUILayout.TextArea(node.text, GUILayout.Height(90));
-
-    GUILayout.Label("Flags");
-    GUILayout.Label("Entry");
-    for (int i = 0; i < node.entryFlags.Count; i++) {
-      EditorGUILayout.BeginHorizontal();
-      if (GUILayout.Button("-")) {
-        node.entryFlags.Remove(node.entryFlags[i]);
-      }
-      Flag eventFlag = (Flag)EditorGUILayout.ObjectField(node.entryFlags[i], typeof(Flag), false);
-      if (eventFlag != node.entryFlags[i]) {
-        diff = true;
-      }
-      node.entryFlags[i] = eventFlag;
-      EditorGUILayout.EndHorizontal();
-    }
-    Flag entryFlagNew = (Flag)EditorGUILayout.ObjectField(null, typeof(Flag), false);
-    if (entryFlagNew) {
-      node.entryFlags.Add(entryFlagNew);
-      diff = true;
-    }
-    GUILayout.Label("Exit");
-    for (int i = 0; i < node.exitFlags.Count; i++) {
-      EditorGUILayout.BeginHorizontal();
-      if (GUILayout.Button("-")) {
-        node.exitFlags.Remove(node.exitFlags[i]);
-      }
-      Flag eventFlag = (Flag)EditorGUILayout.ObjectField(node.exitFlags[i], typeof(Flag), false);
-      if (eventFlag != node.exitFlags[i]) {
-        diff = true;
-      }
-      node.exitFlags[i] = eventFlag;
-      EditorGUILayout.EndHorizontal();
-    }
-    Flag exitFlagNew = (Flag)EditorGUILayout.ObjectField(null, typeof(Flag), false);
-    if (exitFlagNew) {
-      node.exitFlags.Add(exitFlagNew);
-      diff = true;
-    }
 
     GUILayout.Label("Options");
     // Check if the conversation node has a default next node.
@@ -91,6 +103,10 @@ public class DialogueNodeRenderer : NodeRenderer<Dialogue, DialogueNode, Dialogu
     // Check if conversation needs to be saved.
     if (node.speaker != speakerNew) {
       node.speaker = speakerNew;
+      diff = true;
+    }
+    if (node.textFlag != textFlagNew) {
+      node.textFlag = textFlagNew;
       diff = true;
     }
     if (node.start != startNew) {

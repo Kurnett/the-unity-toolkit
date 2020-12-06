@@ -23,6 +23,7 @@ public abstract class Node<NODE_OPTION, FLAG> : ScriptableObject
 
   public bool isDragged;
   public bool isSelected;
+  public bool flagDropdownOpen = false;
 
   public float width = 200f;
   public float height = 500f;
