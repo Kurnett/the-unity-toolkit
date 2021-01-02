@@ -18,11 +18,12 @@ public class CanvasManager : MonoBehaviour {
 
   protected void SetCurrentCanvas(string id) {
     if (current) {
-      current.gameObject.SetActive(false);
+      StartCoroutine(current.Close());
     }
     current = controllers.Find(c => c.id == id);
     if (current != null) {
       current.gameObject.SetActive(true);
+      StartCoroutine(current.Open());
     }
   }
 }

@@ -41,23 +41,28 @@ public class DialogueManager : NodeManager<Dialogue, DialogueNode, DialogueOptio
     base.ClearNodeGraph();
   }
 
-  virtual protected void CheckNodeProgress() {
-    DialogueNode currentConvNode = (DialogueNode)currentNode;
-    if (currentConvNode != null) {
+  virtual protected void CheckNodeProgress() { }
+
+  virtual protected void ProgressNode () {
+    if (currentNode != null) {
       if (
         (currentNode.autoProceed && currentNode.defaultOption.next == -1)
         ||
-        (!currentNode.autoProceed && currentNode.options.Count == 0)
+        (!currentNode.autoProceed && currentNode.options.Count == 0 && currentNode.defaultOption.next == -1)
       ) {
         EndDialogue();
-      } else if (currentConvNode.autoProceed) {
-        SetNode(currentConvNode.defaultOption.next);
+      } else if (currentNode.defaultOption.next != -1) {
+        SetNode(currentNode.defaultOption.next);
       }
     }
   }
 
   public void Respond(int option) {
-    base.SelectNodeOption(option);
+    if (currentNode.options[option - 1].next == -1) {
+      EndDialogue();
+    } else {
+      base.SelectNodeOption(option);
+    }
   }
 
   override protected void OnNodeGraphUIUpdate(DialogueNode node) {

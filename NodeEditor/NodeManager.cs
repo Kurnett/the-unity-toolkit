@@ -40,7 +40,9 @@ public abstract class NodeManager<NODE_GRAPH, NODE, NODE_OPTION, FLAG> : MonoBeh
   }
 
   public void SelectNodeOption(int option) {
-    SetNode(currentNode.options[option - 1].next);
+    if (currentNode.options[option - 1] != null) {
+      SetNode(currentNode.options[option - 1].next);
+    }
   }
 
   NODE GetNode(int id) {
